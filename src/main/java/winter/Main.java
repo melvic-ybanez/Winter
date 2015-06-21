@@ -43,8 +43,11 @@ public class Main extends Application {
         root.setTop(menuBar);
         root.setCenter(mainSplitPane);
         
+        Scene scene = new Scene(root, 900, 600);
+        scene.getStylesheets().add(Main.class.getResource("/syntax/meruem.css").toExternalForm());
+        
         primaryStage.setTitle("Winter");
-        primaryStage.setScene(new Scene(root, 900, 600));
+        primaryStage.setScene(scene);
         primaryStage.setMaximized(true);
         primaryStage.show();
     }

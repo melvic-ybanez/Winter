@@ -1,0 +1,27 @@
+.define-command {
+    -fx-fill: purple;
+    -fx-font-weight: bold;
+}
+.focused-paren {
+    -fx-fill: firebrick;
+    -fx-font-weight: bold;
+}
+.special-keyword, .operator ,.quote {
+    -fx-fill: darkgreen;
+    -fx-font-weight: bold;
+}
+.function-name, .brace {
+    -fx-fill: teal;
+    -fx-font-weight: bold;
+}
+.string, .char {
+    -fx-fill: blue;
+}
+
+.type {
+    -fx-font-weight: bold;
+}
+
+.comment {
+    -fx-fill: cadetblue;
+}
