@@ -22,11 +22,12 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Pane projectPane = new ProjectPane();
         Pane consolePane = new ConsolePane();
+        EditorPane editorPane = new EditorPane();
         
         SplitPane mainSplitPane = new SplitPane();
         
         SplitPane topPane = new SplitPane();
-        topPane.getItems().addAll(projectPane, new EditorPane());
+        topPane.getItems().addAll(projectPane, editorPane);
         topPane.setDividerPositions(0.4f);
         
         mainSplitPane.getItems().addAll(topPane, consolePane);
@@ -37,7 +38,7 @@ public class Main extends Application {
         SplitPane.setResizableWithParent(consolePane, false);
         
         MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().addAll(new FileMenu(), new EditMenu(), new PreferencesMenu(), new HelpMenu());
+        menuBar.getMenus().addAll(new FileMenu(editorPane), new EditMenu(), new PreferencesMenu(), new HelpMenu());
 
         BorderPane root = new BorderPane();
         root.setTop(menuBar);
@@ -45,6 +46,8 @@ public class Main extends Application {
         
         Scene scene = new Scene(root, 900, 600);
         scene.getStylesheets().add(Main.class.getResource("/syntax/meruem.css").toExternalForm());
+        
+        Globals.setMainStage(primaryStage);
         
         primaryStage.setTitle("Winter");
         primaryStage.setScene(scene);

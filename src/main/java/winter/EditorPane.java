@@ -1,14 +1,16 @@
 package winter;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
 import org.fxmisc.richtext.StyleSpans;
 import org.fxmisc.richtext.StyleSpansBuilder;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Optional;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,7 +18,8 @@ import java.util.regex.Pattern;
  * Created by ybamelcash on 6/21/2015.
  */
 public class EditorPane extends BorderPane {
-    private CodeArea editorArea = new CodeArea();
+    private TabPane tabPane = new TabPane();
+    private List<String> openedFiles = new ArrayList<>();
     
     public static final String TYPE_PATTERN = "\\b(" + String.join("|", Settings.TYPES) + ")\\b";
     public static final String OPERATOR_PATTERN = "(" + String.join("|", Settings.OPERATORS) + ")";
@@ -44,14 +47,50 @@ public class EditorPane extends BorderPane {
             + "|(?<QUOTE>" + QUOTE_PATTERN + ")");
     
     public EditorPane() {
+        setCenter(tabPane);
+        createUntitledTab();
+    }
+    
+    public void newEditorAreaTab(String title, String content) {
+        if (openedFiles.contains(title)) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("File already exists.");
+            alert.setHeaderText("The file " + title + " already exists.");
+            alert.setContentText("Do you want to replace it with the new one?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                tabPane.getTabs().removeIf(tab -> tab.getText().equals(title));
+                openedFiles.remove(title);
+                newEditorAreaTab(title, content);
+            } 
+        } else {
+            Tab tab = new Tab(title);
+            CodeArea codeArea = createEditorArea();
+            codeArea.replaceText(0, 0, content);
+            tab.setContent(codeArea);
+            tabPane.getTabs().add(tab);
+            tabPane.getSelectionModel().select(tab);
+            openedFiles.add(title);
+            tab.setOnClosed(event -> {
+                openedFiles.remove(tab.getText());
+            });
+        }
+    }
+
+    private void createUntitledTab() {
+        newEditorAreaTab("Untitled", "");
+    }
+    
+    private CodeArea createEditorArea() {
+        CodeArea editorArea = new CodeArea();
         editorArea.setParagraphGraphicFactory(LineNumberFactory.get(editorArea));
         editorArea.textProperty().addListener((obs, oldText, newText) -> {
             editorArea.setStyleSpans(0, highlight(newText));
         });
-        setCenter(editorArea);
+        return editorArea;
     }
     
-    public StyleSpans<Collection<String>> highlight(String text) {
+    private StyleSpans<Collection<String>> highlight(String text) {
         Matcher matcher = PATTERN.matcher(text);
         int lastMatched = 0;
         StyleSpansBuilder<Collection<String>> builder = new StyleSpansBuilder<>();
