@@ -1,4 +1,4 @@
-package winter;
+package winter.views;
 
 import javafx.scene.layout.BorderPane;
 

@@ -1,4 +1,4 @@
-package winter.menus;
+package winter.views.menus;
 
 import javafx.scene.control.Menu;
 

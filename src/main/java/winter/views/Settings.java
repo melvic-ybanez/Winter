@@ -1,4 +1,4 @@
-package winter;
+package winter.views;
 
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
