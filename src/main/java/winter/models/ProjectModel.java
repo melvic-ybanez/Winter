@@ -1,7 +1,6 @@
 package winter.models;
 
 import winter.utils.Either;
-import winter.views.ProjectsPane;
 
 import java.io.IOException;
 import java.nio.file.Files;

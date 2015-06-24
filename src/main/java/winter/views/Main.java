@@ -22,22 +22,21 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Pane consolePane = new ConsolePane();
-        EditorPane editorPane = new EditorPane();
         
         SplitPane mainSplitPane = new SplitPane();
         SplitPane topPane = Globals.topPane;
-        topPane.getItems().addAll(Globals.getProjectsPane(), editorPane);
+        topPane.getItems().addAll(Globals.projectsPane, Globals.editorPane);
         topPane.setDividerPositions(0.4f);
         
         mainSplitPane.getItems().addAll(topPane, consolePane);
         mainSplitPane.setOrientation(Orientation.VERTICAL);
         mainSplitPane.setDividerPositions(0.6f);
         
-        SplitPane.setResizableWithParent(Globals.getProjectsPane(), false);
+        SplitPane.setResizableWithParent(Globals.projectsPane, false);
         SplitPane.setResizableWithParent(consolePane, false);
         
         MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().addAll(new FileMenu(editorPane), new EditMenu(), new PreferencesMenu(), new HelpMenu());
+        menuBar.getMenus().addAll(new FileMenu(), new EditMenu(), new PreferencesMenu(), new HelpMenu());
 
         BorderPane root = new BorderPane();
         root.setTop(menuBar);

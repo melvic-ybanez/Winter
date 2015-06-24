@@ -19,8 +19,4 @@ public class ProjectController {
             return projectModel.addFile(fileToAddPath);
         } 
     }
-    
-    public static void addProject(Path path) {
-        Globals.getProjectsPane().displayProject(path);
-    }
 }

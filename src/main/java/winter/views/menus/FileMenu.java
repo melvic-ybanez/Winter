@@ -4,7 +4,9 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import winter.controllers.FileController;
 import winter.controllers.ProjectController;
+import winter.utils.Either;
 import winter.views.Errors;
 import winter.views.Settings;
 import winter.views.EditorPane;
@@ -23,11 +25,9 @@ public class FileMenu extends Menu {
     private MenuItem openFolderItem = new MenuItem("Open folder...");
     private FileChooser fileChooser = new FileChooser();
     private DirectoryChooser directoryChooser = new DirectoryChooser();
-    private EditorPane editorPane;
     
-    public FileMenu(EditorPane editorPane) {
+    public FileMenu() {
         super("File");
-        this.editorPane = editorPane;
         getItems().addAll(openMenuItem, openFolderItem);
         registerEventHandlers();
     }
@@ -47,32 +47,21 @@ public class FileMenu extends Menu {
         });
 
         Optional.ofNullable(fileChooser.showOpenDialog(Globals.getMainStage())).ifPresent(file -> {
-            String contents = "";
-            try (BufferedReader reader = Files.newBufferedReader(file.toPath(), Charset.defaultCharset())) {
-                while (true) {
-                    Optional<String> lineOpt = Optional.ofNullable(reader.readLine());
-                    if (lineOpt.isPresent()) {
-                        contents += lineOpt.get() + "\n";
-                    } else {
-                        if (!contents.isEmpty()) {
-                            // remove the extra newline character
-                            contents = contents.substring(0, contents.length() - 1);
-                        }
-                        break;
-                    }
-                }
-            } catch (IOException ex) {
+            Either<IOException, String> result = FileController.openFile(file.toPath());
+            result.getLeft().ifPresent(ex -> {
                 Errors.exceptionDialog("Open File Exception",
                         "An exception has occurred while opening the file", ex.getMessage(), ex);
-            }
-            editorPane.newEditorAreaTab(file.getName(), contents);
+            });
+            result.getRight().ifPresent(contents -> {
+                Globals.editorPane.newEditorAreaTab(file.getName(), contents);
+            });
         });
     }
     
     private void openFolder() {
         directoryChooser.setTitle("Open Folder");
         Optional.ofNullable(directoryChooser.showDialog(Globals.getMainStage())).ifPresent(file -> {
-            ProjectController.addProject(file.toPath());
+            Globals.projectsPane.displayProject(file.toPath());
         });
     }
 }
