@@ -1,4 +1,4 @@
-package winter.views;
+package winter.utils;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -8,6 +8,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Optional;
@@ -40,5 +41,10 @@ public class Errors {
         alert.getDialogPane().setExpandableContent(borderPane);
 
         return alert.showAndWait();
+    }
+    
+    public static Optional<ButtonType> openFileException(IOException ex) {
+        return Errors.exceptionDialog("Open File Exception",
+                "An exception has occurred while opening the file", ex.getMessage(), ex);
     }
 }

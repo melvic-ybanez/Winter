@@ -64,7 +64,7 @@ public class EditorPane extends BorderPane {
                 newEditorAreaTab(title, content);
             } 
         } else {
-            Tab tab = new Tab(title);
+            Tab tab = new Tab(title);  
             CodeArea codeArea = createEditorArea();
             codeArea.replaceText(0, 0, content);
             tab.setContent(codeArea);
@@ -114,5 +114,9 @@ public class EditorPane extends BorderPane {
         }
         builder.add(Collections.emptyList(), text.length() - lastMatched);
         return builder.create();
+    }
+    
+    public TabPane getTabPane() {
+        return tabPane;
     }
 }

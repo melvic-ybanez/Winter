@@ -1,8 +1,6 @@
 package winter.controllers;
 
-import winter.Globals;
 import winter.utils.Either;
-import winter.views.Errors;
 
 import java.io.BufferedReader;
 import java.io.IOException;

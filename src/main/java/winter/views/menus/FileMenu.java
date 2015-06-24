@@ -5,16 +5,12 @@ import javafx.scene.control.MenuItem;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import winter.controllers.FileController;
-import winter.controllers.ProjectController;
 import winter.utils.Either;
-import winter.views.Errors;
+import winter.utils.Errors;
 import winter.views.Settings;
-import winter.views.EditorPane;
 import winter.Globals;
 
 import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
 import java.util.Optional;
 
 /**
@@ -48,10 +44,7 @@ public class FileMenu extends Menu {
 
         Optional.ofNullable(fileChooser.showOpenDialog(Globals.getMainStage())).ifPresent(file -> {
             Either<IOException, String> result = FileController.openFile(file.toPath());
-            result.getLeft().ifPresent(ex -> {
-                Errors.exceptionDialog("Open File Exception",
-                        "An exception has occurred while opening the file", ex.getMessage(), ex);
-            });
+            result.getLeft().ifPresent(ex -> Errors.openFileException(ex));
             result.getRight().ifPresent(contents -> {
                 Globals.editorPane.newEditorAreaTab(file.getName(), contents);
             });
