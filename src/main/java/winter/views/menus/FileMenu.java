@@ -17,20 +17,24 @@ import java.util.Optional;
  * Created by ybamelcash on 6/21/2015.
  */
 public class FileMenu extends Menu {
-    private MenuItem openMenuItem = new MenuItem("Open...");
-    private MenuItem openFolderItem = new MenuItem("Open folder...");
     private FileChooser fileChooser = new FileChooser();
     private DirectoryChooser directoryChooser = new DirectoryChooser();
     
     public FileMenu() {
         super("File");
-        getItems().addAll(openMenuItem, openFolderItem);
-        registerEventHandlers();
+        init();
     }
     
-    private void registerEventHandlers() {
-        openMenuItem.setOnAction(event -> openFile());
+    private void init() {
+        MenuItem newFileItem = new MenuItem("New File");
+        MenuItem openFileItem = new MenuItem("Open File...");
+        MenuItem openFolderItem = new MenuItem("Open Folder...");
+
+        openFileItem.setOnAction(event -> openFile());
         openFolderItem.setOnAction(event -> openFolder());
+        newFileItem.setOnAction(event -> newFile());
+        
+        getItems().addAll(newFileItem, openFileItem, openFolderItem);
     }
     
     private void openFile() {
@@ -44,10 +48,11 @@ public class FileMenu extends Menu {
 
         Optional.ofNullable(fileChooser.showOpenDialog(Globals.getMainStage())).ifPresent(file -> {
             Either<IOException, String> result = FileController.openFile(file.toPath());
-            result.getLeft().ifPresent(ex -> Errors.openFileException(ex));
+            result.getLeft().ifPresent(Errors::openFileException);
             result.getRight().ifPresent(contents -> {
                 Globals.editorPane.newEditorAreaTab(file.getName(), contents);
             });
+            fileChooser.setInitialDirectory(file.getParentFile());
         });
     }
     
@@ -55,6 +60,11 @@ public class FileMenu extends Menu {
         directoryChooser.setTitle("Open Folder");
         Optional.ofNullable(directoryChooser.showDialog(Globals.getMainStage())).ifPresent(file -> {
             Globals.projectsPane.displayProject(file.toPath());
+            directoryChooser.setInitialDirectory(file.getParentFile());
         });
+    }
+    
+    private void newFile() {
+        Globals.editorPane.createUntitledTab();
     }
 }

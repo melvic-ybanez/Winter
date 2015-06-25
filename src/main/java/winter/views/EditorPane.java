@@ -20,6 +20,7 @@ import java.util.regex.Pattern;
 public class EditorPane extends BorderPane {
     private TabPane tabPane = new TabPane();
     private List<String> openedFiles = new ArrayList<>();
+    private int untitledCount = 0;
     
     public static final String TYPE_PATTERN = "\\b(" + String.join("|", Settings.TYPES) + ")\\b";
     public static final String OPERATOR_PATTERN = "(" + String.join("|", Settings.OPERATORS) + ")";
@@ -77,8 +78,10 @@ public class EditorPane extends BorderPane {
         }
     }
 
-    private void createUntitledTab() {
-        newEditorAreaTab("Untitled", "");
+    public void createUntitledTab() {
+        String suffix = untitledCount == 0 ? "" : untitledCount + ""; 
+        newEditorAreaTab("Untitled" + suffix, "");
+        untitledCount++;
     }
     
     private CodeArea createEditorArea() {
