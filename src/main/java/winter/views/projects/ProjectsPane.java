@@ -31,7 +31,7 @@ public class ProjectsPane extends TitledPane {
             item.getValue().getPath().ifPresent(path -> {
                 if (!Files.isDirectory(path)) {
                     Either<IOException, String> result = FileController.openFile(path);
-                    result.getLeft().ifPresent(ex -> Errors.openFileException(ex));
+                    result.getLeft().ifPresent(Errors::openFileException);
                     result.getRight().ifPresent(contents -> {
                         String filename = path.getFileName().toString();
                         TabPane tabPane = Globals.editorPane.getTabPane();
@@ -50,8 +50,21 @@ public class ProjectsPane extends TitledPane {
     }
     
     public void displayProject(Path projectPath) {
-        TreeItem<ProjectNodeValue> root = createFolder(projectPath);
-        tree.getRoot().getChildren().add(root);
+        TreeItem<ProjectNodeValue> root = tree.getRoot();
+        Optional<TreeItem<ProjectNodeValue>> existingProject = root.getChildren()
+                .stream()
+                .filter(item -> item.getValue().getPath().equals(Optional.of(projectPath)))
+                .findFirst();
+        if (existingProject.isPresent()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Opening Project");
+            alert.setHeaderText("Unable to open this project.");
+            alert.setContentText("A project with the same name is already open.");
+            alert.showAndWait();
+        } else {
+            TreeItem<ProjectNodeValue> projectTree = createFolder(projectPath);
+            root.getChildren().add(projectTree);
+        }
     }
     
     private TreeItem<ProjectNodeValue> createFolder(Path folderPath) {
