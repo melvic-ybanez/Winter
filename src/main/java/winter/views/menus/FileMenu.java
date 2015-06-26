@@ -11,6 +11,7 @@ import winter.views.Settings;
 import winter.Globals;
 
 import java.io.*;
+import java.nio.file.Path;
 import java.util.Optional;
 
 /**
@@ -47,10 +48,11 @@ public class FileMenu extends Menu {
         });
 
         Optional.ofNullable(fileChooser.showOpenDialog(Globals.getMainStage())).ifPresent(file -> {
-            Either<IOException, String> result = FileController.openFile(file.toPath());
+            Path path = file.toPath(); 
+            Either<IOException, String> result = FileController.openFile(path);
             result.getLeft().ifPresent(Errors::openFileException);
             result.getRight().ifPresent(contents -> {
-                Globals.editorPane.newEditorAreaTab(file.getName(), contents);
+                Globals.editorPane.newEditorAreaTab(path, contents);
             });
             fileChooser.setInitialDirectory(file.getParentFile());
         });

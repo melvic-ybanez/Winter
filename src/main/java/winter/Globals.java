@@ -3,7 +3,7 @@ package winter;
 import javafx.scene.control.SplitPane;
 import javafx.stage.Stage;
 import winter.views.ConsolePane;
-import winter.views.EditorPane;
+import winter.views.editors.EditorPane;
 import winter.views.projects.ProjectsPane;
 
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package winter.views;
+package winter.views.editors;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -9,17 +9,22 @@ import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
 import org.fxmisc.richtext.StyleSpans;
 import org.fxmisc.richtext.StyleSpansBuilder;
+import winter.controllers.EditorController;
+import winter.models.EditorModel;
+import winter.views.Settings;
 
+import java.nio.file.Path;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 /**
  * Created by ybamelcash on 6/21/2015.
  */
 public class EditorPane extends BorderPane {
     private TabPane tabPane = new TabPane();
-    private List<String> openedFiles = new ArrayList<>();
+    private List<EditorModel> editors = new ArrayList<>();
     private int untitledCount = 0;
     
     public static final String TYPE_PATTERN = "\\b(" + String.join("|", Settings.TYPES) + ")\\b";
@@ -52,8 +57,13 @@ public class EditorPane extends BorderPane {
         createUntitledTab();
     }
     
-    public void newEditorAreaTab(String title, String content) {
-        if (openedFiles.contains(title)) {
+    public void newEditorAreaTab(Optional<Path> pathOpt, String contents) {
+        String title = pathOpt.map(path -> path.getFileName().toString()).orElseGet(() -> {
+            String suffix = untitledCount == 0 ? "" : untitledCount + "";
+            return "Untitled" + suffix;
+        });
+        
+        if (pathOpt.isPresent() && EditorController.exists(editors, pathOpt.get())) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("File already exists.");
             alert.setHeaderText("The file " + title + " already exists.");
@@ -61,26 +71,31 @@ public class EditorPane extends BorderPane {
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
                 tabPane.getTabs().removeIf(tab -> tab.getText().equals(title));
-                openedFiles.remove(title);
-                newEditorAreaTab(title, content);
+                editors = EditorController.remove(editors, pathOpt.get());
+                newEditorAreaTab(pathOpt, contents);
             } 
         } else {
-            Tab tab = new Tab(title);  
+            Tab tab = new Tab(title); 
             CodeArea codeArea = createEditorArea();
-            codeArea.replaceText(0, 0, content);
+            codeArea.replaceText(0, 0, contents);
             tab.setContent(codeArea);
-            tabPane.getTabs().add(tab);
+            tabPane.getTabs().add(tab); 
             tabPane.getSelectionModel().select(tab);
-            openedFiles.add(title);
-            tab.setOnClosed(event -> {
-                openedFiles.remove(tab.getText());
+            pathOpt.ifPresent(path -> {
+                editors.add(new EditorModel(path, contents));
+                tab.setOnClosed(event -> {
+                    editors = EditorController.remove(editors, path);
+                });
             });
         }
     }
+    
+    public void newEditorAreaTab(Path path, String contents) {
+        newEditorAreaTab(Optional.of(path), contents);
+    }
 
     public void createUntitledTab() {
-        String suffix = untitledCount == 0 ? "" : untitledCount + ""; 
-        newEditorAreaTab("Untitled" + suffix, "");
+        newEditorAreaTab(Optional.empty(), "");
         untitledCount++;
     }
     
@@ -94,28 +109,43 @@ public class EditorPane extends BorderPane {
     }
     
     private StyleSpans<Collection<String>> highlight(String text) {
-        Matcher matcher = PATTERN.matcher(text);
-        int lastMatched = 0;
         StyleSpansBuilder<Collection<String>> builder = new StyleSpansBuilder<>();
-        while (matcher.find()) {
-            String styleClass = null;
-            if (matcher.group("TYPE") != null) styleClass = "type";
-            if (matcher.group("OPERATOR") != null) styleClass = "operator";
-            if (matcher.group("FUNCTION") != null) styleClass = "function-name";
-            if (matcher.group("DEFINE") != null) styleClass = "define-command";
-            if (matcher.group("SPECIAL") != null) styleClass = "special-keyword";
-            if (matcher.group("PAREN") != null) styleClass = "paren";
-            if (matcher.group("BRACE") != null) styleClass = "brace";
-            if (matcher.group("STRING") != null) styleClass = "string";
-            if (matcher.group("CHAR") != null) styleClass = "char";
-            if (matcher.group("COMMENT") != null) styleClass = "comment";
-            if (matcher.group("QUOTE") != null) styleClass = "quote";
-            assert styleClass != null;
-            builder.add(Collections.emptyList(), matcher.start() - lastMatched);
-            builder.add(Collections.singleton(styleClass), matcher.end() - matcher.start());
-            lastMatched = matcher.end();
+        int index = 0;
+        int deltaIndex = text.length() > 1000 ? 1000 : text.length();
+        String textToMatch = text.substring(index, index + deltaIndex);
+        
+        while (!textToMatch.isEmpty()) {
+            Matcher matcher = PATTERN.matcher(textToMatch);
+            int lastMatched = 0;
+            
+            while (matcher.find()) {
+                String styleClass = null;
+                if (matcher.group("TYPE") != null) styleClass = "type";
+                if (matcher.group("OPERATOR") != null) styleClass = "operator";
+                if (matcher.group("FUNCTION") != null) styleClass = "function-name";
+                if (matcher.group("DEFINE") != null) styleClass = "define-command";
+                if (matcher.group("SPECIAL") != null) styleClass = "special-keyword";
+                if (matcher.group("PAREN") != null) styleClass = "paren";
+                if (matcher.group("BRACE") != null) styleClass = "brace";
+                if (matcher.group("STRING") != null) styleClass = "string";
+                if (matcher.group("CHAR") != null) styleClass = "char";
+                if (matcher.group("COMMENT") != null) styleClass = "comment";
+                if (matcher.group("QUOTE") != null) styleClass = "quote";
+                assert styleClass != null;
+                builder.add(Collections.emptyList(), matcher.start() - lastMatched);
+                builder.add(Collections.singleton(styleClass), matcher.end() - matcher.start());
+                lastMatched = matcher.end();
+            }
+            builder.add(Collections.emptyList(), textToMatch.length() - lastMatched);
+            
+            index += deltaIndex;
+            if (index == text.length()) break;
+            if (index + deltaIndex > text.length()) {
+                deltaIndex = text.length() - index;
+            }
+            textToMatch = text.substring(index, index + deltaIndex);
         }
-        builder.add(Collections.emptyList(), text.length() - lastMatched);
+        
         return builder.create();
     }
     

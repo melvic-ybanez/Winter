@@ -14,23 +14,23 @@ import java.util.Optional;
  */
 public class FileController {
     public static Either<IOException, String> openFile(Path path) {
-        String contents = "";
-        try (BufferedReader reader = Files.newBufferedReader(path, Charset.defaultCharset())) {
+        StringBuilder contents = new StringBuilder();
+        try (BufferedReader reader = Files.newBufferedReader(path)) {
             while (true) {
                 Optional<String> lineOpt = Optional.ofNullable(reader.readLine());
                 if (lineOpt.isPresent()) {
-                    contents += lineOpt.get() + "\n";
+                    contents.append(lineOpt.get() + "\n");
                 } else {
-                    if (!contents.isEmpty()) {
+                    if (contents.length() > 0) {
                         // remove the extra newline character
-                        contents = contents.substring(0, contents.length() - 1);
+                        contents = new StringBuilder(contents.substring(0, contents.length() - 1));
                     }
                     break;
                 }
             }
-            return Either.right(contents);
+            return Either.right(contents.toString());
         } catch (IOException ex) {
             return Either.left(ex);
-        }
+        } 
     }
 }

@@ -41,7 +41,7 @@ public class ProjectsPane extends TitledPane {
                                 .findFirst();
                         existingTab.ifPresent(tab -> tabPane.getSelectionModel().select(tab));
                         if (!existingTab.isPresent()) {
-                            Globals.editorPane.newEditorAreaTab(filename, contents);
+                            Globals.editorPane.newEditorAreaTab(path, contents);
                         }
                     });
                 }
