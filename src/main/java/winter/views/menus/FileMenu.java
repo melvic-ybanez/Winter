@@ -1,5 +1,6 @@
 package winter.views.menus;
 
+import javafx.scene.control.Alert;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.stage.DirectoryChooser;
@@ -18,7 +19,8 @@ import java.util.Optional;
  * Created by ybamelcash on 6/21/2015.
  */
 public class FileMenu extends Menu {
-    private FileChooser fileChooser = new FileChooser();
+    private FileChooser openFileChooser = new FileChooser();
+    private FileChooser saveFileChooser = new FileChooser();
     private DirectoryChooser directoryChooser = new DirectoryChooser();
     
     public FileMenu() {
@@ -30,43 +32,77 @@ public class FileMenu extends Menu {
         MenuItem newFileItem = new MenuItem("New File");
         MenuItem openFileItem = new MenuItem("Open File...");
         MenuItem openFolderItem = new MenuItem("Open Folder...");
+        MenuItem saveFileItem = new MenuItem("Save");
+        MenuItem saveAsFileItem = new MenuItem("Save As...");
 
-        openFileItem.setOnAction(event -> openFile());
-        openFolderItem.setOnAction(event -> openFolder());
-        newFileItem.setOnAction(event -> newFile());
+        openFileItem.setOnAction(e -> openFile());
+        openFolderItem.setOnAction(e -> openFolder());
+        newFileItem.setOnAction(e -> newFile());
+        saveFileItem.setOnAction(e -> saveFile());
+        saveAsFileItem.setOnAction(e -> saveAsFile());
         
-        getItems().addAll(newFileItem, openFileItem, openFolderItem);
+        getItems().addAll(newFileItem, openFileItem, openFolderItem, saveFileItem, saveAsFileItem);
     }
     
     private void openFile() {
-        fileChooser.setTitle("Open File");
+        openFileChooser.setTitle("Open File"); 
 
         Settings.SUPPORTED_FILE_FORMATS.forEach(format -> {
-            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(
+            openFileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(
                     format.getString("description"),
                     "*" + format.getString("extension")));
         });
 
-        Optional.ofNullable(fileChooser.showOpenDialog(Globals.getMainStage())).ifPresent(file -> {
-            Path path = file.toPath(); 
+        Optional.ofNullable(openFileChooser.showOpenDialog(Globals.getMainStage())).ifPresent(file -> {
+            Path path = file.toPath();
             Either<IOException, String> result = FileController.openFile(path);
             result.getLeft().ifPresent(Errors::openFileException);
             result.getRight().ifPresent(contents -> {
                 Globals.editorPane.newEditorAreaTab(path, contents);
             });
-            fileChooser.setInitialDirectory(file.getParentFile());
+            openFileChooser.setInitialDirectory(file.getParentFile());
         });
     }
     
     private void openFolder() {
-        directoryChooser.setTitle("Open Folder");
+        directoryChooser.setTitle("Open Folder"); 
         Optional.ofNullable(directoryChooser.showDialog(Globals.getMainStage())).ifPresent(file -> {
             Globals.projectsPane.displayProject(file.toPath());
             directoryChooser.setInitialDirectory(file.getParentFile());
         });
     }
     
+    public void saveFile() {
+        Either<IOException, Boolean> result = FileController.saveFile();
+        result.getLeft().ifPresent(Errors::saveFileException);
+        result.getRight().ifPresent(saved -> {
+            if (!saved) {
+                saveAsFile();
+            };
+        });
+    }
+    
+    public void saveAsFile() {
+        saveFileChooser.setTitle("Save As");
+        Optional.ofNullable(saveFileChooser.showSaveDialog(Globals.getMainStage())).ifPresent(file -> {
+            Path path = file.toPath();
+            Either<IOException, Optional<String>> result = FileController.saveAsFile(path);
+            result.getLeft().ifPresent(Errors::saveFileException);
+            result.getRight().ifPresent(errorOpt -> {
+                errorOpt.ifPresent(error -> {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Save File Error");
+                    alert.setHeaderText("Unable to save file: " + path);
+                    alert.setContentText(error);
+                    alert.showAndWait();
+                });
+            });
+            
+            saveFileChooser.setInitialDirectory(file.getParentFile());
+        });
+    }
+    
     private void newFile() {
-        Globals.editorPane.createUntitledTab();
+        Globals.editorPane.newUntitledTab();
     }
 }

@@ -3,6 +3,7 @@ package winter.controllers;
 import winter.Globals;
 import winter.models.EditorModel;
 import winter.utils.StreamUtils;
+import winter.views.editors.EditorPane;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -16,6 +17,12 @@ import java.util.stream.Stream;
  * Created by ybamelcash on 6/26/2015.
  */
 public class EditorController {
+    public static EditorModel getActiveEditor() {
+        EditorPane editorPane = Globals.editorPane;
+        int activeIndex = editorPane.getTabPane().getSelectionModel().getSelectedIndex();
+        return editorPane.getEditors().get(activeIndex);
+    }
+    
     public static Optional<EditorModel> find(List<EditorModel> editors, Path path) {
         return StreamUtils.find(editors.stream(), model -> model.equalsPath(path));
     }

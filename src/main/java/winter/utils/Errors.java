@@ -47,4 +47,9 @@ public class Errors {
         return Errors.exceptionDialog("Open File Exception",
                 "An exception has occurred while opening the file", ex.getMessage(), ex);
     }
+    
+    public static Optional<ButtonType> saveFileException(IOException ex) {
+        return Errors.exceptionDialog("Save File Exception",
+                "An exception has occured while saving the file", ex.getMessage(), ex);
+    }
 }

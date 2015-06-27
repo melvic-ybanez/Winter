@@ -1,6 +1,8 @@
 package winter.utils;
 
 import java.util.Optional;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 /**
  * Created by ybamelcash on 6/24/2015.
@@ -28,5 +30,23 @@ public class Either<A, B> {
     
     public Optional<B> getRight() {
         return rightOpt;
+    }
+    
+    public <C> Either<C, B> mapLeft(Function<A, C> f) {
+        if (getRight().isPresent()) return Either.right(getRight().get());
+        return Either.left(getLeft().map(f::apply).get());
+    }
+    
+    public <C> Either<A, C> mapRight(Function<B, C> f) {
+        if (getLeft().isPresent()) return Either.left(getLeft().get());
+        return Either.right(getRight().map(f::apply).get());
+    }
+    
+    public boolean hasLeft() {
+        return getLeft().isPresent();
+    }
+    
+    public boolean hasRight() {
+        return getRight().isPresent();
     }
 }

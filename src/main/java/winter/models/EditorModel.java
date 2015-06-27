@@ -11,8 +11,16 @@ public class EditorModel {
     private String contents;
     
     public EditorModel(Path path, String contents) {
-        this.pathOpt = Optional.of(path);
+        this(Optional.of(path), contents);
+    }
+    
+    public EditorModel(Optional<Path> pathOpt, String contents) {
+        this.pathOpt = pathOpt;
         this.contents = contents;
+    }
+    
+    public static EditorModel untitled(String contents) {
+        return new EditorModel(Optional.empty(), contents);
     }
     
     public Optional<Path> getPath() {

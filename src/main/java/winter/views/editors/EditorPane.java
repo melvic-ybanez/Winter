@@ -17,7 +17,6 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 /**
  * Created by ybamelcash on 6/21/2015.
@@ -54,7 +53,7 @@ public class EditorPane extends BorderPane {
     
     public EditorPane() {
         setCenter(tabPane);
-        createUntitledTab();
+        newUntitledTab();
     }
     
     public void newEditorAreaTab(Optional<Path> pathOpt, String contents) {
@@ -81,11 +80,12 @@ public class EditorPane extends BorderPane {
             tab.setContent(codeArea);
             tabPane.getTabs().add(tab); 
             tabPane.getSelectionModel().select(tab);
-            pathOpt.ifPresent(path -> {
-                editors.add(new EditorModel(path, contents));
-                tab.setOnClosed(event -> {
-                    editors = EditorController.remove(editors, path);
-                });
+            editors.add(new EditorModel(pathOpt, contents));
+            tab.setOnClosed(event -> {
+                pathOpt.ifPresent(path -> editors = EditorController.remove(editors, path));
+                if (editors.isEmpty()) {
+                    newUntitledTab();
+                }
             });
         }
     }
@@ -94,7 +94,7 @@ public class EditorPane extends BorderPane {
         newEditorAreaTab(Optional.of(path), contents);
     }
 
-    public void createUntitledTab() {
+    public void newUntitledTab() {
         newEditorAreaTab(Optional.empty(), "");
         untitledCount++;
     }
@@ -151,5 +151,9 @@ public class EditorPane extends BorderPane {
     
     public TabPane getTabPane() {
         return tabPane;
+    }
+    
+    public List<EditorModel> getEditors() {
+        return editors;
     }
 }

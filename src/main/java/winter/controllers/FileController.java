@@ -1,9 +1,13 @@
 package winter.controllers;
 
+import winter.Globals;
+import winter.models.EditorModel;
 import winter.utils.Either;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.nio.Buffer;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,7 +23,7 @@ public class FileController {
             while (true) {
                 Optional<String> lineOpt = Optional.ofNullable(reader.readLine());
                 if (lineOpt.isPresent()) {
-                    contents.append(lineOpt.get() + "\n");
+                    contents.append(lineOpt.get()).append("\n");
                 } else {
                     if (contents.length() > 0) {
                         // remove the extra newline character
@@ -33,4 +37,33 @@ public class FileController {
             return Either.left(ex);
         } 
     }
-}
+    
+    public static Either<IOException, Boolean> saveFile() {
+        EditorModel activeEditor = EditorController.getActiveEditor();
+        return activeEditor.getPath().map(path -> {
+            return writeToFile(path, activeEditor.getContents())
+                    .<Either<IOException, Boolean>>map(Either::left)
+                    .orElseGet(() -> Either.right(true));
+        }).orElseGet(() -> Either.right(false));
+    }
+    
+    public static Either<IOException, Optional<String>> saveAsFile(Path path) {
+        if (Files.exists(path)) {
+            return Either.right(Optional.of("File already exists"));
+        } else {
+            EditorModel activeEditor = EditorController.getActiveEditor();
+            return writeToFile(path, activeEditor.getContents())
+                    .<Either<IOException, Optional<String>>>map(Either::left)
+                    .orElseGet(() -> Either.right(Optional.empty()));
+        }
+    }
+    
+    private static Optional<IOException> writeToFile(Path path, String contents) {
+        try (BufferedWriter writer = Files.newBufferedWriter(path)) {
+            writer.write(contents);
+            return Optional.empty();
+        } catch (IOException ex) {
+            return Optional.of(ex);
+        }
+    }
+} 
