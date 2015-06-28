@@ -5,6 +5,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import winter.controllers.EditorController;
 import winter.controllers.FileController;
 import winter.utils.Either;
 import winter.utils.Errors;
@@ -77,29 +78,36 @@ public class FileMenu extends Menu {
         result.getLeft().ifPresent(Errors::saveFileException);
         result.getRight().ifPresent(saved -> {
             if (!saved) {
-                saveAsFile();
+                saveAsFile().ifPresent(EditorController::renameSelectedTab);
             };
         });
     }
     
-    public void saveAsFile() {
+    public Optional<Path> saveAsFile() {
         saveFileChooser.setTitle("Save As");
-        Optional.ofNullable(saveFileChooser.showSaveDialog(Globals.getMainStage())).ifPresent(file -> {
+        return Optional.ofNullable(saveFileChooser.showSaveDialog(Globals.getMainStage())).map(file -> {
             Path path = file.toPath();
             Either<IOException, Optional<String>> result = FileController.saveAsFile(path);
-            result.getLeft().ifPresent(Errors::saveFileException);
-            result.getRight().ifPresent(errorOpt -> {
-                errorOpt.ifPresent(error -> {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Save File Error");
-                    alert.setHeaderText("Unable to save file: " + path);
-                    alert.setContentText(error);
-                    alert.showAndWait();
-                });
+
+            return result.getLeft().map(ex -> {
+                Errors.saveFileException(ex);
+                return Optional.<Path>empty();
+            }).orElseGet(() -> {
+                return result.getRight().map(errorOpt -> {
+                    return errorOpt.map(error -> {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Save File Error");
+                        alert.setHeaderText("Unable to save file: " + path);
+                        alert.setContentText(error);
+                        alert.showAndWait();
+                        return Optional.<Path>empty();
+                    }).orElseGet(() -> {
+                        saveFileChooser.setInitialDirectory(file.getParentFile());
+                        return Optional.of(path);
+                    });
+                }).get();
             });
-            
-            saveFileChooser.setInitialDirectory(file.getParentFile());
-        });
+        }).orElse(Optional.empty());
     }
     
     private void newFile() {

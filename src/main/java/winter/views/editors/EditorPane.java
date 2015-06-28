@@ -1,5 +1,6 @@
 package winter.views.editors;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Tab;
@@ -11,6 +12,7 @@ import org.fxmisc.richtext.StyleSpans;
 import org.fxmisc.richtext.StyleSpansBuilder;
 import winter.controllers.EditorController;
 import winter.models.EditorModel;
+import winter.utils.Either;
 import winter.views.Settings;
 
 import java.nio.file.Path;
@@ -56,11 +58,10 @@ public class EditorPane extends BorderPane {
         newUntitledTab();
     }
     
-    public void newEditorAreaTab(Optional<Path> pathOpt, String contents) {
-        String title = pathOpt.map(path -> path.getFileName().toString()).orElseGet(() -> {
-            String suffix = untitledCount == 0 ? "" : untitledCount + "";
-            return "Untitled" + suffix;
-        });
+    public void newEditorAreaTab(Either<String, Path> pathEither, String contents) {
+        EditorModel editorModel = new EditorModel(pathEither, new SimpleStringProperty(contents));
+        Optional<Path> pathOpt = editorModel.getPath();
+        String title = editorModel.getTitleProperty().getValue();
         
         if (pathOpt.isPresent() && EditorController.exists(editors, pathOpt.get())) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -71,16 +72,19 @@ public class EditorPane extends BorderPane {
             if (result.get() == ButtonType.OK) {
                 tabPane.getTabs().removeIf(tab -> tab.getText().equals(title));
                 editors = EditorController.remove(editors, pathOpt.get());
-                newEditorAreaTab(pathOpt, contents);
+                newEditorAreaTab(pathEither, contents);
             } 
         } else {
-            Tab tab = new Tab(title); 
+            Tab tab = new Tab(title);
             CodeArea codeArea = createEditorArea();
             codeArea.replaceText(0, 0, contents);
             tab.setContent(codeArea);
             tabPane.getTabs().add(tab); 
             tabPane.getSelectionModel().select(tab);
-            editors.add(new EditorModel(pathOpt, contents));
+            
+            editors.add(editorModel);
+            tab.textProperty().bind(editorModel.getTitleProperty());
+            
             tab.setOnClosed(event -> {
                 pathOpt.ifPresent(path -> editors = EditorController.remove(editors, path));
                 if (editors.isEmpty()) {
@@ -91,11 +95,13 @@ public class EditorPane extends BorderPane {
     }
     
     public void newEditorAreaTab(Path path, String contents) {
-        newEditorAreaTab(Optional.of(path), contents);
+        newEditorAreaTab(Either.right(path), contents);
     }
 
     public void newUntitledTab() {
-        newEditorAreaTab(Optional.empty(), "");
+        String suffix = untitledCount == 0 ? "" : untitledCount + "";
+        String title = "Untitled" + suffix;
+        newEditorAreaTab(Either.left(title), "");
         untitledCount++;
     }
     

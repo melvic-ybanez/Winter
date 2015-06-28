@@ -23,6 +23,11 @@ public class EditorController {
         return editorPane.getEditors().get(activeIndex);
     }
     
+    public static void renameSelectedTab(Path newPath) {
+        EditorModel editorModel = EditorController.getActiveEditor();
+        editorModel.setPath(newPath);
+    }
+    
     public static Optional<EditorModel> find(List<EditorModel> editors, Path path) {
         return StreamUtils.find(editors.stream(), model -> model.equalsPath(path));
     }

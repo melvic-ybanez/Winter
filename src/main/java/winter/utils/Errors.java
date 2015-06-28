@@ -11,6 +11,7 @@ import javafx.scene.layout.Priority;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.nio.file.Path;
 import java.util.Optional;
 
 /**
@@ -51,5 +52,11 @@ public class Errors {
     public static Optional<ButtonType> saveFileException(IOException ex) {
         return Errors.exceptionDialog("Save File Exception",
                 "An exception has occured while saving the file", ex.getMessage(), ex);
+    }
+    
+    public static class messages {
+        public static String fileAlreadyExists(Path path) {
+            return "File already exists: " + path;
+        }
     }
 }

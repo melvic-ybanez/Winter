@@ -1,14 +1,12 @@
 package winter.controllers;
 
-import winter.Globals;
 import winter.models.EditorModel;
 import winter.utils.Either;
+import winter.utils.Errors;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.nio.Buffer;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
@@ -49,7 +47,7 @@ public class FileController {
     
     public static Either<IOException, Optional<String>> saveAsFile(Path path) {
         if (Files.exists(path)) {
-            return Either.right(Optional.of("File already exists"));
+            return Either.right(Optional.of(Errors.messages.fileAlreadyExists(path)));
         } else {
             EditorModel activeEditor = EditorController.getActiveEditor();
             return writeToFile(path, activeEditor.getContents())
@@ -66,4 +64,17 @@ public class FileController {
             return Optional.of(ex);
         }
     }
+    
+    public static Either<IOException, Either<String, Path>> renameFile(Path path, String newName) {
+        if (Files.exists(path)) {
+            return Either.right(Either.left(Errors.messages.fileAlreadyExists(path)));
+        } else {
+            try {
+                Path newPath = Files.move(path, path.resolveSibling(newName));
+                return Either.right(Either.<String, Path>right(newPath));
+            } catch (IOException ex) {
+                return Either.left(ex);
+            }
+        }
+    } 
 } 
