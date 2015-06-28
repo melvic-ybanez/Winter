@@ -78,36 +78,36 @@ public class FileMenu extends Menu {
         result.getLeft().ifPresent(Errors::saveFileException);
         result.getRight().ifPresent(saved -> {
             if (!saved) {
-                saveAsFile().ifPresent(EditorController::renameSelectedTab);
+                saveAsFile();
             };
         });
     }
     
-    public Optional<Path> saveAsFile() {
+    public void saveAsFile() {
         saveFileChooser.setTitle("Save As");
-        return Optional.ofNullable(saveFileChooser.showSaveDialog(Globals.getMainStage())).map(file -> {
+        Optional.ofNullable(saveFileChooser.showSaveDialog(Globals.getMainStage())).ifPresent(file -> {
             Path path = file.toPath();
             Either<IOException, Optional<String>> result = FileController.saveAsFile(path);
 
-            return result.getLeft().map(ex -> {
-                Errors.saveFileException(ex);
-                return Optional.<Path>empty();
-            }).orElseGet(() -> {
-                return result.getRight().map(errorOpt -> {
-                    return errorOpt.map(error -> {
+            result.getLeft().ifPresent(Errors::saveFileException);
+            
+            if (!result.getLeft().isPresent()) {
+                result.getRight().ifPresent(errorOpt -> {
+                    errorOpt.ifPresent(error -> {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Save File Error");
                         alert.setHeaderText("Unable to save file: " + path);
                         alert.setContentText(error);
                         alert.showAndWait();
-                        return Optional.<Path>empty();
-                    }).orElseGet(() -> {
-                        saveFileChooser.setInitialDirectory(file.getParentFile());
-                        return Optional.of(path);
                     });
-                }).get();
-            });
-        }).orElse(Optional.empty());
+                    
+                    if (!errorOpt.isPresent()) {
+                        saveFileChooser.setInitialDirectory(file.getParentFile());
+                        EditorController.renameSelectedTab(path);
+                    };
+                });
+            };
+        });
     }
     
     private void newFile() {

@@ -79,6 +79,7 @@ public class EditorPane extends BorderPane {
             CodeArea codeArea = createEditorArea();
             codeArea.replaceText(0, 0, contents);
             tab.setContent(codeArea);
+            editorModel.getContentsProperty().bind(codeArea.textProperty());
             tabPane.getTabs().add(tab); 
             tabPane.getSelectionModel().select(tab);
             
