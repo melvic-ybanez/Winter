@@ -1,8 +1,12 @@
 package winter.views.menus;
 
+import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import winter.controllers.EditorController;
@@ -14,7 +18,10 @@ import winter.Globals;
 
 import java.io.*;
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * Created by ybamelcash on 6/21/2015.
@@ -41,6 +48,14 @@ public class FileMenu extends Menu {
         newFileItem.setOnAction(e -> newFile());
         saveFileItem.setOnAction(e -> saveFile());
         saveAsFileItem.setOnAction(e -> saveAsFile());
+        
+        newFileItem.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCodeCombination.CONTROL_DOWN));
+        openFileItem.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN));
+        openFolderItem.setAccelerator(new KeyCodeCombination(KeyCode.O, 
+                KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN));
+        saveFileItem.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN));
+        saveAsFileItem.setAccelerator(new KeyCodeCombination(KeyCode.S, 
+                KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN));
         
         getItems().addAll(newFileItem, openFileItem, openFolderItem, saveFileItem, saveAsFileItem);
     }

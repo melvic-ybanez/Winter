@@ -3,6 +3,9 @@ package winter.views.projects;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Side;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseButton;
 import winter.Globals;
 import winter.controllers.FileController;
@@ -64,9 +67,10 @@ public class ProjectsPane extends TitledPane {
         MenuItem renameItem = new MenuItem("Rename...");
         MenuItem moveItem = new MenuItem("Move...");
         MenuItem deleteItem = new MenuItem("Delete");
-        contextMenu.getItems().addAll(newFileItem, 
+        
+        contextMenu.getItems().addAll(newFileItem,
                 newFolderItem, new SeparatorMenuItem(),
-                renameItem, moveItem, 
+                renameItem, moveItem,
                 new SeparatorMenuItem(), deleteItem);
         
         tree.contextMenuProperty().bind(

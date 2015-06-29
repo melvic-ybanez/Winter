@@ -5,6 +5,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
@@ -107,10 +110,21 @@ public class EditorPane extends BorderPane {
     }
     
     private CodeArea createEditorArea() {
-        CodeArea editorArea = new CodeArea();
+        CodeArea editorArea = new CodeArea() {
+            {
+                addEventHandler(KeyEvent.KEY_RELEASED, event -> {
+                    
+                    Runnable r = getScene().getAccelerators().get(new KeyCodeCombination(event.getCode(), KeyCodeCombination.CONTROL_DOWN));
+                    if (r != null) {
+                        r.run();
+                    }
+                });
+            }
+        };
         editorArea.setParagraphGraphicFactory(LineNumberFactory.get(editorArea));
         editorArea.textProperty().addListener((obs, oldText, newText) -> {
-            editorArea.setStyleSpans(0, highlight(newText));
+            if (!newText.isEmpty())
+                editorArea.setStyleSpans(0, highlight(newText));
         });
         return editorArea;
     }

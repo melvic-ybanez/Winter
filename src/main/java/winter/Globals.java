@@ -1,6 +1,7 @@
 package winter;
 
 import javafx.scene.control.SplitPane;
+import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
 import winter.views.ConsolePane;
 import winter.views.editors.EditorPane;
