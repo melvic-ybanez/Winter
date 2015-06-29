@@ -1,11 +1,15 @@
 package winter.views.projects;
 
+import javafx.beans.binding.Bindings;
+import javafx.geometry.Side;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
 import winter.Globals;
 import winter.controllers.FileController;
 import winter.utils.Either;
 import winter.utils.Errors;
 
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -25,28 +29,51 @@ public class ProjectsPane extends TitledPane {
         prefHeightProperty().bind(Globals.topPane.heightProperty()); 
         setCollapsible(false);
         
+        createContextMenu();
+        
         tree.setShowRoot(false);
-        tree.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            TreeItem<ProjectNodeValue> item = (TreeItem<ProjectNodeValue>) newValue;
-            item.getValue().getPath().ifPresent(path -> {
-                if (!Files.isDirectory(path)) {
-                    Either<IOException, String> result = FileController.openFile(path);
-                    result.getLeft().ifPresent(Errors::openFileException);
-                    result.getRight().ifPresent(contents -> {
-                        String filename = path.getFileName().toString();
-                        TabPane tabPane = Globals.editorPane.getTabPane();
-                        Optional<Tab> existingTab = tabPane.getTabs()
-                                .stream()
-                                .filter(tab -> tab.getText().equals(filename))
-                                .findFirst();
-                        existingTab.ifPresent(tab -> tabPane.getSelectionModel().select(tab));
-                        if (!existingTab.isPresent()) {
-                            Globals.editorPane.newEditorAreaTab(path, contents);
-                        }
-                    });
-                }
-            });
+        tree.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2 && event.getButton() == MouseButton.PRIMARY) {
+                TreeItem<ProjectNodeValue> item = tree.getSelectionModel().getSelectedItem();
+                item.getValue().getPath().ifPresent(path -> {
+                    if (!Files.isDirectory(path)) {
+                        Either<IOException, String> result = FileController.openFile(path);
+                        result.getLeft().ifPresent(Errors::openFileException);
+                        result.getRight().ifPresent(contents -> {
+                            String filename = path.getFileName().toString();
+                            TabPane tabPane = Globals.editorPane.getTabPane();
+                            Optional<Tab> existingTab = tabPane.getTabs()
+                                    .stream()
+                                    .filter(tab -> tab.getText().equals(filename))
+                                    .findFirst();
+                            existingTab.ifPresent(tab -> tabPane.getSelectionModel().select(tab));
+                            if (!existingTab.isPresent()) {
+                                Globals.editorPane.newEditorAreaTab(path, contents);
+                            }
+                        });
+                    }
+                });
+            } 
         });
+    }
+    
+    private void createContextMenu() {
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem newFileItem = new MenuItem("New File...");
+        MenuItem newFolderItem = new MenuItem("New Folder...");
+        MenuItem renameItem = new MenuItem("Rename...");
+        MenuItem moveItem = new MenuItem("Move...");
+        MenuItem deleteItem = new MenuItem("Delete");
+        contextMenu.getItems().addAll(newFileItem, 
+                newFolderItem, new SeparatorMenuItem(),
+                renameItem, moveItem, 
+                new SeparatorMenuItem(), deleteItem);
+        
+        tree.contextMenuProperty().bind(
+                Bindings.when(tree.getRoot().leafProperty())
+                .then((ContextMenu) null)
+                .otherwise(contextMenu)
+        );
     }
     
     public void displayProject(Path projectPath) {
