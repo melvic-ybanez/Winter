@@ -6,7 +6,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import org.fxmisc.richtext.CodeArea;
@@ -16,10 +16,12 @@ import org.fxmisc.richtext.StyleSpansBuilder;
 import winter.controllers.EditorController;
 import winter.models.EditorModel;
 import winter.utils.Either;
+import winter.utils.StreamUtils;
 import winter.views.Settings;
 
 import java.nio.file.Path;
 import java.util.*;
+import java.util.concurrent.RunnableFuture;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -112,12 +114,10 @@ public class EditorPane extends BorderPane {
     private CodeArea createEditorArea() {
         CodeArea editorArea = new CodeArea() {
             {
-                addEventHandler(KeyEvent.KEY_RELEASED, event -> {
-                    
-                    Runnable r = getScene().getAccelerators().get(new KeyCodeCombination(event.getCode(), KeyCodeCombination.CONTROL_DOWN));
-                    if (r != null) {
-                        r.run();
-                    }
+                addEventHandler(KeyEvent.KEY_PRESSED, event -> {
+                    KeyCode[] codes = { KeyCode.CONTROL, KeyCode.SHIFT };
+                    if (StreamUtils.exists(Arrays.stream(codes), event.getCode()::equals))
+                        getParent().requestFocus();
                 });
             }
         };
