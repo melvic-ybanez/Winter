@@ -19,7 +19,6 @@ import winter.views.Settings;
 
 import java.nio.file.Path;
 import java.util.*;
-import java.util.concurrent.RunnableFuture;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -68,7 +67,8 @@ public class EditorPane extends BorderPane {
         MenuItem closeOtherItem = new MenuItem("Close others");
         MenuItem closeAllItem = new MenuItem("Close All");
         
-        closeItem.setOnAction(event -> EditorController.closeCurrentTab());
+        closeItem.setOnAction(e -> closeCurrentTab());
+        closeOtherItem.setOnAction(e -> EditorController.closeOtherTabs());
         
         closeItem.setAccelerator(new KeyCodeCombination(KeyCode.W, KeyCombination.CONTROL_DOWN));
         
@@ -181,6 +181,11 @@ public class EditorPane extends BorderPane {
         }
         
         return builder.create();
+    }
+    
+    private void closeCurrentTab() {
+        Tab selectedTab = getTabPane().getSelectionModel().getSelectedItem();
+        EditorController.closeTab(selectedTab);
     }
     
     public TabPane getTabPane() {

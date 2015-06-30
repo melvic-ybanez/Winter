@@ -3,8 +3,10 @@ package winter.controllers;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import winter.Globals;
 import winter.models.EditorModel;
+import winter.utils.Either;
 import winter.utils.StreamUtils;
 import winter.views.editors.EditorPane;
 
@@ -31,12 +33,23 @@ public class EditorController {
         editorModel.setPath(newPath);
     }
     
-    public static void closeCurrentTab() {
+    public static void closeTab(Tab tab) {
         EditorPane editorPane = Globals.editorPane;
-        Tab selectedTab = editorPane.getTabPane().getSelectionModel().getSelectedItem();
-        EventHandler<Event> handler = selectedTab.getOnClosed();
-        editorPane.getTabPane().getTabs().remove(selectedTab);
+        EventHandler<Event> handler = tab.getOnClosed();
+        editorPane.getTabPane().getTabs().remove(tab);
         handler.handle(null);
+    }
+    
+    public static void closeOtherTabs() {
+        EditorModel editorModel = getActiveEditor();
+        Globals.editorPane.getTabPane().getTabs().clear();
+        Globals.editorPane.getEditors().clear();
+        editorModel.getPath().ifPresent(path -> {
+            Globals.editorPane.newEditorAreaTab(path, editorModel.getContents());
+        });
+        if (!editorModel.getPath().isPresent()) {
+            Globals.editorPane.newUntitledTab();
+        }
     }
     
     public static Optional<EditorModel> find(List<EditorModel> editors, Path path) {
