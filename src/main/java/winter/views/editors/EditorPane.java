@@ -1,11 +1,9 @@
 package winter.views.editors;
 
 import javafx.beans.property.SimpleStringProperty;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
@@ -60,7 +58,22 @@ public class EditorPane extends BorderPane {
     
     public EditorPane() {
         setCenter(tabPane);
+        createContextMenu();
         newUntitledTab();
+    }
+    
+    private void createContextMenu() {
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem closeItem = new MenuItem("Close");
+        MenuItem closeOtherItem = new MenuItem("Close others");
+        MenuItem closeAllItem = new MenuItem("Close All");
+        
+        closeItem.setOnAction(event -> EditorController.closeCurrentTab());
+        
+        closeItem.setAccelerator(new KeyCodeCombination(KeyCode.W, KeyCombination.CONTROL_DOWN));
+        
+        contextMenu.getItems().addAll(closeItem, closeOtherItem, closeAllItem);
+        tabPane.setContextMenu(contextMenu);
     }
     
     public void newEditorAreaTab(Either<String, Path> pathEither, String contents) {

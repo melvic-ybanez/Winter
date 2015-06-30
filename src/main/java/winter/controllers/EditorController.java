@@ -1,5 +1,8 @@
 package winter.controllers;
 
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.scene.control.Tab;
 import winter.Globals;
 import winter.models.EditorModel;
 import winter.utils.StreamUtils;
@@ -26,6 +29,14 @@ public class EditorController {
     public static void renameSelectedTab(Path newPath) {
         EditorModel editorModel = EditorController.getActiveEditor();
         editorModel.setPath(newPath);
+    }
+    
+    public static void closeCurrentTab() {
+        EditorPane editorPane = Globals.editorPane;
+        Tab selectedTab = editorPane.getTabPane().getSelectionModel().getSelectedItem();
+        EventHandler<Event> handler = selectedTab.getOnClosed();
+        editorPane.getTabPane().getTabs().remove(selectedTab);
+        handler.handle(null);
     }
     
     public static Optional<EditorModel> find(List<EditorModel> editors, Path path) {
