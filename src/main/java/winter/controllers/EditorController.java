@@ -42,14 +42,18 @@ public class EditorController {
     
     public static void closeOtherTabs() {
         EditorModel editorModel = getActiveEditor();
-        Globals.editorPane.getTabPane().getTabs().clear();
-        Globals.editorPane.getEditors().clear();
+        closeAllTabs();
         editorModel.getPath().ifPresent(path -> {
             Globals.editorPane.newEditorAreaTab(path, editorModel.getContents());
         });
         if (!editorModel.getPath().isPresent()) {
             Globals.editorPane.newUntitledTab();
         }
+    }
+    
+    public static void closeAllTabs() {
+        Globals.editorPane.getTabPane().getTabs().clear();
+        Globals.editorPane.getEditors().clear();
     }
     
     public static Optional<EditorModel> find(List<EditorModel> editors, Path path) {

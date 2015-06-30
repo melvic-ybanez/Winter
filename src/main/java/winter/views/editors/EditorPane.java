@@ -69,6 +69,7 @@ public class EditorPane extends BorderPane {
         
         closeItem.setOnAction(e -> closeCurrentTab());
         closeOtherItem.setOnAction(e -> EditorController.closeOtherTabs());
+        closeAllItem.setOnAction(e -> closeAllTabs());
         
         closeItem.setAccelerator(new KeyCodeCombination(KeyCode.W, KeyCombination.CONTROL_DOWN));
         
@@ -186,6 +187,11 @@ public class EditorPane extends BorderPane {
     private void closeCurrentTab() {
         Tab selectedTab = getTabPane().getSelectionModel().getSelectedItem();
         EditorController.closeTab(selectedTab);
+    }
+    
+    private void closeAllTabs() {
+        EditorController.closeAllTabs();
+        newUntitledTab();
     }
     
     public TabPane getTabPane() {
