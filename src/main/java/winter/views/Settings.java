@@ -22,6 +22,7 @@ public class Settings {
     public static final List<String> QUOTES = Settings.getStringList("keywords.quotes");
     public static final List<? extends Config> SUPPORTED_FILE_FORMATS = 
             Settings.getConfigList("general-settings.supported-file-formats");
+    public static final int DEFAULT_TAB_SIZE = getSetting(config -> config.getInt("general-settings.default-tab-size"));
     
     public static String getString(String key) {
         return getSetting(config -> config.getString(key));

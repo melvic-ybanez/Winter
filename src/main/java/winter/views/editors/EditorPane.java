@@ -1,5 +1,6 @@
 package winter.views.editors;
 
+import com.sun.deploy.util.StringUtils;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
@@ -7,6 +8,7 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Font;
 import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
 import org.fxmisc.richtext.StyleSpans;
@@ -21,6 +23,8 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Created by ybamelcash on 6/21/2015.
@@ -133,7 +137,19 @@ public class EditorPane extends BorderPane {
                     if (event.getCode() == KeyCode.ESCAPE) {
                         getParent().requestFocus();
                     }
+                    
+                    if (event.getCode() == KeyCode.TAB) {
+                        System.out.println(Settings.DEFAULT_TAB_SIZE);
+                        String tabString = Collections.<String>nCopies(Settings.DEFAULT_TAB_SIZE, " ")
+                                .stream()
+                                .collect(Collectors.joining());
+                        insertText(getCaretPosition(), tabString);
+                        event.consume();
+                    }
                 });
+                
+                // These values are hard-coded for now.
+                setStyle("-fx-font:13px Consolas");
             }
         };
         editorArea.setParagraphGraphicFactory(LineNumberFactory.get(editorArea));
