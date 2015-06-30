@@ -4,6 +4,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import org.fxmisc.richtext.CodeArea;
 import winter.Globals;
 import winter.models.EditorModel;
 import winter.utils.Either;

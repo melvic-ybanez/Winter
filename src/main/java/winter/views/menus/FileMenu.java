@@ -60,7 +60,7 @@ public class FileMenu extends Menu {
         getItems().addAll(newFileItem, openFileItem, openFolderItem, saveFileItem, saveAsFileItem);
     }
     
-    private void openFile() {
+    public void openFile() {
         openFileChooser.setTitle("Open File"); 
 
         Settings.SUPPORTED_FILE_FORMATS.forEach(format -> {

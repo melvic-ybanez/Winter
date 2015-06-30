@@ -99,6 +99,7 @@ public class EditorPane extends BorderPane {
             codeArea.replaceText(0, 0, contents);
             tab.setContent(codeArea);
             editorModel.getContentsProperty().bind(codeArea.textProperty());
+            
             tabPane.getTabs().add(tab); 
             tabPane.getSelectionModel().select(tab);
             
@@ -129,9 +130,9 @@ public class EditorPane extends BorderPane {
         CodeArea editorArea = new CodeArea() {
             {
                 addEventHandler(KeyEvent.KEY_PRESSED, event -> {
-                    KeyCode[] codes = { KeyCode.CONTROL, KeyCode.SHIFT };
-                    if (StreamUtils.exists(Arrays.stream(codes), event.getCode()::equals))
+                    if (event.getCode() == KeyCode.ESCAPE) {
                         getParent().requestFocus();
+                    }
                 });
             }
         };
