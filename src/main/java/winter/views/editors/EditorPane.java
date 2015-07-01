@@ -1,14 +1,11 @@
 package winter.views.editors;
 
-import com.sun.deploy.util.StringUtils;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.text.Font;
 import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
 import org.fxmisc.richtext.StyleSpans;
@@ -16,15 +13,13 @@ import org.fxmisc.richtext.StyleSpansBuilder;
 import winter.controllers.EditorController;
 import winter.models.EditorModel;
 import winter.utils.Either;
-import winter.utils.StreamUtils;
+import winter.utils.Pair;
 import winter.views.Settings;
 
 import java.nio.file.Path;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 /**
  * Created by ybamelcash on 6/21/2015.
@@ -82,9 +77,9 @@ public class EditorPane extends BorderPane {
     }
     
     public void newEditorAreaTab(Either<String, Path> pathEither, String contents) {
-        EditorModel editorModel = new EditorModel(pathEither, new SimpleStringProperty(contents));
+        EditorModel editorModel = new EditorModel(pathEither);
         Optional<Path> pathOpt = editorModel.getPath();
-        String title = editorModel.getTitleProperty().getValue();
+        String title = editorModel.titleProperty().getValue();
         
         if (pathOpt.isPresent() && EditorController.exists(editors, pathOpt.get())) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -100,15 +95,16 @@ public class EditorPane extends BorderPane {
         } else {
             Tab tab = new Tab(title);
             CodeArea codeArea = createEditorArea();
-            codeArea.replaceText(0, 0, contents);
-            tab.setContent(codeArea);
-            editorModel.getContentsProperty().bind(codeArea.textProperty());
+            codeArea.replaceText(0, 0, contents); 
+            tab.setContent(codeArea); 
+            editorModel.contentsProperty().bind(codeArea.textProperty());
+            editorModel.caretPositionProperty().bind(codeArea.caretPositionProperty());
             
             tabPane.getTabs().add(tab); 
             tabPane.getSelectionModel().select(tab);
             
             editors.add(editorModel);
-            tab.textProperty().bind(editorModel.getTitleProperty());
+            tab.textProperty().bind(editorModel.titleProperty());
             
             tab.setOnClosed(event -> {
                 pathOpt.ifPresent(path -> editors = EditorController.remove(editors, path));
@@ -131,40 +127,42 @@ public class EditorPane extends BorderPane {
     }
     
     private CodeArea createEditorArea() {
-        CodeArea editorArea = new CodeArea() {
-            {
-                addEventHandler(KeyEvent.KEY_PRESSED, event -> {
-                    if (event.getCode() == KeyCode.ESCAPE) {
-                        getParent().requestFocus();
-                    }
-                    
-                    if (event.getCode() == KeyCode.TAB) {
-                        System.out.println(Settings.DEFAULT_TAB_SIZE);
-                        String tabString = Collections.<String>nCopies(Settings.DEFAULT_TAB_SIZE, " ")
-                                .stream()
-                                .collect(Collectors.joining());
-                        insertText(getCaretPosition(), tabString);
-                        event.consume();
-                    }
-                });
-                
-                // These values are hard-coded for now.
-                setStyle("-fx-font:13px Consolas");
-            }
-        };
+        CodeArea editorArea = new CodeArea();
+        
+        // These values are hard-coded for now.
+        editorArea.setStyle("-fx-font:13px Consolas");
+        
         editorArea.setParagraphGraphicFactory(LineNumberFactory.get(editorArea));
         editorArea.textProperty().addListener((obs, oldText, newText) -> {
-            if (!newText.isEmpty())
-                editorArea.setStyleSpans(0, highlight(newText));
+            if (!oldText.equals(newText)) {
+                editorAreaChanged(editorArea, newText);
+            }
+        });
+        editorArea.caretPositionProperty().addListener((obs, oldPos, newPos) -> {
+            if (!oldPos.equals(newPos)) {
+                editorAreaChanged(editorArea, editorArea.getText());
+            }
+        });
+        editorArea.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
+            switch (event.getCode()) {
+                case ESCAPE:
+                    System.out.println(EditorController.getActiveEditor().getCaretPosition());
+                    break; //getParent().requestFocus(); break;
+                case TAB:
+                    editorArea.insertText(editorArea.getCaretPosition(), EditorController.getTabString());
+                    event.consume();
+                    break;
+
+            }
         });
         return editorArea;
     }
     
-    private StyleSpans<Collection<String>> highlight(String text) {
+    private StyleSpans<Collection<String>> highlight(String text, int parenIndex1, int parenIndex2) {
         StyleSpansBuilder<Collection<String>> builder = new StyleSpansBuilder<>();
-        int index = 0;
-        int deltaIndex = text.length() > 1000 ? 1000 : text.length();
-        String textToMatch = text.substring(index, index + deltaIndex);
+        int page = 0;
+        int pageSize = text.length() > 1000 ? 1000 : text.length();
+        String textToMatch = text.substring(page, page + pageSize); 
         
         while (!textToMatch.isEmpty()) {
             Matcher matcher = PATTERN.matcher(textToMatch);
@@ -177,7 +175,11 @@ public class EditorPane extends BorderPane {
                 if (matcher.group("FUNCTION") != null) styleClass = "function-name";
                 if (matcher.group("DEFINE") != null) styleClass = "define-command";
                 if (matcher.group("SPECIAL") != null) styleClass = "special-keyword";
-                if (matcher.group("PAREN") != null) styleClass = "paren";
+                if (matcher.group("PAREN") != null) {
+                    if (matcher.start() == parenIndex1 || matcher.start() == parenIndex2) {
+                        styleClass = "focused-paren";
+                    } 
+                } 
                 if (matcher.group("BRACE") != null) styleClass = "brace";
                 if (matcher.group("STRING") != null) styleClass = "string";
                 if (matcher.group("CHAR") != null) styleClass = "char";
@@ -190,15 +192,29 @@ public class EditorPane extends BorderPane {
             }
             builder.add(Collections.emptyList(), textToMatch.length() - lastMatched);
             
-            index += deltaIndex;
-            if (index == text.length()) break;
-            if (index + deltaIndex > text.length()) {
-                deltaIndex = text.length() - index;
+            page += pageSize;
+            if (page == text.length()) break;
+            if (page + pageSize > text.length()) {
+                pageSize = text.length() - page;
             }
-            textToMatch = text.substring(index, index + deltaIndex);
+            textToMatch = text.substring(page, page + pageSize);
         }
         
         return builder.create();
+    }
+    
+    private void editorAreaChanged(CodeArea editorArea, String newText) {
+        if (!newText.isEmpty()) {
+            Optional<Pair<Integer, Integer>> parenIndexesOpt = EditorController.getActiveParenIndexes();
+            int parenIndex1 = -1;
+            int parenIndex2 = -1;
+            if (parenIndexesOpt.isPresent()) {
+                Pair<Integer, Integer> parenIndexes = parenIndexesOpt.get();
+                parenIndex1 = parenIndexes.getFirst();
+                parenIndex2 = parenIndexes.getSecond();
+            }
+            editorArea.setStyleSpans(0, highlight(newText, parenIndex1, parenIndex2));
+        }
     }
     
     private void closeCurrentTab() {

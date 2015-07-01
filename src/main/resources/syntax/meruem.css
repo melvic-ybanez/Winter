@@ -3,8 +3,8 @@
     -fx-font-weight: bold;
 }
 .focused-paren {
-    -fx-fill: firebrick;
-    -fx-font-weight: bold;
+    -fx-stroke: firebrick;
+    -fx-stroke-width:1;
 }
 .special-keyword, .operator ,.quote {
     -fx-fill: darkgreen;

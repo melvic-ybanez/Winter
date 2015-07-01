@@ -4,6 +4,7 @@ package winter.views;
  * Created by ybamelcash on 6/21/2015.
  */
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Orientation;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;

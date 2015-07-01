@@ -8,10 +8,14 @@ import org.fxmisc.richtext.CodeArea;
 import winter.Globals;
 import winter.models.EditorModel;
 import winter.utils.Either;
+import winter.utils.Pair;
 import winter.utils.StreamUtils;
+import winter.utils.StringUtils;
+import winter.views.Settings;
 import winter.views.editors.EditorPane;
 
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -32,6 +36,21 @@ public class EditorController {
     public static void renameSelectedTab(Path newPath) {
         EditorModel editorModel = EditorController.getActiveEditor();
         editorModel.setPath(newPath);
+    }
+    
+    public static String getActiveEditorLastLine() {
+        return getActiveEditor().getLastLine();
+    }
+    
+    public static String getTabString() {
+        return StringUtils.repeat(Settings.DEFAULT_TAB_SIZE, " ");
+    }
+    
+    public static Optional<Pair<Integer, Integer>> getActiveParenIndexes() {
+        EditorModel activeEditor = getActiveEditor();
+        Optional<Pair<Integer, Integer>> parenIndexes = activeEditor.getParenIndexes('(');
+        if (parenIndexes.isPresent()) return parenIndexes;
+        else return activeEditor.getParenIndexes(')');
     }
     
     public static void closeTab(Tab tab) {
