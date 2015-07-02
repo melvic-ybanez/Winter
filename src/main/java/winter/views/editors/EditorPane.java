@@ -151,7 +151,9 @@ public class EditorPane extends BorderPane {
                     event.consume();
                     break;
                 case ENTER:
-                    editorArea.replaceText(EditorController.getAutoIndentedContents());
+                    Pair<String, Integer> result = EditorController.getAutoIndentedContents();
+                    editorArea.replaceText(result.getFirst());
+                    editorArea.positionCaret(result.getSecond());
                     event.consume();
                     break;
 
