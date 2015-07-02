@@ -74,6 +74,8 @@ public class EditorModel {
     
     public Optional<Pair<Integer, Integer>> getParenIndexes(char paren) {
         int caretPos = getCaretPosition();
+        if (caretPos > getContents().length()) return Optional.empty();
+        
         Pair<String, String> pair = StringUtils.splitAt(getContents(), caretPos);
         String first = pair.getFirst();
         String second = pair.getSecond();
@@ -119,7 +121,7 @@ public class EditorModel {
         });
     }
     
-    private Optional<Integer> getMatchingParenIndex(String str, char caretParen, char matchingParen) {
+    public Optional<Integer> getMatchingParenIndex(String str, char caretParen, char matchingParen) {
         Stack<Character> parenStack = new Stack<>();
         Optional<Integer> matchingIndexOpt = Optional.empty();
         

@@ -137,7 +137,7 @@ public class EditorPane extends BorderPane {
             if (!oldText.equals(newText)) {
                 editorAreaChanged(editorArea, newText);
             }
-        });
+        }); 
         editorArea.caretPositionProperty().addListener((obs, oldPos, newPos) -> {
             if (!oldPos.equals(newPos)) {
                 editorAreaChanged(editorArea, editorArea.getText());
@@ -145,11 +145,13 @@ public class EditorPane extends BorderPane {
         });
         editorArea.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
             switch (event.getCode()) {
-                case ESCAPE:
-                    System.out.println(EditorController.getActiveEditor().getCaretPosition());
-                    break; //getParent().requestFocus(); break;
+                case ESCAPE: getParent().requestFocus(); break;
                 case TAB:
-                    editorArea.insertText(editorArea.getCaretPosition(), EditorController.getTabString());
+                    editorArea.insertText(editorArea.getCaretPosition(), Settings.TAB_STRING);
+                    event.consume();
+                    break;
+                case ENTER:
+                    editorArea.replaceText(EditorController.getAutoIndentedContents());
                     event.consume();
                     break;
 

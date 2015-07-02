@@ -2,6 +2,7 @@ package winter.views;
 
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
+import winter.utils.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -50,4 +51,6 @@ public class Settings {
             });
         }
     }
+
+    public static final String TAB_STRING = StringUtils.repeat(Settings.DEFAULT_TAB_SIZE, " ");
 }

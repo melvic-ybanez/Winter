@@ -3,11 +3,8 @@ package winter.controllers;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import org.fxmisc.richtext.CodeArea;
 import winter.Globals;
 import winter.models.EditorModel;
-import winter.utils.Either;
 import winter.utils.Pair;
 import winter.utils.StreamUtils;
 import winter.utils.StringUtils;
@@ -15,13 +12,11 @@ import winter.views.Settings;
 import winter.views.editors.EditorPane;
 
 import java.nio.file.Path;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
-import java.util.stream.Collector;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Created by ybamelcash on 6/26/2015.
@@ -42,16 +37,35 @@ public class EditorController {
         return getActiveEditor().getLastLine();
     }
     
-    public static String getTabString() {
-        return StringUtils.repeat(Settings.DEFAULT_TAB_SIZE, " ");
-    }
-    
     public static Optional<Pair<Integer, Integer>> getActiveParenIndexes() {
         EditorModel activeEditor = getActiveEditor();
         Optional<Pair<Integer, Integer>> parenIndexes = activeEditor.getParenIndexes('(');
         if (parenIndexes.isPresent()) return parenIndexes;
         else return activeEditor.getParenIndexes(')');
     }
+    
+    public static String getAutoIndentedContents() {
+        EditorModel activeEditor = getActiveEditor();
+        int caretPos = activeEditor.getCaretPosition();
+        Pair<String, String> pair = StringUtils.splitAt(activeEditor.getContents(), caretPos);
+        Optional<Integer> openParenIndexOpt = activeEditor.getMatchingParenIndex(
+                new StringBuilder(pair.getFirst()).reverse().toString(), ')', '(');
+        
+        return openParenIndexOpt.map(openParenIndex -> {
+            int realOpenParenIndex = pair.getFirst().length() - openParenIndex - 1;
+            String stringBeforeOpenParen = StringUtils.splitAt(pair.getFirst(), realOpenParenIndex).getFirst();
+
+            int startCharCount = 0;
+            for (int i = stringBeforeOpenParen.length() - 1; i > -1; i--) {
+                char c = stringBeforeOpenParen.charAt(i);
+                if (c == '\n') break;
+                startCharCount++;
+            }
+
+            String tabString = Settings.TAB_STRING + StringUtils.repeat(startCharCount, " ");
+            return pair.getFirst() + "\n" + tabString + pair.getSecond();
+        }).orElseGet(() -> activeEditor.getContents() + "\n");
+    } 
     
     public static void closeTab(Tab tab) {
         EditorPane editorPane = Globals.editorPane;
