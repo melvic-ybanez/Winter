@@ -42,7 +42,7 @@ public class EditorController {
         else return activeEditor.getParenIndexes(')');
     }
     
-    public static Pair<String, Integer> getAutoIndentedContents() {
+    public static String getAutoIndentedNewLineString() {
         EditorModel activeEditor = getActiveEditor();
         int caretPos = activeEditor.getCaretPosition();
         Pair<String, String> pair = StringUtils.splitAt(activeEditor.getContents(), caretPos);
@@ -60,13 +60,8 @@ public class EditorController {
                 startCharCount++;
             }
 
-            String tabString = Settings.TAB_STRING + StringUtils.repeat(startCharCount, " ");
-            String firstHalf = pair.getFirst() + "\n" + tabString;
-            int newCaretPosition = firstHalf.length();
-            String newContent = firstHalf + pair.getSecond();
-            
-            return Pair.of(newContent, newCaretPosition);
-        }).orElseGet(() -> Pair.of(activeEditor.getContents() + "\n", activeEditor.getCaretPosition() + 1));
+            return "\n" + Settings.TAB_STRING + StringUtils.repeat(startCharCount, " ");
+        }).orElseGet(() -> "\n");
     } 
     
     public static void closeTab(Tab tab) {

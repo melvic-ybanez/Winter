@@ -28,7 +28,7 @@ public class Main extends Application {
         topPane.setDividerPositions(0.4f);
         
         bottomPane.getItems().addAll(Globals.consolePane, Globals.replPane);
-        bottomPane.setDividerPositions(0.7f);
+        bottomPane.setDividerPositions(0.5f);
         
         mainPane.getItems().addAll(topPane, bottomPane);
         mainPane.setOrientation(Orientation.VERTICAL);
@@ -53,8 +53,7 @@ public class Main extends Application {
         primaryStage.setMaximized(true);
         primaryStage.show();
     }
-
-
+    
     public static void main(String[] args) {
         launch(args);
     }

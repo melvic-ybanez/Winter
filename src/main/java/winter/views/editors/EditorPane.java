@@ -1,10 +1,5 @@
 package winter.views.editors;
 
-import javafx.beans.InvalidationListener;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -119,7 +114,7 @@ public class EditorPane extends BorderPane {
             tab.textProperty().bind(editorModel.titleProperty());
             tab.setOnClosed(event -> {
                 editorModel.getPath().ifPresent(path -> editors = EditorController.remove(editors, path));
-                if (!editorModel.getPath().isPresent()) 
+                if (!editorModel.getPath().isPresent())
                     editors = editors.stream().filter(model -> !model.getTitle().equals(editorModel.getTitle()))
                             .collect(Collectors.toList());
                 if (editors.isEmpty()) {
@@ -167,12 +162,10 @@ public class EditorPane extends BorderPane {
                     event.consume();
                     break;
                 case ENTER:
-                    Pair<String, Integer> result = EditorController.getAutoIndentedContents();
-                    editorArea.replaceText(result.getFirst());
-                    editorArea.positionCaret(result.getSecond());
+                    String autoIndentedNewLineString = EditorController.getAutoIndentedNewLineString();
+                    editorArea.insertText(editorArea.getCaretPosition(), autoIndentedNewLineString);
                     event.consume();
                     break;
-
             }
         });
         return editorArea;
