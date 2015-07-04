@@ -9,7 +9,8 @@ import winter.Globals;
 public class ConsolePane extends TitledPane {
     public ConsolePane() {
         setText("Console");
-        prefHeightProperty().bind(Globals.bottomPane.heightProperty());
+        prefHeightProperty().bind(Globals.bottomSplitPane.heightProperty());
         setCollapsible(false);
+        setOpacity(0.83);
     }
 }

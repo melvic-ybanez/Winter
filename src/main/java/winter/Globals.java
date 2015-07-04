@@ -13,9 +13,9 @@ import java.util.Optional;
  * Created by ybamelcash on 6/22/2015.
  */
 public class Globals {
-    public static final SplitPane mainPane = new SplitPane();
-    public static final SplitPane topPane = new SplitPane();
-    public static final SplitPane bottomPane = new SplitPane();
+    public static final SplitPane mainSplitPane = new SplitPane();
+    public static final SplitPane topSplitPane = new SplitPane();
+    public static final SplitPane bottomSplitPane = new SplitPane();
     
     private static Optional<Stage> mainStage = Optional.empty();
     

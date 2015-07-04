@@ -1,6 +1,7 @@
 package winter.views.repl;
 
 import javafx.scene.control.TitledPane;
+import javafx.scene.layout.StackPane;
 import winter.Globals;
 
 /**
@@ -9,7 +10,8 @@ import winter.Globals;
 public class REPLPane extends TitledPane {
     public REPLPane() {
         setText("REPL");
-        prefHeightProperty().bind(Globals.bottomPane.heightProperty());
+        prefHeightProperty().bind(Globals.bottomSplitPane.heightProperty());
         setCollapsible(false);
+        setOpacity(0.83);
     }
 }

@@ -62,6 +62,7 @@ public class EditorPane extends BorderPane {
         setCenter(tabPane);
         createContextMenu();
         newUntitledTab();
+        tabPane.setOpacity(.9);
     }
     
     private void createContextMenu() {
@@ -142,6 +143,7 @@ public class EditorPane extends BorderPane {
         
         // These values are hard-coded for now.
         editorArea.setStyle("-fx-font:13px Consolas");
+        editorArea.setOpacity(0.8);
         
         editorArea.setParagraphGraphicFactory(LineNumberFactory.get(editorArea));
         editorArea.textProperty().addListener((obs, oldText, newText) -> {

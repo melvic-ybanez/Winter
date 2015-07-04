@@ -23,7 +23,7 @@ public class ProjectsPane extends TitledPane {
     public ProjectsPane() {
         setText("Projects");
         setContent(tree);
-        prefHeightProperty().bind(Globals.topPane.heightProperty()); 
+        prefHeightProperty().bind(Globals.topSplitPane.heightProperty()); 
         setCollapsible(false);
         
         createContextMenu();
@@ -50,8 +50,9 @@ public class ProjectsPane extends TitledPane {
                         });
                     }
                 });
-            } 
+            }
         });
+        setOpacity(0.78);
     }
     
     private void createContextMenu() {

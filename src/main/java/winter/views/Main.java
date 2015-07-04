@@ -9,6 +9,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import winter.Globals;
 import winter.views.menus.EditMenu;
@@ -20,9 +22,9 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        SplitPane mainPane = Globals.mainPane;
-        SplitPane topPane = Globals.topPane;
-        SplitPane bottomPane = Globals.bottomPane;
+        SplitPane mainSplitPane = Globals.mainSplitPane;
+        SplitPane topPane = Globals.topSplitPane;
+        SplitPane bottomPane = Globals.bottomSplitPane;
         
         topPane.getItems().addAll(Globals.projectsPane, Globals.editorPane);
         topPane.setDividerPositions(0.4f);
@@ -30,20 +32,30 @@ public class Main extends Application {
         bottomPane.getItems().addAll(Globals.consolePane, Globals.replPane);
         bottomPane.setDividerPositions(0.5f);
         
-        mainPane.getItems().addAll(topPane, bottomPane);
-        mainPane.setOrientation(Orientation.VERTICAL);
-        mainPane.setDividerPositions(0.8f);
-        
+        mainSplitPane.getItems().addAll(topPane, bottomPane);
+        mainSplitPane.setOrientation(Orientation.VERTICAL);
+        mainSplitPane.setDividerPositions(0.8f);
+        mainSplitPane.getStyleClass().add("transparent");
+        topPane.getStyleClass().add("transparent");
+        bottomPane.getStyleClass().add("transparent");
+
         SplitPane.setResizableWithParent(Globals.projectsPane, false);
         
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(new FileMenu(), new EditMenu(), new PreferencesMenu(), new HelpMenu());
 
-        BorderPane root = new BorderPane();
-        root.setTop(menuBar);
-        root.setCenter(mainPane);
+        BorderPane mainPane = new BorderPane();
+        mainPane.setTop(menuBar);
+        mainPane.setCenter(mainSplitPane);
+
+        StackPane bgPane = new StackPane();
+        bgPane.setId("root-pane");
+        
+        StackPane root = new StackPane();
+        root.getChildren().addAll(bgPane, mainPane);
         
         Scene scene = new Scene(root, 900, 600);
+        scene.setFill(Color.TRANSPARENT);
         scene.getStylesheets().add(Main.class.getResource("/syntax/meruem.css").toExternalForm());
         
         Globals.setMainStage(primaryStage);
