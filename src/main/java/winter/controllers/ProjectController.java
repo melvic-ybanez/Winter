@@ -2,7 +2,6 @@ package winter.controllers;
 
 import winter.models.ProjectModel;
 import winter.utils.Either;
-import winter.Globals;
 
 import java.nio.file.Files;
 import java.nio.file.Path;

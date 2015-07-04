@@ -14,8 +14,6 @@ import winter.views.editors.EditorPane;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -54,8 +52,8 @@ public class EditorController {
         return openParenIndexOpt.map(openParenIndex -> {
             int realOpenParenIndex = pair.getFirst().length() - openParenIndex - 1;
             String stringBeforeOpenParen = StringUtils.splitAt(pair.getFirst(), realOpenParenIndex).getFirst();
-
             int startCharCount = 0;
+            
             for (int i = stringBeforeOpenParen.length() - 1; i > -1; i--) {
                 char c = stringBeforeOpenParen.charAt(i);
                 if (c == '\n') break;
@@ -66,6 +64,7 @@ public class EditorController {
             String firstHalf = pair.getFirst() + "\n" + tabString;
             int newCaretPosition = firstHalf.length();
             String newContent = firstHalf + pair.getSecond();
+            
             return Pair.of(newContent, newCaretPosition);
         }).orElseGet(() -> Pair.of(activeEditor.getContents() + "\n", activeEditor.getCaretPosition() + 1));
     } 
@@ -83,9 +82,7 @@ public class EditorController {
         editorModel.getPath().ifPresent(path -> {
             Globals.editorPane.newEditorAreaTab(path, editorModel.getContents());
         });
-        if (!editorModel.getPath().isPresent()) {
-            Globals.editorPane.newUntitledTab();
-        }
+        editorModel.ifUntitled(Globals.editorPane::newUntitledTab);
     }
     
     public static void closeAllTabs() {

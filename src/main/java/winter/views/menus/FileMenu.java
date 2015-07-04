@@ -1,6 +1,5 @@
 package winter.views.menus;
 
-import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
@@ -9,19 +8,16 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import winter.Globals;
 import winter.controllers.EditorController;
 import winter.controllers.FileController;
 import winter.utils.Either;
 import winter.utils.Errors;
 import winter.views.Settings;
-import winter.Globals;
 
-import java.io.*;
+import java.io.IOException;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 /**
  * Created by ybamelcash on 6/21/2015.
@@ -90,11 +86,11 @@ public class FileMenu extends Menu {
     
     public void saveFile() {
         Either<IOException, Boolean> result = FileController.saveFile();
-        result.getLeft().ifPresent(Errors::saveFileException);
-        result.getRight().ifPresent(saved -> {
+        result.ifLeft(Errors::saveFileException);
+        result.ifRight(saved -> {
             if (!saved) {
                 saveAsFile();
-            };
+            }
         });
     }
     
@@ -102,26 +98,13 @@ public class FileMenu extends Menu {
         saveFileChooser.setTitle("Save As");
         Optional.ofNullable(saveFileChooser.showSaveDialog(Globals.getMainStage())).ifPresent(file -> {
             Path path = file.toPath();
-            Either<IOException, Optional<String>> result = FileController.saveAsFile(path);
+            Optional<IOException> errorOpt = FileController.saveAsFile(path);
 
-            result.getLeft().ifPresent(Errors::saveFileException);
-            
-            if (!result.getLeft().isPresent()) {
-                result.getRight().ifPresent(errorOpt -> {
-                    errorOpt.ifPresent(error -> {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Save File Error");
-                        alert.setHeaderText("Unable to save file: " + path);
-                        alert.setContentText(error);
-                        alert.showAndWait();
-                    });
-                    
-                    if (!errorOpt.isPresent()) {
-                        saveFileChooser.setInitialDirectory(file.getParentFile());
-                        EditorController.renameSelectedTab(path);
-                    };
-                });
-            };
+            errorOpt.ifPresent(Errors::saveFileException);
+            if (!errorOpt.isPresent()) {
+                saveFileChooser.setInitialDirectory(file.getParentFile());
+                EditorController.renameSelectedTab(path);
+            }
         });
     }
     

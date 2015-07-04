@@ -1,7 +1,6 @@
 package winter.views;
 
 import javafx.scene.control.TitledPane;
-import javafx.scene.layout.BorderPane;
 import winter.Globals;
 
 /**

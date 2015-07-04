@@ -1,7 +1,7 @@
 package winter.utils;
 
 import java.util.Optional;
-import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -40,6 +40,14 @@ public class Either<A, B> {
     public <C> Either<A, C> mapRight(Function<B, C> f) {
         if (getLeft().isPresent()) return Either.left(getLeft().get());
         return Either.right(getRight().map(f::apply).get());
+    }
+    
+    public void ifLeft(Consumer<A> f) {
+        getLeft().ifPresent(f);
+    }
+    
+    public void ifRight(Consumer<B> f) {
+        getRight().ifPresent(f);
     }
     
     public boolean hasLeft() {

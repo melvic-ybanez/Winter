@@ -1,5 +1,10 @@
 package winter.views.editors;
 
+import javafx.beans.InvalidationListener;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -11,15 +16,19 @@ import org.fxmisc.richtext.LineNumberFactory;
 import org.fxmisc.richtext.StyleSpans;
 import org.fxmisc.richtext.StyleSpansBuilder;
 import winter.controllers.EditorController;
+import winter.controllers.FileController;
 import winter.models.EditorModel;
 import winter.utils.Either;
+import winter.utils.Errors;
 import winter.utils.Pair;
 import winter.views.Settings;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Created by ybamelcash on 6/21/2015.
@@ -62,21 +71,23 @@ public class EditorPane extends BorderPane {
     
     private void createContextMenu() {
         ContextMenu contextMenu = new ContextMenu();
+        MenuItem renameItem = new MenuItem("Rename");
         MenuItem closeItem = new MenuItem("Close");
-        MenuItem closeOtherItem = new MenuItem("Close others");
+        MenuItem closeOtherItem = new MenuItem("Close Others");
         MenuItem closeAllItem = new MenuItem("Close All");
         
+        renameItem.setOnAction(e -> renameTab());
         closeItem.setOnAction(e -> closeCurrentTab());
         closeOtherItem.setOnAction(e -> EditorController.closeOtherTabs());
         closeAllItem.setOnAction(e -> closeAllTabs());
         
         closeItem.setAccelerator(new KeyCodeCombination(KeyCode.W, KeyCombination.CONTROL_DOWN));
         
-        contextMenu.getItems().addAll(closeItem, closeOtherItem, closeAllItem);
+        contextMenu.getItems().addAll(renameItem, closeItem, closeOtherItem, closeAllItem);
         tabPane.setContextMenu(contextMenu);
     }
     
-    public void newEditorAreaTab(Either<String, Path> pathEither, String contents) {
+    public void newEditorAreaTab(Either<Integer, Path> pathEither, String contents) {
         EditorModel editorModel = new EditorModel(pathEither);
         Optional<Path> pathOpt = editorModel.getPath();
         String title = editorModel.titleProperty().getValue();
@@ -94,20 +105,23 @@ public class EditorPane extends BorderPane {
             } 
         } else {
             Tab tab = new Tab(title);
+            editors.add(editorModel);
             CodeArea codeArea = createEditorArea();
             codeArea.replaceText(0, 0, contents); 
             tab.setContent(codeArea); 
+            tab.textProperty().bind(editorModel.titleProperty());
             editorModel.contentsProperty().bind(codeArea.textProperty());
             editorModel.caretPositionProperty().bind(codeArea.caretPositionProperty());
             
             tabPane.getTabs().add(tab); 
             tabPane.getSelectionModel().select(tab);
             
-            editors.add(editorModel);
             tab.textProperty().bind(editorModel.titleProperty());
-            
             tab.setOnClosed(event -> {
-                pathOpt.ifPresent(path -> editors = EditorController.remove(editors, path));
+                editorModel.getPath().ifPresent(path -> editors = EditorController.remove(editors, path));
+                if (!editorModel.getPath().isPresent()) 
+                    editors = editors.stream().filter(model -> !model.getTitle().equals(editorModel.getTitle()))
+                            .collect(Collectors.toList());
                 if (editors.isEmpty()) {
                     newUntitledTab();
                 }
@@ -119,11 +133,13 @@ public class EditorPane extends BorderPane {
         newEditorAreaTab(Either.right(path), contents);
     }
 
+    public void newUntitledTab(int untitledCount) {
+        newEditorAreaTab(Either.left(untitledCount), "");
+        this.untitledCount = ++untitledCount;
+    }
+    
     public void newUntitledTab() {
-        String suffix = untitledCount == 0 ? "" : untitledCount + "";
-        String title = "Untitled" + suffix;
-        newEditorAreaTab(Either.left(title), "");
-        untitledCount++;
+        newUntitledTab(this.untitledCount);
     }
     
     private CodeArea createEditorArea() {
@@ -208,7 +224,7 @@ public class EditorPane extends BorderPane {
     }
     
     private void editorAreaChanged(CodeArea editorArea, String newText) {
-        if (!newText.isEmpty()) {
+        if (!newText.isEmpty() && getTabPane().getSelectionModel().getSelectedIndex() != -1) {
             Optional<Pair<Integer, Integer>> parenIndexesOpt = EditorController.getActiveParenIndexes();
             int parenIndex1 = -1;
             int parenIndex2 = -1;
@@ -224,11 +240,37 @@ public class EditorPane extends BorderPane {
     private void closeCurrentTab() {
         Tab selectedTab = getTabPane().getSelectionModel().getSelectedItem();
         EditorController.closeTab(selectedTab);
+        if (tabPane.getTabs().isEmpty()) {
+            newUntitledTab();
+        }
     }
     
     private void closeAllTabs() {
         EditorController.closeAllTabs();
         newUntitledTab();
+    }
+    
+    private void renameTab() {
+        EditorModel activeEditor = EditorController.getActiveEditor();
+        activeEditor.ifUntitled(count -> {
+            Errors.headerLessDialog(Errors.titles.RENAME, "Can not rename a non-existing file");
+        });
+        activeEditor.getPath().ifPresent(path -> {
+            TextInputDialog renameDialog = new TextInputDialog(activeEditor.getTitle());
+            renameDialog.setTitle("Rename File");
+            renameDialog.setHeaderText(null);
+            renameDialog.setContentText("Enter the new filename");
+
+            Optional<String> newFilenameOpt = renameDialog.showAndWait();
+            newFilenameOpt.ifPresent(newFilename -> {
+                Either<IOException, Either<String, Path>> result = FileController.renameFile(path, newFilename);
+                result.ifLeft(ex -> Errors.exceptionDialog(Errors.titles.RENAME, null, ex.getMessage(), ex));
+                result.ifRight(right -> {
+                    right.ifLeft(error -> Errors.headerLessDialog(Errors.titles.RENAME, error));
+                    right.ifRight(activeEditor::setPath);
+                });
+            });    
+        });
     }
     
     public TabPane getTabPane() {

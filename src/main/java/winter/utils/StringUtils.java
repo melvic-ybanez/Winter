@@ -1,7 +1,5 @@
 package winter.utils;
 
-import winter.views.Settings;
-
 import java.util.Collections;
 import java.util.stream.Collectors;
 

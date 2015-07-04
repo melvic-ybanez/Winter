@@ -1,24 +1,18 @@
 package winter.views.projects;
 
 import javafx.beans.binding.Bindings;
-import javafx.geometry.Side;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseButton;
 import winter.Globals;
 import winter.controllers.FileController;
 import winter.utils.Either;
 import winter.utils.Errors;
 
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 /**
  * Created by ybamelcash on 6/21/2015.

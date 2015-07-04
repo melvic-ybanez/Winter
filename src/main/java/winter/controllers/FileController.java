@@ -39,21 +39,15 @@ public class FileController {
     public static Either<IOException, Boolean> saveFile() {
         EditorModel activeEditor = EditorController.getActiveEditor();
         return activeEditor.getPath().map(path -> {
-            return writeToFile(path, activeEditor.getContents())
+            return saveAsFile(path)
                     .<Either<IOException, Boolean>>map(Either::left)
                     .orElseGet(() -> Either.right(true));
         }).orElseGet(() -> Either.right(false));
     }
     
-    public static Either<IOException, Optional<String>> saveAsFile(Path path) {
-        if (Files.exists(path)) {
-            return Either.right(Optional.of(Errors.messages.fileAlreadyExists(path)));
-        } else {
-            EditorModel activeEditor = EditorController.getActiveEditor();
-            return writeToFile(path, activeEditor.getContents())
-                    .<Either<IOException, Optional<String>>>map(Either::left)
-                    .orElseGet(() -> Either.right(Optional.empty()));
-        }
+    public static Optional<IOException> saveAsFile(Path path) {
+        EditorModel activeEditor = EditorController.getActiveEditor();
+        return writeToFile(path, activeEditor.getContents());
     }
     
     private static Optional<IOException> writeToFile(Path path, String contents) {
@@ -66,11 +60,12 @@ public class FileController {
     }
     
     public static Either<IOException, Either<String, Path>> renameFile(Path path, String newName) {
-        if (Files.exists(path)) {
-            return Either.right(Either.left(Errors.messages.fileAlreadyExists(path)));
+        Path newPath = path.resolveSibling(newName);
+        if (Files.exists(newPath)) {
+            return Either.right(Either.left(Errors.messages.fileAlreadyExists(newPath)));
         } else {
             try {
-                Path newPath = Files.move(path, path.resolveSibling(newName));
+                newPath = Files.move(path, newPath);
                 return Either.right(Either.<String, Path>right(newPath));
             } catch (IOException ex) {
                 return Either.left(ex);

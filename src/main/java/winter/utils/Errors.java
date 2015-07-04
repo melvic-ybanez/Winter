@@ -5,8 +5,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -54,9 +52,21 @@ public class Errors {
                 "An exception has occured while saving the file", ex.getMessage(), ex);
     }
     
+    public static Optional<ButtonType> headerLessDialog(String title, String contents) {
+        Alert errorDialog = new Alert(Alert.AlertType.ERROR);
+        errorDialog.setTitle(title);
+        errorDialog.setHeaderText(null);
+        errorDialog.setContentText(contents);
+        return errorDialog.showAndWait();
+    }
+    
     public static class messages {
         public static String fileAlreadyExists(Path path) {
             return "File already exists: " + path;
         }
+    }
+    
+    public static class titles {
+        public static final String RENAME = "Rename File Error";
     }
 }

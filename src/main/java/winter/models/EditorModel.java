@@ -2,6 +2,7 @@ package winter.models;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import winter.utils.Constants;
 import winter.utils.Either;
 import winter.utils.Pair;
 import winter.utils.StringUtils;
@@ -9,17 +10,18 @@ import winter.utils.StringUtils;
 import java.nio.file.Path;
 import java.util.Optional;
 import java.util.Stack;
+import java.util.function.Consumer;
 
 /**
  * Created by ybamelcash on 6/26/2015.
  */
 public class EditorModel {
-    private Either<String, Path> pathEither;
+    private Either<Integer, Path> pathEither;
     private SimpleStringProperty contentsProperty = new SimpleStringProperty();
     private SimpleStringProperty titleProperty = new SimpleStringProperty();
     private SimpleIntegerProperty caretPositionProperty = new SimpleIntegerProperty();
     
-    public EditorModel(Either<String, Path> pathEither) {
+    public EditorModel(Either<Integer, Path> pathEither) {
         setPathEither(pathEither);
     }
     
@@ -48,14 +50,18 @@ public class EditorModel {
     }
     
     public boolean equalsPath(Path path) {
-        return getPath().map(path1 -> path1.equals(path)).orElse(false);
+        return getPath().map(path::equals).orElse(false);
     }
     
-    public void setPathEither(Either<String, Path> pathEither) {
+    public void setPathEither(Either<Integer, Path> pathEither) {
         this.pathEither = pathEither;
         this.titleProperty.setValue(pathEither.getRight()
                 .map(path -> path.getFileName().toString())
-                .orElseGet(() -> pathEither.getLeft().get()));
+                .orElseGet(() -> {
+                    int untitledCount = pathEither.getLeft().get();
+                    String suffix = untitledCount == 0 ? "" : untitledCount + "";
+                    return Constants.UNTITLED + suffix;
+                }));
     }
     
     public void setContents(SimpleStringProperty contents) {
@@ -145,5 +151,13 @@ public class EditorModel {
     private boolean getParenHeadValue(String str, char paren) {
         if (str.isEmpty()) return false;
         else return str.charAt(0) == paren;
+    }
+    
+    public void ifUntitled(Consumer<Integer> f) {
+        pathEither.getLeft().ifPresent(f); 
+    }
+    
+    public String getTitle() {
+        return titleProperty.get();
     }
 }
