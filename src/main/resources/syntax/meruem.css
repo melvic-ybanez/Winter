@@ -1,6 +1,6 @@
 #root-pane {
-    -fx-background-image: url("/images/winter-bg.jpg");
-    -fx-background-repeat: stretch;
+    -fx-background-image: url("/images/winter-bg3.jpg");
+    -fx-background-repeat: repeat-x;
     -fx-background-position: center center;
     -fx-background-size: 1600 900;
     -fx-effect: inherit;
