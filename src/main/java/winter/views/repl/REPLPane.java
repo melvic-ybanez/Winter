@@ -12,6 +12,6 @@ public class REPLPane extends TitledPane {
         setText("REPL");
         prefHeightProperty().bind(Globals.bottomSplitPane.heightProperty());
         setCollapsible(false);
-        setOpacity(0.9);
+        setOpacity(0.85);
     }
 }

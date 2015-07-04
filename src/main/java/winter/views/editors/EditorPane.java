@@ -62,7 +62,7 @@ public class EditorPane extends BorderPane {
         setCenter(tabPane);
         createContextMenu();
         newUntitledTab();
-        tabPane.setOpacity(.9);
+        tabPane.setOpacity(.85);
     }
     
     private void createContextMenu() {
