@@ -20,24 +20,28 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        SplitPane bottomPane = Globals.bottomPane;
+        SplitPane mainPane = Globals.mainPane;
         SplitPane topPane = Globals.topPane;
+        SplitPane bottomPane = Globals.bottomPane;
+        
         topPane.getItems().addAll(Globals.projectsPane, Globals.editorPane);
         topPane.setDividerPositions(0.4f);
         
-        bottomPane.getItems().addAll(topPane, Globals.consolePane);
-        bottomPane.setOrientation(Orientation.VERTICAL);
-        bottomPane.setDividerPositions(0.6f);
+        bottomPane.getItems().addAll(Globals.consolePane, Globals.replPane);
+        bottomPane.setDividerPositions(0.7f);
+        
+        mainPane.getItems().addAll(topPane, bottomPane);
+        mainPane.setOrientation(Orientation.VERTICAL);
+        mainPane.setDividerPositions(0.8f);
         
         SplitPane.setResizableWithParent(Globals.projectsPane, false);
-        SplitPane.setResizableWithParent(Globals.consolePane, false);
         
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(new FileMenu(), new EditMenu(), new PreferencesMenu(), new HelpMenu());
 
         BorderPane root = new BorderPane();
         root.setTop(menuBar);
-        root.setCenter(bottomPane);
+        root.setCenter(mainPane);
         
         Scene scene = new Scene(root, 900, 600);
         scene.getStylesheets().add(Main.class.getResource("/syntax/meruem.css").toExternalForm());
