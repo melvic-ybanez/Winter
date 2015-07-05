@@ -21,6 +21,11 @@ public class EditMenu extends Menu {
     private void init() {
         MenuItem undo = new MenuItem("Undo");
         MenuItem redo = new MenuItem("Redo");
+        MenuItem find = new MenuItem("Find...");
+        MenuItem replace = new MenuItem("Replace...");
+        MenuItem copy = new MenuItem("Copy");
+        MenuItem cut = new MenuItem("Cut");
+        MenuItem paste = new MenuItem("Paste");
         
         undo.disableProperty().bind(
                 ((BooleanBinding) EditorController.getActiveCodeArea().undoAvailableProperty()).not());
@@ -32,7 +37,15 @@ public class EditMenu extends Menu {
         
         undo.setAccelerator(new KeyCodeCombination(KeyCode.Z, KeyCodeCombination.CONTROL_DOWN));
         redo.setAccelerator(new KeyCodeCombination(KeyCode.Y, KeyCodeCombination.CONTROL_DOWN));
+        find.setAccelerator(new KeyCodeCombination(KeyCode.F, KeyCodeCombination.CONTROL_DOWN));
+        replace.setAccelerator(new KeyCodeCombination(KeyCode.F, 
+                KeyCodeCombination.CONTROL_DOWN, KeyCodeCombination.SHIFT_DOWN));
+        copy.setAccelerator(new KeyCodeCombination(KeyCode.C, KeyCodeCombination.CONTROL_DOWN));
+        cut.setAccelerator(new KeyCodeCombination(KeyCode.X, KeyCodeCombination.CONTROL_DOWN));
+        paste.setAccelerator(new KeyCodeCombination(KeyCode.V, KeyCodeCombination.CONTROL_DOWN));
         
-        getItems().addAll(undo, redo);
+        getItems().addAll(undo, redo, new SeparatorMenuItem(), 
+                find, replace, new SeparatorMenuItem(),
+                copy, cut, paste);
     }
 }
