@@ -144,7 +144,7 @@ public class EditorPane extends BorderPane {
         editorArea.getStyleClass().add("meruem-codearea");
         
         /* These are hardcoded values for now */
-        editorArea.setStyle("-fx-font-family: Consolas");
+        editorArea.setStyle("-fx-font-family: Consolas"); 
 
         editorArea.setParagraphGraphicFactory(LineNumberFactory.get(editorArea));
         editorArea.textProperty().addListener((obs, oldText, newText) -> {
@@ -156,7 +156,7 @@ public class EditorPane extends BorderPane {
             if (!oldPos.equals(newPos)) {
                 editorAreaChanged(editorArea, editorArea.getText());
             }
-        });
+        }); 
         editorArea.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
             switch (event.getCode()) {
                 case ESCAPE: getParent().requestFocus(); break;

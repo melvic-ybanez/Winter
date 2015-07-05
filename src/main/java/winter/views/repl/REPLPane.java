@@ -12,6 +12,5 @@ public class REPLPane extends TitledPane {
         setText("REPL");
         prefHeightProperty().bind(Globals.bottomSplitPane.heightProperty());
         setCollapsible(false);
-        getStyleClass().add("meruem-titled-pane");
     }
 }

@@ -3,6 +3,7 @@ package winter.controllers;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Tab;
+import org.fxmisc.richtext.CodeArea;
 import winter.Globals;
 import winter.models.EditorModel;
 import winter.utils.Pair;
@@ -62,7 +63,19 @@ public class EditorController {
 
             return "\n" + Settings.TAB_STRING + StringUtils.repeat(startCharCount, " ");
         }).orElseGet(() -> "\n");
-    } 
+    }
+    
+    public static CodeArea getActiveCodeArea() {
+        return (CodeArea) Globals.editorPane.getTabPane().getSelectionModel().getSelectedItem().getContent();
+    }
+    
+    public static void undo() {
+        getActiveCodeArea().undo();
+    }
+    
+    public static void redo() {
+        getActiveCodeArea().redo();
+    }
     
     public static void closeTab(Tab tab) {
         EditorPane editorPane = Globals.editorPane;

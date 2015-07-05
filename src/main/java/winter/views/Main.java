@@ -4,6 +4,7 @@ package winter.views;
  * Created by ybamelcash on 6/21/2015.
  */
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Orientation;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
@@ -35,27 +36,17 @@ public class Main extends Application {
         mainSplitPane.getItems().addAll(topPane, bottomPane);
         mainSplitPane.setOrientation(Orientation.VERTICAL);
         mainSplitPane.setDividerPositions(0.8f);
-        mainSplitPane.getStyleClass().add("transparent");
-        topPane.getStyleClass().add("transparent");
-        bottomPane.getStyleClass().add("transparent");
 
         SplitPane.setResizableWithParent(Globals.projectsPane, false);
         
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(new FileMenu(), new EditMenu(), new PreferencesMenu(), new HelpMenu());
 
-        BorderPane mainPane = new BorderPane();
-        mainPane.setTop(menuBar);
-        mainPane.setCenter(mainSplitPane);
-
-        StackPane bgPane = new StackPane();
-        bgPane.setId("root-pane");
-        
-        StackPane root = new StackPane();
-        root.getChildren().addAll(bgPane, mainPane);
+        BorderPane root = new BorderPane();
+        root.setTop(menuBar);
+        root.setCenter(mainSplitPane);
         
         Scene scene = new Scene(root, 900, 600);
-        scene.setFill(Color.TRANSPARENT);
         scene.getStylesheets().add(Main.class.getResource("/syntax/meruem.css").toExternalForm());
         
         Globals.setMainStage(primaryStage);

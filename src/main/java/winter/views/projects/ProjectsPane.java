@@ -52,7 +52,6 @@ public class ProjectsPane extends TitledPane {
                 });
             }
         });
-        setOpacity(0.7);
     }
     
     private void createContextMenu() {
