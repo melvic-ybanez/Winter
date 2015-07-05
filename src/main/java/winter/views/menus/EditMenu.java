@@ -34,6 +34,9 @@ public class EditMenu extends Menu {
         
         undo.setOnAction(e -> EditorController.undo());
         redo.setOnAction(e -> EditorController.redo());
+        copy.setOnAction(e -> EditorController.copy());
+        cut.setOnAction(e -> EditorController.cut());
+        paste.setOnAction(e -> EditorController.paste());
         
         undo.setAccelerator(new KeyCodeCombination(KeyCode.Z, KeyCodeCombination.CONTROL_DOWN));
         redo.setAccelerator(new KeyCodeCombination(KeyCode.Y, KeyCodeCombination.CONTROL_DOWN));

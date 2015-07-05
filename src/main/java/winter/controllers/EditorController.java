@@ -83,6 +83,18 @@ public class EditorController {
         getActiveCodeArea().redo();
     }
     
+    public static void copy() {
+        getActiveCodeArea().copy();
+    }
+    
+    public static void cut() {
+        getActiveCodeArea().cut();
+    }
+    
+    public static void paste() {
+        getActiveCodeArea().paste();
+    }
+    
     public static boolean runAccelerators(KeyEvent event) {
         if (!event.getCode().isModifierKey()) {
             Function<KeyCombination.Modifier[], Boolean> runAccelerator = (modifiers) -> {
