@@ -1,5 +1,5 @@
 #root-pane {
-    -fx-background-image: url("/images/winter-bg3.jpg");
+    -fx-background-image: url("/images/winter-bg4.jpg");
     -fx-background-repeat: repeat-x;
     -fx-background-position: center center;
     -fx-background-size: 1600 900;
@@ -8,6 +8,23 @@
 
 .transparent {
     -fx-background-color: transparent;
+}
+
+.meruem-titled-pane > .title {
+    -fx-opacity: 0.9;
+}
+
+.meruem-titled-pane > *.content {
+    -fx-opacity: 0.8;
+}
+
+.meruem-codearea {
+    -fx-font-size: 13px;
+    -fx-opacity: 0.8;
+}
+
+.meruem-tabpane {
+    -fx-opacity: 0.87;
 }
 
 .define-command {

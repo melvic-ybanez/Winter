@@ -11,6 +11,6 @@ public class ConsolePane extends TitledPane {
         setText("Console");
         prefHeightProperty().bind(Globals.bottomSplitPane.heightProperty());
         setCollapsible(false);
-        setOpacity(0.85);
+        getStyleClass().add("meruem-titled-pane");
     }
 }

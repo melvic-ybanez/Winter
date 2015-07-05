@@ -6,6 +6,7 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Text;
 import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
 import org.fxmisc.richtext.StyleSpans;
@@ -62,7 +63,7 @@ public class EditorPane extends BorderPane {
         setCenter(tabPane);
         createContextMenu();
         newUntitledTab();
-        tabPane.setOpacity(.85);
+        tabPane.getStyleClass().add("meruem-tabpane");
     }
     
     private void createContextMenu() {
@@ -140,11 +141,11 @@ public class EditorPane extends BorderPane {
     
     private CodeArea createEditorArea() {
         CodeArea editorArea = new CodeArea();
+        editorArea.getStyleClass().add("meruem-codearea");
         
-        // These values are hard-coded for now.
-        editorArea.setStyle("-fx-font:13px Consolas");
-        editorArea.setOpacity(0.8);
-        
+        /* These are hardcoded values for now */
+        editorArea.setStyle("-fx-font-family: Consolas");
+
         editorArea.setParagraphGraphicFactory(LineNumberFactory.get(editorArea));
         editorArea.textProperty().addListener((obs, oldText, newText) -> {
             if (!oldText.equals(newText)) {
