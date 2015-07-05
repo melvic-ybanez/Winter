@@ -3,6 +3,9 @@ package winter.controllers;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Tab;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import org.fxmisc.richtext.CodeArea;
 import winter.Globals;
@@ -14,8 +17,10 @@ import winter.views.menus.FileMenu;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -76,6 +81,28 @@ public class EditorController {
     
     public static void redo() {
         getActiveCodeArea().redo();
+    }
+    
+    public static boolean runAccelerators(KeyEvent event) {
+        if (!event.getCode().isModifierKey()) {
+            Function<KeyCombination.Modifier[], Boolean> runAccelerator = (modifiers) -> {
+                Runnable r = Globals.editorPane.getScene().getAccelerators()
+                        .get(new KeyCodeCombination(event.getCode(), modifiers));
+                if (r != null) {
+                    r.run();
+                    return true;
+                }
+                return false;
+            };
+
+            List<KeyCombination.Modifier> modifiers = new ArrayList<>();
+            if (event.isControlDown()) modifiers.add(KeyCodeCombination.CONTROL_DOWN);
+            if (event.isShiftDown()) modifiers.add(KeyCodeCombination.SHIFT_DOWN);
+            if (event.isAltDown()) modifiers.add(KeyCodeCombination.ALT_DOWN);
+
+            return runAccelerator.apply(modifiers.toArray(new KeyCombination.Modifier[modifiers.size()]));
+        }
+        return false;
     }
     
     public static void openFile() {

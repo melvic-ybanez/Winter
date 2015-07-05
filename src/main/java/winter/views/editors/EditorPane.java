@@ -160,29 +160,10 @@ public class EditorPane extends BorderPane {
             }
         }); 
         editorArea.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
-            if (!event.getCode().isModifierKey()) {
-                Function<KeyCombination.Modifier[], Boolean> runAccelerator = (modifiers) -> {
-                    Runnable r = getScene().getAccelerators().get(new KeyCodeCombination(event.getCode(), modifiers));
-                    if (r != null) {
-                        r.run();
-                        return true;
-                    }
-                    return false;
-                };
-
-                List<KeyCombination.Modifier> modifiers = new ArrayList<>();
-                if (event.isControlDown()) modifiers.add(KeyCodeCombination.CONTROL_DOWN);
-                if (event.isShiftDown()) modifiers.add(KeyCodeCombination.SHIFT_DOWN);
-                if (event.isAltDown()) modifiers.add(KeyCodeCombination.ALT_DOWN);
-                
-                if (runAccelerator.apply(modifiers.toArray(new KeyCombination.Modifier[modifiers.size()])))
-                    return;
-            }
+            if (EditorController.runAccelerators(event))
+                return;
 
             switch (event.getCode()) {
-                case ESCAPE:
-                    getParent().requestFocus();
-                    break;
                 case TAB:
                     editorArea.insertText(editorArea.getCaretPosition(), Settings.TAB_STRING);
                     event.consume();
