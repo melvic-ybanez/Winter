@@ -40,7 +40,7 @@ public class Main extends Application {
         SplitPane.setResizableWithParent(Globals.projectsPane, false);
         
         MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().addAll(new FileMenu(), new EditMenu(), new PreferencesMenu(), new HelpMenu());
+        menuBar.getMenus().addAll(Globals.menus.fileMenu, new EditMenu(), new PreferencesMenu(), new HelpMenu());
 
         BorderPane root = new BorderPane();
         root.setTop(menuBar);

@@ -3,15 +3,16 @@ package winter.controllers;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Tab;
+import javafx.stage.FileChooser;
 import org.fxmisc.richtext.CodeArea;
 import winter.Globals;
 import winter.models.EditorModel;
-import winter.utils.Pair;
-import winter.utils.StreamUtils;
-import winter.utils.StringUtils;
+import winter.utils.*;
 import winter.views.Settings;
 import winter.views.editors.EditorPane;
+import winter.views.menus.FileMenu;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
@@ -75,6 +76,44 @@ public class EditorController {
     
     public static void redo() {
         getActiveCodeArea().redo();
+    }
+    
+    public static void openFile() {
+        FileChooser openFileChooser = Globals.menus.fileMenu.getOpenFileChooser();
+
+        Optional.ofNullable(openFileChooser.showOpenDialog(Globals.getMainStage())).ifPresent(file -> {
+            Path path = file.toPath();
+            Either<IOException, String> result = FileController.openFile(path);
+            result.getLeft().ifPresent(Errors::openFileException);
+            result.getRight().ifPresent(contents -> {
+                Globals.editorPane.newEditorAreaTab(path, contents);
+            });
+            openFileChooser.setInitialDirectory(file.getParentFile());
+        });
+    }
+    
+    public static void saveFile() {
+        Either<IOException, Boolean> result = FileController.saveFile();
+        result.ifLeft(Errors::saveFileException);
+        result.ifRight(saved -> {
+            if (!saved) {
+                saveAsFile();
+            }
+        });
+    }
+    
+    public static void saveAsFile() {
+        FileChooser saveFileChooser = Globals.menus.fileMenu.getSaveFileChooser();
+        Optional.ofNullable(saveFileChooser.showSaveDialog(Globals.getMainStage())).ifPresent(file -> {
+            Path path = file.toPath();
+            Optional<IOException> errorOpt = FileController.saveAsFile(path);
+
+            errorOpt.ifPresent(Errors::saveFileException);
+            if (!errorOpt.isPresent()) {
+                saveFileChooser.setInitialDirectory(file.getParentFile());
+                EditorController.renameSelectedTab(path);
+            }
+        });
     }
     
     public static void closeTab(Tab tab) {

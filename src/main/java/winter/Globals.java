@@ -1,9 +1,11 @@
 package winter;
 
+import javafx.scene.control.Menu;
 import javafx.scene.control.SplitPane;
 import javafx.stage.Stage;
 import winter.views.ConsolePane;
 import winter.views.editors.EditorPane;
+import winter.views.menus.FileMenu;
 import winter.views.projects.ProjectsPane;
 import winter.views.repl.REPLPane;
 
@@ -23,6 +25,10 @@ public class Globals {
     public static final EditorPane editorPane = new EditorPane();
     public static final ConsolePane consolePane = new ConsolePane();
     public static final REPLPane replPane = new REPLPane();
+    
+    public static class menus {
+        public static final FileMenu fileMenu = new FileMenu();
+    }
     
     public static void setMainStage(Stage stage) {
         mainStage = Optional.of(stage);

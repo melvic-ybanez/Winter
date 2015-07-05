@@ -22,6 +22,8 @@ import winter.views.Settings;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -158,8 +160,29 @@ public class EditorPane extends BorderPane {
             }
         }); 
         editorArea.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
+            if (!event.getCode().isModifierKey()) {
+                Function<KeyCombination.Modifier[], Boolean> runAccelerator = (modifiers) -> {
+                    Runnable r = getScene().getAccelerators().get(new KeyCodeCombination(event.getCode(), modifiers));
+                    if (r != null) {
+                        r.run();
+                        return true;
+                    }
+                    return false;
+                };
+
+                List<KeyCombination.Modifier> modifiers = new ArrayList<>();
+                if (event.isControlDown()) modifiers.add(KeyCodeCombination.CONTROL_DOWN);
+                if (event.isShiftDown()) modifiers.add(KeyCodeCombination.SHIFT_DOWN);
+                if (event.isAltDown()) modifiers.add(KeyCodeCombination.ALT_DOWN);
+                
+                if (runAccelerator.apply(modifiers.toArray(new KeyCombination.Modifier[modifiers.size()])))
+                    return;
+            }
+
             switch (event.getCode()) {
-                case ESCAPE: getParent().requestFocus(); break;
+                case ESCAPE:
+                    getParent().requestFocus();
+                    break;
                 case TAB:
                     editorArea.insertText(editorArea.getCaretPosition(), Settings.TAB_STRING);
                     event.consume();

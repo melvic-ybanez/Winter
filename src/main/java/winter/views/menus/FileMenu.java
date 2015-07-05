@@ -23,8 +23,8 @@ import java.util.Optional;
  * Created by ybamelcash on 6/21/2015.
  */
 public class FileMenu extends Menu {
-    private FileChooser openFileChooser = new FileChooser();
-    private FileChooser saveFileChooser = new FileChooser();
+    private FileChooser openFileChooser;
+    private FileChooser saveFileChooser;
     private DirectoryChooser directoryChooser = new DirectoryChooser();
     
     public FileMenu() {
@@ -39,11 +39,11 @@ public class FileMenu extends Menu {
         MenuItem saveFileItem = new MenuItem("Save");
         MenuItem saveAsFileItem = new MenuItem("Save As...");
 
-        openFileItem.setOnAction(e -> openFile());
+        openFileItem.setOnAction(e -> EditorController.openFile());
         openFolderItem.setOnAction(e -> openFolder());
         newFileItem.setOnAction(e -> newFile());
-        saveFileItem.setOnAction(e -> saveFile());
-        saveAsFileItem.setOnAction(e -> saveAsFile());
+        saveFileItem.setOnAction(e -> EditorController.saveFile());
+        saveAsFileItem.setOnAction(e -> EditorController.saveAsFile());
         
         newFileItem.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCodeCombination.CONTROL_DOWN));
         openFileItem.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN));
@@ -56,26 +56,6 @@ public class FileMenu extends Menu {
         getItems().addAll(newFileItem, openFileItem, openFolderItem, saveFileItem, saveAsFileItem);
     }
     
-    public void openFile() {
-        openFileChooser.setTitle("Open File"); 
-
-        Settings.SUPPORTED_FILE_FORMATS.forEach(format -> {
-            openFileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(
-                    format.getString("description"),
-                    "*" + format.getString("extension")));
-        });
-
-        Optional.ofNullable(openFileChooser.showOpenDialog(Globals.getMainStage())).ifPresent(file -> {
-            Path path = file.toPath();
-            Either<IOException, String> result = FileController.openFile(path);
-            result.getLeft().ifPresent(Errors::openFileException);
-            result.getRight().ifPresent(contents -> {
-                Globals.editorPane.newEditorAreaTab(path, contents);
-            });
-            openFileChooser.setInitialDirectory(file.getParentFile());
-        });
-    }
-    
     private void openFolder() {
         directoryChooser.setTitle("Open Folder"); 
         Optional.ofNullable(directoryChooser.showDialog(Globals.getMainStage())).ifPresent(file -> {
@@ -84,31 +64,28 @@ public class FileMenu extends Menu {
         });
     }
     
-    public void saveFile() {
-        Either<IOException, Boolean> result = FileController.saveFile();
-        result.ifLeft(Errors::saveFileException);
-        result.ifRight(saved -> {
-            if (!saved) {
-                saveAsFile();
-            }
-        });
-    }
-    
-    public void saveAsFile() {
-        saveFileChooser.setTitle("Save As");
-        Optional.ofNullable(saveFileChooser.showSaveDialog(Globals.getMainStage())).ifPresent(file -> {
-            Path path = file.toPath();
-            Optional<IOException> errorOpt = FileController.saveAsFile(path);
-
-            errorOpt.ifPresent(Errors::saveFileException);
-            if (!errorOpt.isPresent()) {
-                saveFileChooser.setInitialDirectory(file.getParentFile());
-                EditorController.renameSelectedTab(path);
-            }
-        });
-    }
-    
     private void newFile() {
         Globals.editorPane.newUntitledTab();
+    }
+    
+    public FileChooser getOpenFileChooser() {
+        if (openFileChooser == null) {
+            openFileChooser = new FileChooser();
+            openFileChooser.setTitle("Open File");
+            Settings.SUPPORTED_FILE_FORMATS.forEach(format -> {
+                openFileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(
+                        format.getString("description"),
+                        "*" + format.getString("extension")));
+            });
+        }
+        return openFileChooser;
+    }
+    
+    public FileChooser getSaveFileChooser() {
+        if (saveFileChooser == null) {
+            saveFileChooser = new FileChooser();
+            saveFileChooser.setTitle("Save As");
+        }
+        return saveFileChooser;
     }
 }
