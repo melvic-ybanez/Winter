@@ -2,25 +2,27 @@ package winter.controllers;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import org.fxmisc.richtext.CodeArea;
+import org.fxmisc.richtext.StyleSpans;
+import org.fxmisc.richtext.StyleSpansBuilder;
 import winter.Globals;
 import winter.models.EditorModel;
 import winter.utils.*;
 import winter.views.Settings;
 import winter.views.editors.EditorPane;
-import winter.views.menus.FileMenu;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
+import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 
 /**
@@ -69,6 +71,76 @@ public class EditorController {
 
             return "\n" + Settings.TAB_STRING + StringUtils.repeat(startCharCount, " ");
         }).orElseGet(() -> "\n");
+    }
+
+    public static void editorAreaChanged(CodeArea editorArea, String newText) {
+        TabPane tabPane = Globals.editorPane.getTabPane();
+        if (!newText.isEmpty() && tabPane.getSelectionModel().getSelectedIndex() != -1) {
+            Optional<Pair<Integer, Integer>> parenIndexesOpt = EditorController.getActiveParenIndexes();
+            int parenIndex1 = -1;
+            int parenIndex2 = -1;
+            if (parenIndexesOpt.isPresent()) {
+                Pair<Integer, Integer> parenIndexes = parenIndexesOpt.get();
+                parenIndex1 = parenIndexes.getFirst();
+                parenIndex2 = parenIndexes.getSecond();
+            }
+            editorArea.setStyleSpans(0, getStyleSpans(newText, parenIndex1, parenIndex2));
+        }
+        
+        updateTabGraphic();
+    }
+    
+    public static void updateTabGraphic() {
+        Label graphicLabel = (Label) Globals.editorPane.getTabPane()
+                .getSelectionModel().getSelectedItem().getGraphic();
+        if (getActiveEditor().hasChanges()) {
+            graphicLabel.setText("*");
+        } else graphicLabel.setText("");
+    }
+
+    public static StyleSpans<Collection<String>> getStyleSpans(String text, int parenIndex1, int parenIndex2) {
+        StyleSpansBuilder<Collection<String>> builder = new StyleSpansBuilder<>();
+        int page = 0;
+        int pageSize = text.length() > 1000 ? 1000 : text.length();
+        String textToMatch = text.substring(page, page + pageSize);
+
+        while (!textToMatch.isEmpty()) {
+            Matcher matcher = EditorPane.PATTERN.matcher(textToMatch);
+            int lastMatched = 0;
+
+            while (matcher.find()) {
+                String styleClass = null;
+                if (matcher.group("TYPE") != null) styleClass = "type";
+                if (matcher.group("OPERATOR") != null) styleClass = "operator";
+                if (matcher.group("FUNCTION") != null) styleClass = "function-name";
+                if (matcher.group("DEFINE") != null) styleClass = "define-command";
+                if (matcher.group("SPECIAL") != null) styleClass = "special-keyword";
+                if (matcher.group("PAREN") != null) {
+                    if (matcher.start() == parenIndex1 || matcher.start() == parenIndex2) {
+                        styleClass = "focused-paren";
+                    }
+                }
+                if (matcher.group("BRACE") != null) styleClass = "brace";
+                if (matcher.group("STRING") != null) styleClass = "string";
+                if (matcher.group("CHAR") != null) styleClass = "char";
+                if (matcher.group("COMMENT") != null) styleClass = "comment";
+                if (matcher.group("QUOTE") != null) styleClass = "quote";
+                assert styleClass != null;
+                builder.add(Collections.emptyList(), matcher.start() - lastMatched);
+                builder.add(Collections.singleton(styleClass), matcher.end() - matcher.start());
+                lastMatched = matcher.end();
+            }
+            builder.add(Collections.emptyList(), textToMatch.length() - lastMatched);
+
+            page += pageSize;
+            if (page == text.length()) break;
+            if (page + pageSize > text.length()) {
+                pageSize = text.length() - page;
+            }
+            textToMatch = text.substring(page, page + pageSize);
+        }
+
+        return builder.create();
     }
     
     public static CodeArea getActiveCodeArea() {

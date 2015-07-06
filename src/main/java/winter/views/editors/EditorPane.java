@@ -107,10 +107,15 @@ public class EditorPane extends BorderPane {
             editors.add(editorModel);
             CodeArea codeArea = createEditorArea();
             codeArea.replaceText(0, 0, contents); 
+            
             tab.setContent(codeArea); 
             tab.textProperty().bind(editorModel.titleProperty());
+            
+            tab.setGraphic(new Label());
+            
             editorModel.contentsProperty().bind(codeArea.textProperty());
             editorModel.caretPositionProperty().bind(codeArea.caretPositionProperty());
+            editorModel.setOrigContents(contents);
             
             tabPane.getTabs().add(tab); 
             tabPane.getSelectionModel().select(tab);
@@ -150,14 +155,10 @@ public class EditorPane extends BorderPane {
 
         editorArea.setParagraphGraphicFactory(LineNumberFactory.get(editorArea));
         editorArea.textProperty().addListener((obs, oldText, newText) -> {
-            if (!oldText.equals(newText)) {
-                editorAreaChanged(editorArea, newText);
-            }
+            EditorController.editorAreaChanged(editorArea, newText);
         }); 
         editorArea.caretPositionProperty().addListener((obs, oldPos, newPos) -> {
-            if (!oldPos.equals(newPos)) {
-                editorAreaChanged(editorArea, editorArea.getText());
-            }
+            EditorController.editorAreaChanged(editorArea, editorArea.getText());
         }); 
         editorArea.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
             if (EditorController.runAccelerators(event))
@@ -176,65 +177,6 @@ public class EditorPane extends BorderPane {
             }
         });
         return editorArea;
-    }
-    
-    private StyleSpans<Collection<String>> highlight(String text, int parenIndex1, int parenIndex2) {
-        StyleSpansBuilder<Collection<String>> builder = new StyleSpansBuilder<>();
-        int page = 0;
-        int pageSize = text.length() > 1000 ? 1000 : text.length();
-        String textToMatch = text.substring(page, page + pageSize); 
-        
-        while (!textToMatch.isEmpty()) {
-            Matcher matcher = PATTERN.matcher(textToMatch);
-            int lastMatched = 0;
-            
-            while (matcher.find()) {
-                String styleClass = null;
-                if (matcher.group("TYPE") != null) styleClass = "type";
-                if (matcher.group("OPERATOR") != null) styleClass = "operator";
-                if (matcher.group("FUNCTION") != null) styleClass = "function-name";
-                if (matcher.group("DEFINE") != null) styleClass = "define-command";
-                if (matcher.group("SPECIAL") != null) styleClass = "special-keyword";
-                if (matcher.group("PAREN") != null) {
-                    if (matcher.start() == parenIndex1 || matcher.start() == parenIndex2) {
-                        styleClass = "focused-paren";
-                    } 
-                } 
-                if (matcher.group("BRACE") != null) styleClass = "brace";
-                if (matcher.group("STRING") != null) styleClass = "string";
-                if (matcher.group("CHAR") != null) styleClass = "char";
-                if (matcher.group("COMMENT") != null) styleClass = "comment";
-                if (matcher.group("QUOTE") != null) styleClass = "quote";
-                assert styleClass != null;
-                builder.add(Collections.emptyList(), matcher.start() - lastMatched);
-                builder.add(Collections.singleton(styleClass), matcher.end() - matcher.start());
-                lastMatched = matcher.end();
-            }
-            builder.add(Collections.emptyList(), textToMatch.length() - lastMatched);
-            
-            page += pageSize;
-            if (page == text.length()) break;
-            if (page + pageSize > text.length()) {
-                pageSize = text.length() - page;
-            }
-            textToMatch = text.substring(page, page + pageSize);
-        }
-        
-        return builder.create();
-    }
-    
-    private void editorAreaChanged(CodeArea editorArea, String newText) {
-        if (!newText.isEmpty() && getTabPane().getSelectionModel().getSelectedIndex() != -1) {
-            Optional<Pair<Integer, Integer>> parenIndexesOpt = EditorController.getActiveParenIndexes();
-            int parenIndex1 = -1;
-            int parenIndex2 = -1;
-            if (parenIndexesOpt.isPresent()) {
-                Pair<Integer, Integer> parenIndexes = parenIndexesOpt.get();
-                parenIndex1 = parenIndexes.getFirst();
-                parenIndex2 = parenIndexes.getSecond();
-            }
-            editorArea.setStyleSpans(0, highlight(newText, parenIndex1, parenIndex2));
-        }
     }
     
     private void closeCurrentTab() {

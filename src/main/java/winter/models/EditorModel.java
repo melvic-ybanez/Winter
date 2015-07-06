@@ -2,6 +2,7 @@ package winter.models;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import winter.controllers.EditorController;
 import winter.utils.Constants;
 import winter.utils.Either;
 import winter.utils.Pair;
@@ -20,6 +21,7 @@ public class EditorModel {
     private SimpleStringProperty contentsProperty = new SimpleStringProperty();
     private SimpleStringProperty titleProperty = new SimpleStringProperty();
     private SimpleIntegerProperty caretPositionProperty = new SimpleIntegerProperty();
+    private String origContents = "";
     
     public EditorModel(Either<Integer, Path> pathEither) {
         setPathEither(pathEither);
@@ -62,10 +64,6 @@ public class EditorModel {
                     String suffix = untitledCount == 0 ? "" : untitledCount + "";
                     return Constants.UNTITLED + suffix;
                 }));
-    }
-    
-    public void setContents(SimpleStringProperty contents) {
-        this.contentsProperty = contents;
     }
     
     public SimpleStringProperty titleProperty() {
@@ -159,5 +157,18 @@ public class EditorModel {
     
     public String getTitle() {
         return titleProperty.get();
+    }
+    
+    public void save() {
+        setOrigContents(getContents());
+        EditorController.updateTabGraphic();
+    }
+    
+    public void setOrigContents(String contents) {
+        origContents = contents;
+    }
+    
+    public boolean hasChanges() {
+        return !getContents().equals(origContents);
     }
 }

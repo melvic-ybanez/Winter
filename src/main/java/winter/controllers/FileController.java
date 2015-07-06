@@ -47,7 +47,9 @@ public class FileController {
     
     public static Optional<IOException> saveAsFile(Path path) {
         EditorModel activeEditor = EditorController.getActiveEditor();
-        return writeToFile(path, activeEditor.getContents());
+        Optional<IOException> errorOpt = writeToFile(path, activeEditor.getContents());
+        if (!errorOpt.isPresent()) activeEditor.save();
+        return errorOpt;
     }
     
     private static Optional<IOException> writeToFile(Path path, String contents) {
