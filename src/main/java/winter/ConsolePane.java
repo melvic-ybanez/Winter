@@ -1,4 +1,4 @@
-package winter.views;
+package winter;
 
 import javafx.scene.control.TitledPane;
 import winter.Application;

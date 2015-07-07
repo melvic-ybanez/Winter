@@ -1,33 +1,25 @@
 package winter.views.editors;
 
-import javafx.beans.binding.Bindings;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.text.Text;
 import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
-import org.fxmisc.richtext.StyleSpans;
-import org.fxmisc.richtext.StyleSpansBuilder;
 import winter.controllers.EditorController;
 import winter.controllers.FileController;
 import winter.models.EditorModel;
 import winter.utils.Either;
 import winter.utils.Errors;
-import winter.utils.Pair;
-import winter.views.Settings;
+import winter.Settings;
+import winter.views.edit.FindPane;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * Created by ybamelcash on 6/21/2015.
@@ -63,6 +55,7 @@ public class EditorPane extends BorderPane {
             + "|(?<QUOTE>" + QUOTE_PATTERN + ")");
     
     public EditorPane() {
+        setTop(new FindPane());
         setCenter(tabPane);
         createContextMenu();
         newUntitledTab();

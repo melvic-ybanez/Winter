@@ -1,4 +1,4 @@
-package winter.views;
+package winter;
 
 /**
  * Created by ybamelcash on 6/21/2015.
@@ -9,7 +9,6 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import winter.Application;
 import winter.views.menus.EditMenu;
 import winter.views.menus.HelpMenu;
 import winter.views.menus.PreferencesMenu;

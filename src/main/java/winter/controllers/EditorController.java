@@ -12,7 +12,7 @@ import org.fxmisc.richtext.StyleSpansBuilder;
 import winter.Application;
 import winter.models.EditorModel;
 import winter.utils.*;
-import winter.views.Settings;
+import winter.Settings;
 import winter.views.editors.EditorPane;
 
 import java.io.IOException;

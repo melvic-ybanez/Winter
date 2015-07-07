@@ -10,7 +10,7 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import winter.Application;
 import winter.controllers.EditorController;
-import winter.views.Settings;
+import winter.Settings;
 
 import java.io.File;
 import java.util.Optional;

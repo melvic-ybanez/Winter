@@ -1,10 +1,8 @@
 package winter;
 
-import javafx.scene.control.Menu;
 import javafx.scene.control.SplitPane;
 import javafx.stage.Stage;
 import winter.controllers.EditorController;
-import winter.views.ConsolePane;
 import winter.views.editors.EditorPane;
 import winter.views.menus.FileMenu;
 import winter.views.projects.ProjectsPane;
