@@ -9,7 +9,7 @@ import javafx.stage.FileChooser;
 import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.StyleSpans;
 import org.fxmisc.richtext.StyleSpansBuilder;
-import winter.Globals;
+import winter.Application;
 import winter.models.EditorModel;
 import winter.utils.*;
 import winter.views.Settings;
@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  */
 public class EditorController {
     public static EditorModel getActiveEditor() {
-        EditorPane editorPane = Globals.editorPane;
+        EditorPane editorPane = Application.editorPane;
         int activeIndex = editorPane.getTabPane().getSelectionModel().getSelectedIndex();
         return editorPane.getEditors().get(activeIndex);
     }
@@ -71,7 +71,7 @@ public class EditorController {
     }
 
     public static void editorAreaChanged(CodeArea editorArea, String newText) {
-        TabPane tabPane = Globals.editorPane.getTabPane();
+        TabPane tabPane = Application.editorPane.getTabPane();
         if (!newText.isEmpty() && tabPane.getSelectionModel().getSelectedIndex() != -1) {
             Optional<Pair<Integer, Integer>> parenIndexesOpt = EditorController.getActiveParenIndexes();
             int parenIndex1 = -1;
@@ -88,8 +88,8 @@ public class EditorController {
     }
     
     public static void updateTabGraphic() {
-        if (Globals.editorPane.getTabPane().getSelectionModel().getSelectedIndex() != -1) {
-            Label graphicLabel = (Label) Globals.editorPane.getTabPane()
+        if (Application.editorPane.getTabPane().getSelectionModel().getSelectedIndex() != -1) {
+            Label graphicLabel = (Label) Application.editorPane.getTabPane()
                     .getSelectionModel().getSelectedItem().getGraphic();
             if (getActiveEditor().unsaved()) {
                 graphicLabel.setText("*");
@@ -143,7 +143,7 @@ public class EditorController {
     }
     
     public static CodeArea getActiveCodeArea() {
-        return (CodeArea) Globals.editorPane.getTabPane().getSelectionModel().getSelectedItem().getContent();
+        return (CodeArea) Application.editorPane.getTabPane().getSelectionModel().getSelectedItem().getContent();
     }
     
     public static void undo() {
@@ -169,7 +169,7 @@ public class EditorController {
     public static boolean runAccelerators(KeyEvent event) {
         if (!event.getCode().isModifierKey()) {
             Function<KeyCombination.Modifier[], Boolean> runAccelerator = (modifiers) -> {
-                Runnable r = Globals.editorPane.getScene().getAccelerators()
+                Runnable r = Application.editorPane.getScene().getAccelerators()
                         .get(new KeyCodeCombination(event.getCode(), modifiers));
                 if (r != null) {
                     r.run();
@@ -189,13 +189,13 @@ public class EditorController {
     }
     
     public static void openFile() {
-        FileChooser openFileChooser = Globals.menus.fileMenu.getOpenFileChooser();
-        Globals.menus.fileMenu.showOpenDialog().ifPresent(file -> {
+        FileChooser openFileChooser = Application.menus.fileMenu.getOpenFileChooser();
+        Application.menus.fileMenu.showOpenDialog().ifPresent(file -> {
             Path path = file.toPath();
             Either<IOException, String> result = FileController.openFile(path);
             result.getLeft().ifPresent(Errors::openFileException);
             result.getRight().ifPresent(contents -> {
-                Globals.editorPane.newEditorAreaTab(path, contents);
+                Application.editorPane.newEditorAreaTab(path, contents);
             });
             openFileChooser.setInitialDirectory(file.getParentFile());
         });
@@ -214,8 +214,8 @@ public class EditorController {
     }
     
     public static void saveAsFile(EditorModel editorModel) {
-        FileChooser saveFileChooser = Globals.menus.fileMenu.getSaveFileChooser();
-        Globals.menus.fileMenu.showSaveDialog().ifPresent(file -> {
+        FileChooser saveFileChooser = Application.menus.fileMenu.getSaveFileChooser();
+        Application.menus.fileMenu.showSaveDialog().ifPresent(file -> {
             Path path = file.toPath();
             Optional<IOException> errorOpt = FileController.saveAsFile(path, editorModel.getContents());
 
@@ -251,23 +251,23 @@ public class EditorController {
     }
     
     public static boolean closeTab(Tab tab) {
-        int index = Globals.editorPane.getTabPane().getTabs().indexOf(tab);
-        EditorModel editorModel = Globals.editorPane.getEditors().get(index);
+        int index = Application.editorPane.getTabPane().getTabs().indexOf(tab);
+        EditorModel editorModel = Application.editorPane.getEditors().get(index);
         
         boolean toClose = whenHasChanges(editorModel, () -> {
-            EditorPane editorPane = Globals.editorPane;
+            EditorPane editorPane = Application.editorPane;
             editorPane.getTabPane().getTabs().remove(tab);
-            final List<EditorModel> editors = Globals.editorPane.getEditors();
+            final List<EditorModel> editors = Application.editorPane.getEditors();
             editorModel.getPath().ifPresent(path -> {
-                Globals.editorPane.setEditors(EditorController.remove(editors, path));
+                Application.editorPane.setEditors(EditorController.remove(editors, path));
             });
             if (!editorModel.getPath().isPresent())
-                Globals.editorPane.setEditors(editors.stream().filter(model -> !model.getTitle().equals(editorModel.getTitle()))
+                Application.editorPane.setEditors(editors.stream().filter(model -> !model.getTitle().equals(editorModel.getTitle()))
                         .collect(Collectors.toList()));
         });
 
-        if (Globals.editorPane.getEditors().isEmpty()) {
-            Globals.editorPane.newUntitledTab();
+        if (Application.editorPane.getEditors().isEmpty()) {
+            Application.editorPane.newUntitledTab();
         }
         
         return toClose;
@@ -276,29 +276,30 @@ public class EditorController {
     public static void closeOtherTabs() {
         EditorModel editorModel = getActiveEditor();
         
-        int selectedIndex = Globals.editorPane.getTabPane().getSelectionModel().getSelectedIndex();
-        Globals.editorPane.getTabPane().getTabs().remove(selectedIndex);
-        Globals.editorPane.getEditors().remove(selectedIndex);
+        int selectedIndex = Application.editorPane.getTabPane().getSelectionModel().getSelectedIndex();
+        Application.editorPane.getTabPane().getTabs().remove(selectedIndex);
+        Application.editorPane.getEditors().remove(selectedIndex);
         
         closeAllTabs();
-        Globals.editorPane.newEditorAreaTab(editorModel);
+        Application.editorPane.newEditorAreaTab(editorModel);
     }
     
-    public static void closeAllTabs() {
+    public static boolean closeAllTabs() {
         List<EditorModel> unclosedEditors = new ArrayList<>();
-        ObservableList<Tab> tabs = Globals.editorPane.getTabPane().getTabs();
+        ObservableList<Tab> tabs = Application.editorPane.getTabPane().getTabs();
         for (int i = 0; i < tabs.size(); i++) {
             Tab tab = tabs.get(i);
-            EditorModel editorModel = Globals.editorPane.getEditors().get(i);
+            EditorModel editorModel = Application.editorPane.getEditors().get(i);
             if (!whenHasChanges(editorModel, () -> {})) {
                 unclosedEditors.add(editorModel);
             }
         }
         if (unclosedEditors.size() != tabs.size()) {
-            Globals.editorPane.getTabPane().getTabs().clear();
-            Globals.editorPane.getEditors().clear();
-            unclosedEditors.forEach(Globals.editorPane::newEditorAreaTab);
+            Application.editorPane.getTabPane().getTabs().clear();
+            Application.editorPane.getEditors().clear();
+            unclosedEditors.forEach(Application.editorPane::newEditorAreaTab);
         }
+        return unclosedEditors.isEmpty();
     }
     
     public static Optional<EditorModel> find(List<EditorModel> editors, Path path) {

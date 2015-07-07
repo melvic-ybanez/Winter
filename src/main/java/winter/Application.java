@@ -3,6 +3,7 @@ package winter;
 import javafx.scene.control.Menu;
 import javafx.scene.control.SplitPane;
 import javafx.stage.Stage;
+import winter.controllers.EditorController;
 import winter.views.ConsolePane;
 import winter.views.editors.EditorPane;
 import winter.views.menus.FileMenu;
@@ -14,7 +15,7 @@ import java.util.Optional;
 /**
  * Created by ybamelcash on 6/22/2015.
  */
-public class Globals {
+public class Application {
     public static final SplitPane mainSplitPane = new SplitPane();
     public static final SplitPane topSplitPane = new SplitPane();
     public static final SplitPane bottomSplitPane = new SplitPane();
@@ -36,5 +37,11 @@ public class Globals {
     
     public static Stage getMainStage() {
         return mainStage.get();
+    }
+    
+    public static void exit() {
+        if (EditorController.closeAllTabs()) {
+            System.exit(0);
+        }
     }
 }

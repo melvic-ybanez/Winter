@@ -1,7 +1,7 @@
 package winter.views;
 
 import javafx.scene.control.TitledPane;
-import winter.Globals;
+import winter.Application;
 
 /**
  * Created by ybamelcash on 6/21/2015.
@@ -9,7 +9,7 @@ import winter.Globals;
 public class ConsolePane extends TitledPane {
     public ConsolePane() {
         setText("Console");
-        prefHeightProperty().bind(Globals.bottomSplitPane.heightProperty());
+        prefHeightProperty().bind(Application.bottomSplitPane.heightProperty());
         setCollapsible(false);
     }
 }

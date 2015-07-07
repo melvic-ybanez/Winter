@@ -1,23 +1,18 @@
 package winter.views.menus;
 
-import javafx.scene.control.Alert;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import winter.Globals;
+import winter.Application;
 import winter.controllers.EditorController;
-import winter.controllers.FileController;
-import winter.utils.Either;
-import winter.utils.Errors;
 import winter.views.Settings;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
 import java.util.Optional;
 
 /**
@@ -39,12 +34,14 @@ public class FileMenu extends Menu {
         MenuItem openFolderItem = new MenuItem("Open Folder...");
         MenuItem saveFileItem = new MenuItem("Save");
         MenuItem saveAsFileItem = new MenuItem("Save As...");
+        MenuItem exitFileItem = new MenuItem("Exit"); 
 
         openFileItem.setOnAction(e -> EditorController.openFile());
         openFolderItem.setOnAction(e -> openFolder());
         newFileItem.setOnAction(e -> newFile());
         saveFileItem.setOnAction(e -> EditorController.saveFile(EditorController.getActiveEditor()));
         saveAsFileItem.setOnAction(e -> EditorController.saveAsFile(EditorController.getActiveEditor()));
+        exitFileItem.setOnAction(e -> Application.exit());
         
         newFileItem.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCodeCombination.CONTROL_DOWN));
         openFileItem.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN));
@@ -53,20 +50,24 @@ public class FileMenu extends Menu {
         saveFileItem.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN));
         saveAsFileItem.setAccelerator(new KeyCodeCombination(KeyCode.S, 
                 KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN));
+        exitFileItem.setAccelerator(new KeyCodeCombination(KeyCode.Q, KeyCombination.CONTROL_DOWN));
         
-        getItems().addAll(newFileItem, openFileItem, openFolderItem, saveFileItem, saveAsFileItem);
+        getItems().addAll(newFileItem, 
+                openFileItem, openFolderItem, new SeparatorMenuItem(),
+                saveFileItem, saveAsFileItem, new SeparatorMenuItem(),
+                exitFileItem);
     }
     
     private void openFolder() {
         directoryChooser.setTitle("Open Folder"); 
-        Optional.ofNullable(directoryChooser.showDialog(Globals.getMainStage())).ifPresent(file -> {
-            Globals.projectsPane.displayProject(file.toPath());
+        Optional.ofNullable(directoryChooser.showDialog(Application.getMainStage())).ifPresent(file -> {
+            Application.projectsPane.displayProject(file.toPath());
             directoryChooser.setInitialDirectory(file.getParentFile());
         });
     }
     
     private void newFile() {
-        Globals.editorPane.newUntitledTab();
+        Application.editorPane.newUntitledTab();
     }
     
     public FileChooser getOpenFileChooser() {
@@ -91,10 +92,10 @@ public class FileMenu extends Menu {
     }
     
     public Optional<File> showOpenDialog() {
-        return Optional.ofNullable(openFileChooser.showOpenDialog(Globals.getMainStage()));
+        return Optional.ofNullable(openFileChooser.showOpenDialog(Application.getMainStage()));
     }
     
     public Optional<File> showSaveDialog() {
-        return Optional.ofNullable(saveFileChooser.showSaveDialog(Globals.getMainStage()));
+        return Optional.ofNullable(saveFileChooser.showSaveDialog(Application.getMainStage()));
     }
 }

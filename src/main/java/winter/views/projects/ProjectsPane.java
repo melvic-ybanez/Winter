@@ -3,7 +3,7 @@ package winter.views.projects;
 import javafx.beans.binding.Bindings;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
-import winter.Globals;
+import winter.Application;
 import winter.controllers.FileController;
 import winter.utils.Either;
 import winter.utils.Errors;
@@ -23,7 +23,7 @@ public class ProjectsPane extends TitledPane {
     public ProjectsPane() {
         setText("Projects");
         setContent(tree);
-        prefHeightProperty().bind(Globals.topSplitPane.heightProperty()); 
+        prefHeightProperty().bind(Application.topSplitPane.heightProperty()); 
         setCollapsible(false);
         
         createContextMenu();
@@ -38,14 +38,14 @@ public class ProjectsPane extends TitledPane {
                         result.getLeft().ifPresent(Errors::openFileException);
                         result.getRight().ifPresent(contents -> {
                             String filename = path.getFileName().toString();
-                            TabPane tabPane = Globals.editorPane.getTabPane();
+                            TabPane tabPane = Application.editorPane.getTabPane();
                             Optional<Tab> existingTab = tabPane.getTabs()
                                     .stream()
                                     .filter(tab -> tab.getText().equals(filename))
                                     .findFirst();
                             existingTab.ifPresent(tab -> tabPane.getSelectionModel().select(tab));
                             if (!existingTab.isPresent()) {
-                                Globals.editorPane.newEditorAreaTab(path, contents);
+                                Application.editorPane.newEditorAreaTab(path, contents);
                             }
                         });
                     }
