@@ -1,6 +1,9 @@
 package winter.views.edit;
 
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
 /**
@@ -11,11 +14,27 @@ public class FindPane extends HBox {
     
     public FindPane() {
         findField.setPromptText("Enter the string to search");
+        
+        HBox checkBoxPane = new HBox();
         CheckBox matchCaseCheck = new CheckBox("Match Case");
         CheckBox wordsCheck = new CheckBox("Words");
+        checkBoxPane.getChildren().addAll(matchCaseCheck, wordsCheck);
+        checkBoxPane.setAlignment(Pos.CENTER);
+        checkBoxPane.setSpacing(7);
         
-        Button nextButton = new Button("Next");
-        Button previousButton = new Button("Prev");
-        getChildren().addAll(findField, matchCaseCheck, wordsCheck, nextButton, previousButton);
+        HBox buttonsPane = new HBox();
+        Label nextButton = new Label();
+        Label previousButton = new Label();
+        nextButton.setTooltip(new Tooltip("Find next occurrence"));
+        previousButton.setTooltip(new Tooltip("Find previous occurrence"));
+        nextButton.setGraphic(new ImageView(this.getClass().getResource("/icons/up.png").toString()));
+        previousButton.setGraphic(new ImageView(this.getClass().getResource("/icons/down.png").toString()));
+        buttonsPane.getChildren().addAll(nextButton, previousButton);
+        buttonsPane.setAlignment(Pos.CENTER);
+        buttonsPane.setSpacing(7);
+        
+        getChildren().addAll(findField, checkBoxPane, buttonsPane);
+        setSpacing(12);
+        setPadding(new Insets(3, 3, 3, 3));
     }
 }
