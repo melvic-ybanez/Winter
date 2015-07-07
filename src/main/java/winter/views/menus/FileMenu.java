@@ -15,6 +15,7 @@ import winter.utils.Either;
 import winter.utils.Errors;
 import winter.views.Settings;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Optional;
@@ -42,8 +43,8 @@ public class FileMenu extends Menu {
         openFileItem.setOnAction(e -> EditorController.openFile());
         openFolderItem.setOnAction(e -> openFolder());
         newFileItem.setOnAction(e -> newFile());
-        saveFileItem.setOnAction(e -> EditorController.saveFile());
-        saveAsFileItem.setOnAction(e -> EditorController.saveAsFile());
+        saveFileItem.setOnAction(e -> EditorController.saveFile(EditorController.getActiveEditor()));
+        saveAsFileItem.setOnAction(e -> EditorController.saveAsFile(EditorController.getActiveEditor()));
         
         newFileItem.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCodeCombination.CONTROL_DOWN));
         openFileItem.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN));
@@ -87,5 +88,13 @@ public class FileMenu extends Menu {
             saveFileChooser.setTitle("Save As");
         }
         return saveFileChooser;
+    }
+    
+    public Optional<File> showOpenDialog() {
+        return Optional.ofNullable(openFileChooser.showOpenDialog(Globals.getMainStage()));
+    }
+    
+    public Optional<File> showSaveDialog() {
+        return Optional.ofNullable(saveFileChooser.showSaveDialog(Globals.getMainStage()));
     }
 }

@@ -1,10 +1,7 @@
 package winter.controllers;
 
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+import javafx.collections.ObservableList;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
@@ -91,11 +88,13 @@ public class EditorController {
     }
     
     public static void updateTabGraphic() {
-        Label graphicLabel = (Label) Globals.editorPane.getTabPane()
-                .getSelectionModel().getSelectedItem().getGraphic();
-        if (getActiveEditor().hasChanges()) {
-            graphicLabel.setText("*");
-        } else graphicLabel.setText("");
+        if (Globals.editorPane.getTabPane().getSelectionModel().getSelectedIndex() != -1) {
+            Label graphicLabel = (Label) Globals.editorPane.getTabPane()
+                    .getSelectionModel().getSelectedItem().getGraphic();
+            if (getActiveEditor().unsaved()) {
+                graphicLabel.setText("*");
+            } else graphicLabel.setText("");
+        }
     }
 
     public static StyleSpans<Collection<String>> getStyleSpans(String text, int parenIndex1, int parenIndex2) {
@@ -191,8 +190,7 @@ public class EditorController {
     
     public static void openFile() {
         FileChooser openFileChooser = Globals.menus.fileMenu.getOpenFileChooser();
-
-        Optional.ofNullable(openFileChooser.showOpenDialog(Globals.getMainStage())).ifPresent(file -> {
+        Globals.menus.fileMenu.showOpenDialog().ifPresent(file -> {
             Path path = file.toPath();
             Either<IOException, String> result = FileController.openFile(path);
             result.getLeft().ifPresent(Errors::openFileException);
@@ -203,49 +201,104 @@ public class EditorController {
         });
     }
     
-    public static void saveFile() {
-        Either<IOException, Boolean> result = FileController.saveFile();
+    public static void saveFile(EditorModel editorModel) {
+        Either<IOException, Boolean> result = FileController.saveFile(editorModel.getPath(), editorModel.getContents());
         result.ifLeft(Errors::saveFileException);
         result.ifRight(saved -> {
-            if (!saved) {
-                saveAsFile();
-            }
+            if (saved) {
+                editorModel.save();
+            } else {
+                saveAsFile(editorModel);
+            } 
         });
     }
     
-    public static void saveAsFile() {
+    public static void saveAsFile(EditorModel editorModel) {
         FileChooser saveFileChooser = Globals.menus.fileMenu.getSaveFileChooser();
-        Optional.ofNullable(saveFileChooser.showSaveDialog(Globals.getMainStage())).ifPresent(file -> {
+        Globals.menus.fileMenu.showSaveDialog().ifPresent(file -> {
             Path path = file.toPath();
-            Optional<IOException> errorOpt = FileController.saveAsFile(path);
+            Optional<IOException> errorOpt = FileController.saveAsFile(path, editorModel.getContents());
 
             errorOpt.ifPresent(Errors::saveFileException);
             if (!errorOpt.isPresent()) {
                 saveFileChooser.setInitialDirectory(file.getParentFile());
                 EditorController.renameSelectedTab(path);
+                editorModel.save();
             }
         });
     }
+
+    public static boolean whenHasChanges(EditorModel editorModel, Runnable function) {
+        if (editorModel.unsaved()) {
+            Alert saveAlert = new Alert(Alert.AlertType.CONFIRMATION); 
+            saveAlert.setHeaderText(null);
+            saveAlert.setContentText("Do you want to save " + editorModel.getTitle() + "?");
+            saveAlert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+            Optional<ButtonType> buttonType = saveAlert.showAndWait();
+            return buttonType.map(button -> {
+                if (button == ButtonType.YES) {
+                    saveFile(editorModel);
+                } else if (button == ButtonType.CANCEL) {
+                    return false;
+                }
+                function.run();
+                return true;
+            }).orElse(false);
+        } else {
+            function.run();
+            return true;
+        }
+    }
     
-    public static void closeTab(Tab tab) {
-        EditorPane editorPane = Globals.editorPane;
-        EventHandler<Event> handler = tab.getOnClosed();
-        editorPane.getTabPane().getTabs().remove(tab);
-        handler.handle(null);
+    public static boolean closeTab(Tab tab) {
+        int index = Globals.editorPane.getTabPane().getTabs().indexOf(tab);
+        EditorModel editorModel = Globals.editorPane.getEditors().get(index);
+        
+        boolean toClose = whenHasChanges(editorModel, () -> {
+            EditorPane editorPane = Globals.editorPane;
+            editorPane.getTabPane().getTabs().remove(tab);
+            final List<EditorModel> editors = Globals.editorPane.getEditors();
+            editorModel.getPath().ifPresent(path -> {
+                Globals.editorPane.setEditors(EditorController.remove(editors, path));
+            });
+            if (!editorModel.getPath().isPresent())
+                Globals.editorPane.setEditors(editors.stream().filter(model -> !model.getTitle().equals(editorModel.getTitle()))
+                        .collect(Collectors.toList()));
+        });
+
+        if (Globals.editorPane.getEditors().isEmpty()) {
+            Globals.editorPane.newUntitledTab();
+        }
+        
+        return toClose;
     }
     
     public static void closeOtherTabs() {
         EditorModel editorModel = getActiveEditor();
+        
+        int selectedIndex = Globals.editorPane.getTabPane().getSelectionModel().getSelectedIndex();
+        Globals.editorPane.getTabPane().getTabs().remove(selectedIndex);
+        Globals.editorPane.getEditors().remove(selectedIndex);
+        
         closeAllTabs();
-        editorModel.getPath().ifPresent(path -> {
-            Globals.editorPane.newEditorAreaTab(path, editorModel.getContents());
-        });
-        editorModel.ifUntitled(Globals.editorPane::newUntitledTab);
+        Globals.editorPane.newEditorAreaTab(editorModel);
     }
     
     public static void closeAllTabs() {
-        Globals.editorPane.getTabPane().getTabs().clear();
-        Globals.editorPane.getEditors().clear();
+        List<EditorModel> unclosedEditors = new ArrayList<>();
+        ObservableList<Tab> tabs = Globals.editorPane.getTabPane().getTabs();
+        for (int i = 0; i < tabs.size(); i++) {
+            Tab tab = tabs.get(i);
+            EditorModel editorModel = Globals.editorPane.getEditors().get(i);
+            if (!whenHasChanges(editorModel, () -> {})) {
+                unclosedEditors.add(editorModel);
+            }
+        }
+        if (unclosedEditors.size() != tabs.size()) {
+            Globals.editorPane.getTabPane().getTabs().clear();
+            Globals.editorPane.getEditors().clear();
+            unclosedEditors.forEach(Globals.editorPane::newEditorAreaTab);
+        }
     }
     
     public static Optional<EditorModel> find(List<EditorModel> editors, Path path) {

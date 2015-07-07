@@ -155,6 +155,10 @@ public class EditorModel {
         pathEither.getLeft().ifPresent(f); 
     }
     
+    public boolean isUntitled() {
+        return pathEither.hasLeft();
+    }
+    
     public String getTitle() {
         return titleProperty.get();
     }
@@ -168,7 +172,15 @@ public class EditorModel {
         origContents = contents;
     }
     
-    public boolean hasChanges() {
+    public String getOrigContents() {
+        return origContents;
+    }
+    
+    public boolean unsaved() {
         return !getContents().equals(origContents);
+    }
+    
+    public Either<Integer, Path> getPathEither() {
+        return pathEither;
     }
 }

@@ -1,5 +1,6 @@
 package winter.views.editors;
 
+import javafx.beans.binding.Bindings;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -121,16 +122,15 @@ public class EditorPane extends BorderPane {
             tabPane.getSelectionModel().select(tab);
             
             tab.textProperty().bind(editorModel.titleProperty());
-            tab.setOnClosed(event -> {
-                editorModel.getPath().ifPresent(path -> editors = EditorController.remove(editors, path));
-                if (!editorModel.getPath().isPresent())
-                    editors = editors.stream().filter(model -> !model.getTitle().equals(editorModel.getTitle()))
-                            .collect(Collectors.toList());
-                if (editors.isEmpty()) {
-                    newUntitledTab();
-                }
+            tab.setOnCloseRequest(event -> {
+                if (!EditorController.closeTab(tab)) event.consume();
             });
         }
+    }
+    
+    public void newEditorAreaTab(EditorModel model) {
+        newEditorAreaTab(model.getPathEither(), model.getOrigContents());
+        EditorController.getActiveCodeArea().replaceText(model.getContents());
     }
     
     public void newEditorAreaTab(Path path, String contents) {
@@ -179,17 +179,16 @@ public class EditorPane extends BorderPane {
         return editorArea;
     }
     
-    private void closeCurrentTab() {
+    private boolean closeCurrentTab() {
         Tab selectedTab = getTabPane().getSelectionModel().getSelectedItem();
-        EditorController.closeTab(selectedTab);
-        if (tabPane.getTabs().isEmpty()) {
-            newUntitledTab();
-        }
+        return EditorController.closeTab(selectedTab);
     }
     
     private void closeAllTabs() {
         EditorController.closeAllTabs();
-        newUntitledTab();
+        if (editors.isEmpty()) {
+            newUntitledTab();
+        }
     }
     
     private void renameTab() {
@@ -221,5 +220,9 @@ public class EditorPane extends BorderPane {
     
     public List<EditorModel> getEditors() {
         return editors;
+    }
+    
+    public void setEditors(List<EditorModel> editors) {
+        this.editors = editors;
     }
 }

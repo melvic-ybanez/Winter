@@ -36,19 +36,16 @@ public class FileController {
         } 
     }
     
-    public static Either<IOException, Boolean> saveFile() {
-        EditorModel activeEditor = EditorController.getActiveEditor();
-        return activeEditor.getPath().map(path -> {
-            return saveAsFile(path)
+    public static Either<IOException, Boolean> saveFile(Optional<Path> pathOpt, String contents) {
+        return pathOpt.map(path -> {
+            return saveAsFile(path, contents)
                     .<Either<IOException, Boolean>>map(Either::left)
                     .orElseGet(() -> Either.right(true));
         }).orElseGet(() -> Either.right(false));
     }
     
-    public static Optional<IOException> saveAsFile(Path path) {
-        EditorModel activeEditor = EditorController.getActiveEditor();
-        Optional<IOException> errorOpt = writeToFile(path, activeEditor.getContents());
-        if (!errorOpt.isPresent()) activeEditor.save();
+    public static Optional<IOException> saveAsFile(Path path, String contents) {
+        Optional<IOException> errorOpt = writeToFile(path, contents);
         return errorOpt;
     }
     
