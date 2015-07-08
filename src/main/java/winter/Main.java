@@ -7,8 +7,10 @@ import javafx.geometry.Orientation;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import winter.views.ToolBarPane;
 import winter.views.menus.EditMenu;
 import winter.views.menus.HelpMenu;
 import winter.views.menus.PreferencesMenu;
@@ -35,10 +37,14 @@ public class Main extends javafx.application.Application {
         
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(Application.menus.fileMenu, new EditMenu(), new PreferencesMenu(), new HelpMenu());
+        
+        BorderPane mainPane = new BorderPane();
+        mainPane.setTop(new ToolBarPane());
+        mainPane.setCenter(mainSplitPane);
 
         BorderPane root = new BorderPane();
         root.setTop(menuBar);
-        root.setCenter(mainSplitPane);
+        root.setCenter(mainPane);
         
         Scene scene = new Scene(root, 900, 600);
         scene.getStylesheets().add(Main.class.getResource("/syntax/meruem.css").toExternalForm());
@@ -48,6 +54,10 @@ public class Main extends javafx.application.Application {
         primaryStage.setTitle("Winter");
         primaryStage.setScene(scene);
         primaryStage.setMaximized(true);
+        primaryStage.setOnCloseRequest(event -> {
+            Application.exit();
+            event.consume();
+        });
         primaryStage.show();
     }
     

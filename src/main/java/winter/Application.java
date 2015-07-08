@@ -1,5 +1,6 @@
 package winter;
 
+import javafx.application.Platform;
 import javafx.scene.control.SplitPane;
 import javafx.stage.Stage;
 import winter.controllers.EditorController;
@@ -39,7 +40,7 @@ public class Application {
     
     public static void exit() {
         if (EditorController.closeAllTabs()) {
-            System.exit(0);
+            Platform.exit();
         }
     }
 }

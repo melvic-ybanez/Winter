@@ -33,3 +33,17 @@
 .comment {
     -fx-fill: cadetblue;
 }
+
+.meruem-toolbar .button {
+    -fx-background-insets: 0;
+    -fx-background-color: transparent;
+    -fx-padding: 4;
+}
+
+.meruem-toolbar .button:hover {
+    -fx-background-color: lightblue;
+}
+
+.meruem-toolbar {
+    -fx-spacing: 3;
+}
