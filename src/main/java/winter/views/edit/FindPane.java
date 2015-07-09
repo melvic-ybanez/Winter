@@ -13,6 +13,7 @@ public class FindPane extends HBox {
     private TextField findField = new TextField();
     
     public FindPane() {
+        setId("find-pane");
         getStyleClass().add("meruem-toolbar");
         findField.setPromptText("Enter the string to search");
         

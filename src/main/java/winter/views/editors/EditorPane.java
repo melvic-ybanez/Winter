@@ -55,8 +55,8 @@ public class EditorPane extends BorderPane {
             + "|(?<QUOTE>" + QUOTE_PATTERN + ")");
     
     public EditorPane() {
-        setTop(new FindPane());
         setCenter(tabPane);
+        setBottom(new FindPane());
         createContextMenu();
         newUntitledTab();
         tabPane.getStyleClass().add("meruem-tabpane");

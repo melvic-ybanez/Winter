@@ -16,4 +16,10 @@ public class Resources {
         img.setPreserveRatio(true);
         return img;
     }
+    
+    public static ImageView getRedoIcon() {
+        ImageView redoGraphic = Resources.getIcon("undo.png");
+        redoGraphic.setScaleX(-1);
+        return redoGraphic;
+    }
 }

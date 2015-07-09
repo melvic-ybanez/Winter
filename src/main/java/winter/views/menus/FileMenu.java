@@ -9,6 +9,7 @@ import javafx.scene.input.KeyCombination;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import winter.Application;
+import winter.Resources;
 import winter.controllers.EditorController;
 import winter.Settings;
 
@@ -29,11 +30,11 @@ public class FileMenu extends Menu {
     }
     
     private void init() {
-        MenuItem newFileItem = new MenuItem("New File");
-        MenuItem openFileItem = new MenuItem("Open File...");
+        MenuItem newFileItem = new MenuItem("New File", Resources.getIcon("new.png"));
+        MenuItem openFileItem = new MenuItem("Open File...", Resources.getIcon("open.png"));
         MenuItem openFolderItem = new MenuItem("Open Folder...");
-        MenuItem saveFileItem = new MenuItem("Save");
-        MenuItem saveAsFileItem = new MenuItem("Save As...");
+        MenuItem saveFileItem = new MenuItem("Save", Resources.getIcon("save.png"));
+        MenuItem saveAsFileItem = new MenuItem("Save As...", Resources.getIcon("save_as.png"));
         MenuItem exitFileItem = new MenuItem("Exit"); 
 
         openFileItem.setOnAction(e -> EditorController.openFile());

@@ -19,12 +19,10 @@ public class ToolBarPane extends ToolBar {
         Button newButton = new Button("", Resources.getIcon("new.png")); 
         Button openButton = new Button("", Resources.getIcon("open.png"));
         Button saveButton = new Button("", Resources.getIcon("save.png"));
+        Button saveAsButton = new Button("", Resources.getIcon("save_as.png"));
         
         Button undoButton = new Button("", Resources.getIcon("undo.png"));
-        Button redoButton = new Button();
-        ImageView redoGraphic = Resources.getIcon("undo.png");
-        redoGraphic.setScaleX(-1);
-        redoButton.setGraphic(redoGraphic);
+        Button redoButton = new Button("", Resources.getRedoIcon());
         
         Button copyButton = new Button("", Resources.getIcon("copy.png"));
         Button cutButton = new Button("", Resources.getIcon("cut.png"));
@@ -35,14 +33,17 @@ public class ToolBarPane extends ToolBar {
         
         Button runButton = new Button("", Resources.getIcon("run.png"));
         Button replButton = new Button("", Resources.getIcon("repl.png"));
+        Button stopButton = new Button("", Resources.getIcon("stop.png"));
+        
+        Button preferencesButton = new Button("", Resources.getIcon("preferences.png"));
         
         Button helpButton = new Button("", Resources.getIcon("help.png"));
         
-        getItems().addAll(newButton, openButton, saveButton, new Separator(),
+        getItems().addAll(newButton, openButton, saveButton, saveAsButton, new Separator(),
                 undoButton, redoButton, new Separator(),
                 copyButton, cutButton, pasteButton, new Separator(),
                 findButton, replaceButton, new Separator(),
-                runButton, replButton, new Separator(),
-                helpButton); 
+                runButton, replButton, stopButton, new Separator(),
+                preferencesButton, helpButton); 
     }
 }

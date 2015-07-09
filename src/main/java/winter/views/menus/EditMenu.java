@@ -6,6 +6,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
+import winter.Resources;
 import winter.controllers.EditorController;
 
 /**
@@ -18,13 +19,13 @@ public class EditMenu extends Menu {
     }
     
     private void init() {
-        MenuItem undo = new MenuItem("Undo");
-        MenuItem redo = new MenuItem("Redo");
-        MenuItem find = new MenuItem("Find...");
-        MenuItem replace = new MenuItem("Replace...");
-        MenuItem copy = new MenuItem("Copy");
-        MenuItem cut = new MenuItem("Cut");
-        MenuItem paste = new MenuItem("Paste");
+        MenuItem undo = new MenuItem("Undo", Resources.getIcon("undo.png"));
+        MenuItem redo = new MenuItem("Redo", Resources.getRedoIcon());
+        MenuItem find = new MenuItem("Find...", Resources.getIcon("find.png"));
+        MenuItem replace = new MenuItem("Replace...", Resources.getIcon("replace.png"));
+        MenuItem copy = new MenuItem("Copy", Resources.getIcon("copy.png"));
+        MenuItem cut = new MenuItem("Cut", Resources.getIcon("cut.png"));
+        MenuItem paste = new MenuItem("Paste", Resources.getIcon("paste.png"));
         
         undo.disableProperty().bind(
                 ((BooleanBinding) EditorController.getActiveCodeArea().undoAvailableProperty()).not());
