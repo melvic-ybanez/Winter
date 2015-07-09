@@ -33,12 +33,16 @@ public class ToolBarPane extends ToolBar {
         Button findButton = new Button("", Resources.getIcon("find.png"));
         Button replaceButton = new Button("", Resources.getIcon("replace.png"));
         
+        Button runButton = new Button("", Resources.getIcon("run.png"));
+        Button replButton = new Button("", Resources.getIcon("repl.png"));
+        
         Button helpButton = new Button("", Resources.getIcon("help.png"));
         
         getItems().addAll(newButton, openButton, saveButton, new Separator(),
                 undoButton, redoButton, new Separator(),
                 copyButton, cutButton, pasteButton, new Separator(),
                 findButton, replaceButton, new Separator(),
+                runButton, replButton, new Separator(),
                 helpButton); 
     }
 }
