@@ -7,7 +7,6 @@ import javafx.geometry.Orientation;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.SplitPane;
-import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import winter.views.ToolBarPane;
@@ -23,7 +22,7 @@ public class Main extends javafx.application.Application {
         SplitPane topPane = Application.topSplitPane;
         SplitPane bottomPane = Application.bottomSplitPane;
         
-        topPane.getItems().addAll(Application.projectsPane, Application.editorPane);
+        topPane.getItems().addAll(Application.PROJECTS_VIEW, Application.EDITORS_VIEW);
         topPane.setDividerPositions(0.4f);
         
         bottomPane.getItems().addAll(Application.consolePane, Application.replPane);
@@ -33,7 +32,7 @@ public class Main extends javafx.application.Application {
         mainSplitPane.setOrientation(Orientation.VERTICAL);
         mainSplitPane.setDividerPositions(0.8f);
 
-        SplitPane.setResizableWithParent(Application.projectsPane, false);
+        SplitPane.setResizableWithParent(Application.PROJECTS_VIEW, false);
         
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(Application.menus.fileMenu, new EditMenu(), new PreferencesMenu(), new HelpMenu());

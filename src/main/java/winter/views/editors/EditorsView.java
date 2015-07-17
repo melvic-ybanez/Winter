@@ -6,8 +6,8 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import org.fxmisc.richtext.CodeArea;
-import winter.controllers.EditorsControllerImpl;
-import winter.controllers.FileController;
+import winter.controllers.*;
+import winter.models.EditorModel;
 import winter.models.MeruemEditorModel;
 import winter.utils.Either;
 import winter.utils.Errors;
@@ -20,12 +20,14 @@ import java.util.*;
 /**
  * Created by ybamelcash on 6/21/2015.
  */
-public class EditorPane extends BorderPane {
+public class EditorsView extends BorderPane {
+    private EditorsController editorsController;
     private TabPane tabPane = new TabPane();
-    private List<MeruemEditorModel> editors = new ArrayList<>();
+    private List<EditorController> editorControllers = new ArrayList<>();
     private int untitledCount = 0;
     
-    public EditorPane() {
+    public EditorsView(EditorsController editorsController) {
+        setEditorsController(editorsController);
         setCenter(tabPane);
         setBottom(new FindPane());
         createContextMenu();
@@ -52,11 +54,12 @@ public class EditorPane extends BorderPane {
     }
     
     public void newEditorAreaTab(Either<Integer, Path> pathEither, String contents) {
-        MeruemEditorModel editorModel = new MeruemEditorModel(pathEither);
+        EditorModel editorModel = new MeruemEditorModel(pathEither);
+        EditorController editorController = new EditorControllerImpl(editorModel);
         Optional<Path> pathOpt = editorModel.getPath();
         String title = editorModel.titleProperty().getValue();
         
-        if (pathOpt.isPresent() && EditorsControllerImpl.exists(editors, pathOpt.get())) {
+        if (pathOpt.isPresent() && editorsController.exists(pathOpt.get())) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("File already exists.");
             alert.setHeaderText("The file " + title + " already exists.");
@@ -64,19 +67,20 @@ public class EditorPane extends BorderPane {
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
                 tabPane.getTabs().removeIf(tab -> tab.getText().equals(title));
-                editors = EditorsControllerImpl.remove(editors, pathOpt.get());
+                editorControllers = editorsController.remove(pathOpt.get());
                 newEditorAreaTab(pathEither, contents);
             } 
         } else {
             Tab tab = new Tab(title);
-            editors.add(editorModel);
-            CodeArea codeArea = new EditorArea();
+            editorControllers.add(editorModel);
+            CodeArea codeArea = editorController.getEditorView();
             codeArea.replaceText(0, 0, contents); 
             
             tab.setContent(codeArea); 
             tab.textProperty().bind(editorModel.titleProperty());
             
-            tab.setGraphic(new Label());
+            tab.setGraphic(new Label()); 
+            tab.graphicProperty().bindBidirectional(editorController.getEditorView().graphicProperty());
             
             editorModel.contentsProperty().bind(codeArea.textProperty());
             editorModel.caretPositionProperty().bind(codeArea.caretPositionProperty());
@@ -92,7 +96,7 @@ public class EditorPane extends BorderPane {
         }
     }
     
-    public void newEditorAreaTab(MeruemEditorModel model) {
+    public void newEditorAreaTab(EditorModel model) {
         newEditorAreaTab(model.getPathEither(), model.getOrigContents());
         EditorsControllerImpl.getActiveCodeArea().replaceText(model.getContents());
     }
@@ -117,7 +121,7 @@ public class EditorPane extends BorderPane {
     
     private void closeAllTabs() {
         EditorsControllerImpl.closeAllTabs();
-        if (editors.isEmpty()) {
+        if (editorControllers.isEmpty()) {
             newUntitledTab();
         }
     }
@@ -149,11 +153,15 @@ public class EditorPane extends BorderPane {
         return tabPane;
     }
     
-    public List<MeruemEditorModel> getEditors() {
-        return editors;
+    public List<EditorController> getEditorControllers() {
+        return editorControllers;
     }
     
-    public void setEditors(List<MeruemEditorModel> editors) {
-        this.editors = editors;
+    public void setEditorControllers(List<EditorController> editorControllers) {
+        this.editorControllers = editorControllers;
+    }
+
+    public void setEditorsController(EditorsController editorsController) {
+        this.editorsController = editorsController;
     }
 }

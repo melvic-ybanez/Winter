@@ -7,7 +7,6 @@ import winter.Application;
 import winter.controllers.FileController;
 import winter.utils.Either;
 import winter.utils.Errors;
-import winter.views.editors.EditorPane;
 
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
@@ -18,12 +17,10 @@ import java.util.Optional;
 /**
  * Created by ybamelcash on 6/21/2015.
  */
-public class ProjectPane extends TitledPane {
-    private EditorPane editorPane;
+public class ProjectsView extends TitledPane {
     private TreeView<ProjectNodeValue> tree = new TreeView<>(new TreeItem<>(new ProjectNodeValue()));
     
-    public ProjectPane(EditorPane editorPane) {
-        this.editorPane = editorPane;
+    public ProjectsView() {
         setText("Projects");
         setContent(tree);
         prefHeightProperty().bind(Application.topSplitPane.heightProperty()); 
@@ -41,14 +38,14 @@ public class ProjectPane extends TitledPane {
                         result.getLeft().ifPresent(Errors::openFileException);
                         result.getRight().ifPresent(contents -> {
                             String filename = path.getFileName().toString();
-                            TabPane tabPane = editorPane.getTabPane();
+                            TabPane tabPane = Application.EDITORS_VIEW.getTabPane();
                             Optional<Tab> existingTab = tabPane.getTabs()
                                     .stream()
                                     .filter(tab -> tab.getText().equals(filename))
                                     .findFirst();
                             existingTab.ifPresent(tab -> tabPane.getSelectionModel().select(tab));
                             if (!existingTab.isPresent()) {
-                                editorPane.newEditorAreaTab(path, contents);
+                                Application.EDITORS_VIEW.newEditorAreaTab(path, contents);
                             }
                         });
                     }

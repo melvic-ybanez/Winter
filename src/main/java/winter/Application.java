@@ -5,9 +5,9 @@ import javafx.scene.control.SplitPane;
 import javafx.stage.Stage;
 import winter.controllers.EditorsControllerImpl;
 import winter.views.ConsolePane;
-import winter.views.editors.EditorPane;
+import winter.views.editors.EditorsView;
 import winter.views.menus.FileMenu;
-import winter.views.projects.ProjectsPane;
+import winter.views.projects.ProjectsView;
 import winter.views.repl.REPLPane;
 
 import java.util.Optional;
@@ -22,8 +22,7 @@ public class Application {
     
     private static Optional<Stage> mainStage = Optional.empty();
     
-    public static final ProjectsPane projectsPane = new ProjectsPane();
-    public static final EditorPane editorPane = new EditorPane();
+    public static final ProjectsView PROJECTS_VIEW = new ProjectsView();
     public static final ConsolePane consolePane = new ConsolePane();
     public static final REPLPane replPane = new REPLPane();
     

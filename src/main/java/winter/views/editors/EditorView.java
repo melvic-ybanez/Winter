@@ -1,5 +1,10 @@
 package winter.views.editors;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.Property;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
@@ -12,11 +17,12 @@ import winter.utils.Observer;
 /**
  * Created by ybamelcash on 7/16/2015.
  */
-public class EditorArea extends CodeArea implements Observer {
-    EditorModel editorModel;
-    EditorController editorController;
+public class EditorView extends CodeArea implements Observer {
+    private EditorModel editorModel;
+    private EditorController editorController;
+    private Property<Node> graphicProperty = new SimpleObjectProperty<>(new Label());
     
-    public EditorArea(EditorController editorController, EditorModel editorModel) {
+    public EditorView(EditorController editorController, EditorModel editorModel) {
         setEditorModel(editorModel);
         setEditorController(editorController);
         editorModel.registerObserver(this);
@@ -44,8 +50,7 @@ public class EditorArea extends CodeArea implements Observer {
                     event.consume();
                     break;
                 case ENTER:
-                    String autoIndentedNewLineString = EditorsControllerImpl.getAutoIndentedNewLineString();
-                    insertText(getCaretPosition(), autoIndentedNewLineString);
+                    editorController.autoIndent();
                     event.consume();
                     break;
             }
@@ -67,6 +72,10 @@ public class EditorArea extends CodeArea implements Observer {
 
     public void setEditorController(EditorController editorController) {
         this.editorController = editorController;
+    }
+    
+    public Property<Node> graphicProperty() {
+        return graphicProperty;
     }
 
     @Override

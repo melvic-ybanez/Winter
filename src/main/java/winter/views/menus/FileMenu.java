@@ -62,13 +62,13 @@ public class FileMenu extends Menu {
     private void openFolder() {
         directoryChooser.setTitle("Open Folder"); 
         Optional.ofNullable(directoryChooser.showDialog(Application.getMainStage())).ifPresent(file -> {
-            Application.projectsPane.displayProject(file.toPath());
+            Application.PROJECTS_VIEW.displayProject(file.toPath());
             directoryChooser.setInitialDirectory(file.getParentFile());
         });
     }
     
     private void newFile() {
-        Application.editorPane.newUntitledTab();
+        Application.EDITORS_VIEW.newUntitledTab();
     }
     
     public FileChooser getOpenFileChooser() {
