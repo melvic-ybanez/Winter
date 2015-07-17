@@ -1,6 +1,5 @@
 package winter.controllers;
 
-import winter.models.EditorModel;
 import winter.utils.Either;
 import winter.utils.Errors;
 

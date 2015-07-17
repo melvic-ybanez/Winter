@@ -3,7 +3,8 @@ package winter;
 import javafx.application.Platform;
 import javafx.scene.control.SplitPane;
 import javafx.stage.Stage;
-import winter.controllers.EditorController;
+import winter.controllers.EditorsControllerImpl;
+import winter.views.ConsolePane;
 import winter.views.editors.EditorPane;
 import winter.views.menus.FileMenu;
 import winter.views.projects.ProjectsPane;
@@ -39,7 +40,7 @@ public class Application {
     }
     
     public static void exit() {
-        if (EditorController.closeAllTabs()) {
+        if (EditorsControllerImpl.closeAllTabs()) {
             Platform.exit();
         }
     }

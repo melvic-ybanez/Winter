@@ -1,6 +1,6 @@
 package winter.controllers;
 
-import winter.models.ProjectModel;
+import winter.models.ProjectModelImpl;
 import winter.utils.Either;
 
 import java.nio.file.Files;
@@ -14,7 +14,7 @@ public class ProjectController {
         if (!Files.exists(projectPath)) {
             return Either.left("Project does not exist: " + projectPath.toString());
         } else {
-            ProjectModel projectModel = new ProjectModel(projectPath);
+            ProjectModelImpl projectModel = new ProjectModelImpl(projectPath);
             return projectModel.addFile(fileToAddPath);
         } 
     }

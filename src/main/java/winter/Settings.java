@@ -16,12 +16,6 @@ import java.util.stream.Stream;
 public class Settings {
     private static Optional<Config> configOpt = Optional.empty();
     
-    public static final List<String> TYPES = Settings.getStringList("keywords.types");
-    public static final List<String> OPERATORS = Settings.getStringList("keywords.operators");
-    public static final List<String> FUNCTION_NAMES = Settings.getStringList("keywords.function-names");
-    public static final List<String> DEFINE_COMMANDS = Settings.getStringList("keywords.define-commands");
-    public static final List<String> SPECIAL_KEYWORDS = Settings.getStringList("keywords.special-keywords");
-    public static final List<String> QUOTES = Settings.getStringList("keywords.quotes");
     public static final List<? extends Config> SUPPORTED_FILE_FORMATS = 
             Settings.getConfigList("general-settings.supported-file-formats");
     public static final int DEFAULT_TAB_SIZE = getSetting(config -> config.getInt("general-settings.default-tab-size"));
@@ -47,7 +41,7 @@ public class Settings {
         if (!configOpt.isPresent()) {
             Config config = ConfigFactory.load();
             configOpt = Optional.of(config);
-            Stream.of("keywords", "general-settings").forEach(key -> {
+            Stream.of("language", "general-settings").forEach(key -> {
                 config.checkValid(ConfigFactory.defaultReference(), key);
             });
         }

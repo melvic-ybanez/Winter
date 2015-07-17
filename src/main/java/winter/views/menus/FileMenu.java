@@ -10,7 +10,7 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import winter.Application;
 import winter.Resources;
-import winter.controllers.EditorController;
+import winter.controllers.EditorsControllerImpl;
 import winter.Settings;
 
 import java.io.File;
@@ -37,11 +37,11 @@ public class FileMenu extends Menu {
         MenuItem saveAsFileItem = new MenuItem("Save As...", Resources.getIcon("save_as.png"));
         MenuItem exitFileItem = new MenuItem("Exit"); 
 
-        openFileItem.setOnAction(e -> EditorController.openFile());
+        openFileItem.setOnAction(e -> EditorsControllerImpl.openFile());
         openFolderItem.setOnAction(e -> openFolder());
         newFileItem.setOnAction(e -> newFile());
-        saveFileItem.setOnAction(e -> EditorController.saveFile(EditorController.getActiveEditor()));
-        saveAsFileItem.setOnAction(e -> EditorController.saveAsFile(EditorController.getActiveEditor()));
+        saveFileItem.setOnAction(e -> EditorsControllerImpl.saveFile(EditorsControllerImpl.getActiveEditor()));
+        saveAsFileItem.setOnAction(e -> EditorsControllerImpl.saveAsFile(EditorsControllerImpl.getActiveEditor()));
         exitFileItem.setOnAction(e -> Application.exit());
         
         newFileItem.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCodeCombination.CONTROL_DOWN));

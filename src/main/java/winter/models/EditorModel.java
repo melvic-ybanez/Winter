@@ -2,59 +2,52 @@ package winter.models;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import winter.controllers.EditorController;
-import winter.utils.Constants;
-import winter.utils.Either;
-import winter.utils.Pair;
-import winter.utils.StringUtils;
+import org.fxmisc.richtext.StyleSpans;
+import org.fxmisc.richtext.StyleSpansBuilder;
+import winter.controllers.EditorsControllerImpl;
+import winter.models.behaviors.*;
+import winter.utils.*;
+import winter.utils.Observable;
+import winter.utils.Observer;
 
 import java.nio.file.Path;
-import java.util.Optional;
-import java.util.Stack;
+import java.util.*;
 import java.util.function.Consumer;
+import java.util.regex.Matcher;
 
 /**
- * Created by ybamelcash on 6/26/2015.
+ * Created by ybamelcash on 7/16/2015.
  */
-public class EditorModel {
+public abstract class EditorModel implements Observable {
+    private List<Observer> observers;
     private Either<Integer, Path> pathEither;
     private SimpleStringProperty contentsProperty = new SimpleStringProperty();
     private SimpleStringProperty titleProperty = new SimpleStringProperty();
     private SimpleIntegerProperty caretPositionProperty = new SimpleIntegerProperty();
     private String origContents = "";
-    
-    public EditorModel(Either<Integer, Path> pathEither) {
-        setPathEither(pathEither);
+
+    private ParenIndexesBehavior parenIndexesBehavior;
+    private AutoIndentedLineStringBehavior autoIndentedLineStringBehavior;
+    private MatchingParenIndexBehavior matchingParenIndexBehavior;
+    private StyleClassBehavior styleClassBehavior;
+    private ActiveParenIndexesBehavior activeParenIndexesBehavior;
+
+    public EditorModel() {
+        observers = new ArrayList<>();
     }
-    
-    public Optional<Path> getPath() {
-        return pathEither.getRight();
-    }
-    
+
     public SimpleStringProperty contentsProperty() {
         return contentsProperty;
     }
-    
+
     public SimpleIntegerProperty caretPositionProperty() {
         return caretPositionProperty;
     }
-    
-    public String getContents() {
-        return contentsProperty().getValue();
-    }
-    
-    public int getCaretPosition() {
-        return caretPositionProperty.get();
-    }
-    
-    public void setPath(Path path) {
-        setPathEither(Either.right(path));
-    }
-    
+
     public boolean equalsPath(Path path) {
         return getPath().map(path::equals).orElse(false);
     }
-    
+
     public void setPathEither(Either<Integer, Path> pathEither) {
         this.pathEither = pathEither;
         this.titleProperty.setValue(pathEither.getRight()
@@ -65,122 +58,160 @@ public class EditorModel {
                     return Constants.UNTITLED + suffix;
                 }));
     }
-    
+
+    public StyleSpans<Collection<String>> getStyleSpans(String text, int parenIndex1, int parenIndex2) {
+        StyleSpansBuilder<Collection<String>> builder = new StyleSpansBuilder<>();
+        int page = 0;
+        int pageSize = text.length() > 1000 ? 1000 : text.length();
+        String textToMatch = text.substring(page, page + pageSize);
+
+        while (!textToMatch.isEmpty()) {
+            Matcher matcher = MeruemEditorModel.PATTERN.matcher(textToMatch);
+            int lastMatched = 0;
+
+            while (matcher.find()) {
+                String styleClass = getStyleClass(matcher, parenIndex1, parenIndex2);
+                assert styleClass != null;
+                builder.add(Collections.emptyList(), matcher.start() - lastMatched);
+                builder.add(Collections.singleton(styleClass), matcher.end() - matcher.start());
+                lastMatched = matcher.end();
+            }
+            builder.add(Collections.emptyList(), textToMatch.length() - lastMatched);
+
+            page += pageSize;
+            if (page == text.length()) break;
+            if (page + pageSize > text.length()) {
+                pageSize = text.length() - page;
+            }
+            textToMatch = text.substring(page, page + pageSize);
+        }
+
+        return builder.create();
+    }
+
     public SimpleStringProperty titleProperty() {
         return titleProperty;
     }
-    
+
     public String getLastLine() {
         String[] lines = getContents().split("\n", -1);
         if (lines.length == 0) return "";
         else return lines[lines.length - 1];
     }
-    
-    public Optional<Pair<Integer, Integer>> getParenIndexes(char paren) {
-        int caretPos = getCaretPosition();
-        if (caretPos > getContents().length()) return Optional.empty();
-        
-        Pair<String, String> pair = StringUtils.splitAt(getContents(), caretPos);
-        String first = pair.getFirst();
-        String second = pair.getSecond();
-        
-        // check which side the paren is located
-        String lastOfFirst = first.isEmpty() ? "" : first.substring(first.length() - 1);
-        boolean parenFoundAtLeft = getParenHeadValue(lastOfFirst, paren);
-        boolean parenFoundAtRight = getParenHeadValue(second, paren);
-        
-        Optional<Integer> parenToMatchIndexOpt = Optional.empty();
-        if (parenFoundAtLeft) {
-            parenToMatchIndexOpt = Optional.of(caretPos - 1);       // move backward
-        } else if (parenFoundAtRight) {
-            parenToMatchIndexOpt = Optional.of(caretPos);
-        }
-        
-        return parenToMatchIndexOpt.flatMap(parenToMatchIndex -> {
-            Optional<Integer> matchIndexOpt = Optional.empty();
-            if (paren == '(') {
-                // Remove the first paren from the second string.
-                String second1 = parenFoundAtRight ? second.substring(1) : second;
-                
-                // Add one to delta if the first paren was removed to fill in the missing space.
-                int delta = parenFoundAtRight? 1 : 0;       
-                
-                // Move delta steps forward
-                matchIndexOpt = getMatchingParenIndex(second1, paren, ')').map(i -> i + caretPos + delta);
-            } else if (paren == ')') {
-                // The traversal here starts at the end since this is to find the opening paren.
-                String reversedFirst = new StringBuilder(first).reverse().toString();
-                
-                // Apply the same logic as above (with a different predicate).
-                String first1 = parenFoundAtLeft ? reversedFirst.substring(1) : reversedFirst;
-                int delta = parenFoundAtLeft ? 1 : 0;
-                
-                // Move delta steps backward, minus one (due to the nature of the caret placement).
-                matchIndexOpt = getMatchingParenIndex(first1, paren, '(').map(i -> caretPos - i - 1 - delta);
-            } 
-            
-            return matchIndexOpt.flatMap(matchIndex -> {
-                return Optional.of(Pair.of(parenToMatchIndex, matchIndex));    
-            });
-        });
+
+    public Optional<Path> getPath() {
+        return getPathEither().getRight();
     }
-    
-    public Optional<Integer> getMatchingParenIndex(String str, char caretParen, char matchingParen) {
-        Stack<Character> parenStack = new Stack<>();
-        Optional<Integer> matchingIndexOpt = Optional.empty();
-        
-        for (int i = 0; i < str.length(); i++) {
-            char c = str.charAt(i);
-            if (c == caretParen) {
-                parenStack.push(c);
-            } else if (c == matchingParen) {
-                if (parenStack.isEmpty()) {
-                    matchingIndexOpt = Optional.of(i);
-                    break;
-                } else {
-                    parenStack.pop();
-                }
-            }
-        }
-        
-        return matchingIndexOpt;
+
+    public String getContents() {
+        return contentsProperty().get();
     }
-    
-    private boolean getParenHeadValue(String str, char paren) {
-        if (str.isEmpty()) return false;
-        else return str.charAt(0) == paren;
+
+    public int getCaretPosition() {
+        return caretPositionProperty().get();
     }
-    
-    public void ifUntitled(Consumer<Integer> f) {
-        pathEither.getLeft().ifPresent(f); 
+
+    public void setPath(Path path) {
+        setPathEither(Either.right(path));
     }
-    
+
     public boolean isUntitled() {
-        return pathEither.hasLeft();
+        return getPathEither().hasLeft();
     }
-    
+
     public String getTitle() {
-        return titleProperty.get();
+        return titleProperty().get();
     }
-    
+
+    public void ifUntitled(Consumer<Integer> f) {
+        getPathEither().getLeft().ifPresent(f);
+    }
+
     public void save() {
         setOrigContents(getContents());
-        EditorController.updateTabGraphic();
-    }
-    
-    public void setOrigContents(String contents) {
-        origContents = contents;
-    }
-    
-    public String getOrigContents() {
-        return origContents;
+        EditorsControllerImpl.updateTabGraphic();
     }
     
     public boolean unsaved() {
         return !getContents().equals(origContents);
     }
-    
+
     public Either<Integer, Path> getPathEither() {
         return pathEither;
     }
+
+    public void registerObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    public void notifyObservers() {
+        observers.forEach(Observer::update);
+    }
+
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    public void setOrigContents(String contents) {
+        origContents = contents;
+    }
+
+    public String getOrigContents() {
+        return origContents;
+    }
+
+    public boolean withParenHead(String str, char paren) {
+        if (str.isEmpty()) return false;
+        else return str.charAt(0) == paren;
+    }
+
+    public void setParenIndexesBehavior(ParenIndexesBehavior parenIndexesBehavior) {
+        this.parenIndexesBehavior = parenIndexesBehavior;
+    }
+
+    public void setAutoIndentedLineStringBehavior(AutoIndentedLineStringBehavior autoIndentedLineStringBehavior) {
+        this.autoIndentedLineStringBehavior = autoIndentedLineStringBehavior;
+    }
+
+    public void setMatchingParenIndexBehavior(MatchingParenIndexBehavior matchingParenIndexBehavior) {
+        this.matchingParenIndexBehavior = matchingParenIndexBehavior;
+    }
+
+    public void setStyleClassBehavior(StyleClassBehavior styleClassBehavior) {
+        this.styleClassBehavior = styleClassBehavior;
+    }
+
+    public void setActiveParenIndexesBehavior(ActiveParenIndexesBehavior activeParenIndexesBehavior) {
+        this.activeParenIndexesBehavior = activeParenIndexesBehavior;
+    }
+
+    public ParenIndexesBehavior getParenIndexesBehavior() {
+        return parenIndexesBehavior;
+    }
+
+    public AutoIndentedLineStringBehavior getAutoIndentedLineStringBehavior() {
+        return autoIndentedLineStringBehavior;
+    }
+
+    public MatchingParenIndexBehavior getMatchingParenIndexBehavior() {
+        return matchingParenIndexBehavior;
+    }
+
+    public StyleClassBehavior getStyleClassBehavior() {
+        return styleClassBehavior;
+    }
+
+    public ActiveParenIndexesBehavior getActiveParenIndexesBehavior() {
+        return activeParenIndexesBehavior;
+    }
+
+    public abstract Optional<Pair<Integer, Integer>> getParenIndexes(char paren);
+    
+    public abstract Optional<Integer> getMatchingParenIndex(String str, char caretParen, char matchingParen);
+
+    public abstract String getAutoIndentedNewLineString();
+
+    public abstract Optional<Pair<Integer, Integer>> getActiveParenIndexes();
+    
+    public abstract String getStyleClass(Matcher matcher, int parenIndex1, int parenIndex2);
 }

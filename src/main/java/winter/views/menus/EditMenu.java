@@ -7,7 +7,7 @@ import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import winter.Resources;
-import winter.controllers.EditorController;
+import winter.controllers.EditorsControllerImpl;
 
 /**
  * Created by ybamelcash on 6/21/2015.
@@ -28,15 +28,15 @@ public class EditMenu extends Menu {
         MenuItem paste = new MenuItem("Paste", Resources.getIcon("paste.png"));
         
         undo.disableProperty().bind(
-                ((BooleanBinding) EditorController.getActiveCodeArea().undoAvailableProperty()).not());
+                ((BooleanBinding) EditorsControllerImpl.getActiveCodeArea().undoAvailableProperty()).not());
         redo.disableProperty().bind(
-                ((BooleanBinding) EditorController.getActiveCodeArea().redoAvailableProperty()).not());
+                ((BooleanBinding) EditorsControllerImpl.getActiveCodeArea().redoAvailableProperty()).not());
         
-        undo.setOnAction(e -> EditorController.undo());
-        redo.setOnAction(e -> EditorController.redo());
-        copy.setOnAction(e -> EditorController.copy());
-        cut.setOnAction(e -> EditorController.cut());
-        paste.setOnAction(e -> EditorController.paste());
+        undo.setOnAction(e -> EditorsControllerImpl.undo());
+        redo.setOnAction(e -> EditorsControllerImpl.redo());
+        copy.setOnAction(e -> EditorsControllerImpl.copy());
+        cut.setOnAction(e -> EditorsControllerImpl.cut());
+        paste.setOnAction(e -> EditorsControllerImpl.paste());
         
         undo.setAccelerator(new KeyCodeCombination(KeyCode.Z, KeyCodeCombination.CONTROL_DOWN));
         redo.setAccelerator(new KeyCodeCombination(KeyCode.Y, KeyCodeCombination.CONTROL_DOWN));
