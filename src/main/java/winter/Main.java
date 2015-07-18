@@ -9,33 +9,52 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import winter.controllers.*;
+import winter.models.EditorModel;
+import winter.models.MeruemEditorModel;
+import winter.views.ConsolePane;
 import winter.views.ToolBarPane;
+import winter.views.editors.EditorSetView;
 import winter.views.menus.EditMenu;
+import winter.views.menus.FileMenu;
 import winter.views.menus.HelpMenu;
 import winter.views.menus.PreferencesMenu;
+import winter.views.projects.ProjectSetView;
+import winter.views.repl.REPLPane;
 
 public class Main extends javafx.application.Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        SplitPane mainSplitPane = Application.mainSplitPane;
-        SplitPane topPane = Application.topSplitPane;
-        SplitPane bottomPane = Application.bottomSplitPane;
+        SplitPane mainSplitPane = new SplitPane();
+        SplitPane topSplitPane = new SplitPane();
+        SplitPane bottomSplitPane = new SplitPane();
+
+        EditorSetController editorSetController = new EditorSetControllerImpl();
+        EditorSetView editorSetView = editorSetController.getEditorSetView();
+        ProjectSetController projectSetController = new ProjectSetControllerImpl(editorSetView, topSplitPane.heightProperty());
+        ProjectSetView projectSetView = projectSetController.getProjectSetView();
+        FileController fileController = new FileControllerImpl(editorSetController, projectSetController);
+        FileMenu fileMenu = fileController.getFileMenu();
         
-        topPane.getItems().addAll(Application.PROJECTS_VIEW, Application.EDITORS_VIEW);
-        topPane.setDividerPositions(0.4f);
+        editorSetController.setFileController(fileController);
         
-        bottomPane.getItems().addAll(Application.consolePane, Application.replPane);
-        bottomPane.setDividerPositions(0.5f);
+        topSplitPane.getItems().addAll(projectSetView, editorSetView);
+        topSplitPane.setDividerPositions(0.4f);
         
-        mainSplitPane.getItems().addAll(topPane, bottomPane);
+        bottomSplitPane.getItems().addAll(new ConsolePane(bottomSplitPane.heightProperty()), 
+                new REPLPane(bottomSplitPane.heightProperty()));
+        bottomSplitPane.setDividerPositions(0.5f);
+        
+        mainSplitPane.getItems().addAll(topSplitPane, bottomSplitPane);
         mainSplitPane.setOrientation(Orientation.VERTICAL);
         mainSplitPane.setDividerPositions(0.8f);
 
-        SplitPane.setResizableWithParent(Application.PROJECTS_VIEW, false);
+        SplitPane.setResizableWithParent(projectSetView, false);
         
         MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().addAll(Application.menus.fileMenu, new EditMenu(), new PreferencesMenu(), new HelpMenu());
+        menuBar.getMenus().addAll(fileMenu, 
+                new EditMenu(editorSetController), new PreferencesMenu(), new HelpMenu());
         
         BorderPane mainPane = new BorderPane();
         mainPane.setTop(new ToolBarPane());
@@ -48,14 +67,13 @@ public class Main extends javafx.application.Application {
         Scene scene = new Scene(root, 900, 600);
         scene.getStylesheets().add(Main.class.getResource("/syntax/meruem.css").toExternalForm());
         
-        Application.setMainStage(primaryStage);
-        
         primaryStage.setTitle("Winter");
         primaryStage.setScene(scene);
         primaryStage.setMaximized(true);
         primaryStage.setOnCloseRequest(event -> {
-            Application.exit();
-            event.consume();
+            if (!editorSetController.closeAllTabs()) {
+                event.consume();
+            }
         });
         primaryStage.show();
     }

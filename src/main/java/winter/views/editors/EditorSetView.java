@@ -10,24 +10,22 @@ import winter.controllers.*;
 import winter.models.EditorModel;
 import winter.models.MeruemEditorModel;
 import winter.utils.Either;
-import winter.utils.Errors;
 import winter.views.edit.FindPane;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.*;
 
 /**
  * Created by ybamelcash on 6/21/2015.
  */
-public class EditorsView extends BorderPane {
-    private EditorsController editorsController;
+public class EditorSetView extends BorderPane {
+    private EditorSetController editorSetController;
     private TabPane tabPane = new TabPane();
     private List<EditorController> editorControllers = new ArrayList<>();
     private int untitledCount = 0;
     
-    public EditorsView(EditorsController editorsController) {
-        setEditorsController(editorsController);
+    public EditorSetView(EditorSetController editorSetController) {
+        setEditorSetController(editorSetController);
         setCenter(tabPane);
         setBottom(new FindPane());
         createContextMenu();
@@ -42,9 +40,9 @@ public class EditorsView extends BorderPane {
         MenuItem closeOtherItem = new MenuItem("Close Others");
         MenuItem closeAllItem = new MenuItem("Close All");
         
-        renameItem.setOnAction(e -> renameTab());
+        renameItem.setOnAction(e -> editorSetController.getActiveEditorController().rename());
         closeItem.setOnAction(e -> closeCurrentTab());
-        closeOtherItem.setOnAction(e -> editorsController.closeOtherTabs());
+        closeOtherItem.setOnAction(e -> editorSetController.closeOtherTabs());
         closeAllItem.setOnAction(e -> closeAllTabs());
         
         closeItem.setAccelerator(new KeyCodeCombination(KeyCode.W, KeyCombination.CONTROL_DOWN));
@@ -59,7 +57,7 @@ public class EditorsView extends BorderPane {
         Optional<Path> pathOpt = editorModel.getPath();
         String title = editorModel.titleProperty().getValue();
         
-        if (pathOpt.isPresent() && editorsController.exists(pathOpt.get())) {
+        if (pathOpt.isPresent() && editorSetController.exists(pathOpt.get())) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("File already exists.");
             alert.setHeaderText("The file " + title + " already exists.");
@@ -67,12 +65,12 @@ public class EditorsView extends BorderPane {
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
                 tabPane.getTabs().removeIf(tab -> tab.getText().equals(title));
-                editorControllers = editorsController.remove(pathOpt.get());
+                editorControllers = editorSetController.remove(pathOpt.get());
                 newEditorAreaTab(pathEither, contents);
             } 
         } else {
             Tab tab = new Tab(title);
-            editorControllers.add(editorModel);
+            editorControllers.add(editorController);
             CodeArea codeArea = editorController.getEditorView();
             codeArea.replaceText(0, 0, contents); 
             
@@ -87,18 +85,18 @@ public class EditorsView extends BorderPane {
             editorModel.setOrigContents(contents);
             
             tabPane.getTabs().add(tab); 
-            tabPane.getSelectionModel().select(tab);
+            tabPane.getSelectionModel().select(tab); 
             
             tab.textProperty().bind(editorModel.titleProperty());
             tab.setOnCloseRequest(event -> {
-                if (!EditorsControllerImpl.closeTab(tab)) event.consume();
+                if (!editorSetController.closeTab(tab)) event.consume();
             });
         }
     }
     
     public void newEditorAreaTab(EditorModel model) {
         newEditorAreaTab(model.getPathEither(), model.getOrigContents());
-        EditorsControllerImpl.getActiveCodeArea().replaceText(model.getContents());
+        editorSetController.getActiveCodeArea().replaceText(model.getContents());
     }
     
     public void newEditorAreaTab(Path path, String contents) {
@@ -116,37 +114,14 @@ public class EditorsView extends BorderPane {
     
     private boolean closeCurrentTab() {
         Tab selectedTab = getTabPane().getSelectionModel().getSelectedItem();
-        return EditorsControllerImpl.closeTab(selectedTab);
+        return editorSetController.closeTab(selectedTab);
     }
     
     private void closeAllTabs() {
-        EditorsControllerImpl.closeAllTabs();
+        editorSetController.closeAllTabs();
         if (editorControllers.isEmpty()) {
             newUntitledTab();
         }
-    }
-    
-    private void renameTab() {
-        MeruemEditorModel activeEditor = EditorsControllerImpl.getActiveEditor();
-        activeEditor.ifUntitled(count -> {
-            Errors.headerLessDialog(Errors.titles.RENAME, "Can not rename a non-existing file");
-        });
-        activeEditor.getPath().ifPresent(path -> {
-            TextInputDialog renameDialog = new TextInputDialog(activeEditor.getTitle());
-            renameDialog.setTitle("Rename File");
-            renameDialog.setHeaderText(null);
-            renameDialog.setContentText("Enter the new filename");
-
-            Optional<String> newFilenameOpt = renameDialog.showAndWait();
-            newFilenameOpt.ifPresent(newFilename -> {
-                Either<IOException, Either<String, Path>> result = FileControllerImpl.renameFile(path, newFilename);
-                result.ifLeft(ex -> Errors.exceptionDialog(Errors.titles.RENAME, null, ex.getMessage(), ex));
-                result.ifRight(right -> {
-                    right.ifLeft(error -> Errors.headerLessDialog(Errors.titles.RENAME, error));
-                    right.ifRight(activeEditor::setPath);
-                });
-            });    
-        });
     }
     
     public TabPane getTabPane() {
@@ -161,7 +136,7 @@ public class EditorsView extends BorderPane {
         this.editorControllers = editorControllers;
     }
 
-    public void setEditorsController(EditorsController editorsController) {
-        this.editorsController = editorsController;
+    public void setEditorSetController(EditorSetController editorSetController) {
+        this.editorSetController = editorSetController;
     }
 }

@@ -4,6 +4,8 @@ import javafx.scene.control.Tab;
 import org.fxmisc.richtext.CodeArea;
 import winter.models.EditorModel;
 import winter.models.MeruemEditorModel;
+import winter.views.editors.EditorSetView;
+import winter.views.editors.EditorView;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -12,7 +14,7 @@ import java.util.Optional;
 /**
  * Created by ybamelcash on 7/17/2015.
  */
-public interface EditorsController {
+public interface EditorSetController {
     public EditorController getActiveEditorController();
     
     public CodeArea getActiveCodeArea();
@@ -29,5 +31,11 @@ public interface EditorsController {
     
     public List<EditorController> remove(Path path);
     
-    public void openFile();
+    public void setEditorSetView(EditorSetView editorSetView);
+    
+    public EditorSetView getEditorSetView();
+    
+    public void setFileController(FileController fileController);
+    
+    public FileController getFileController();
 }

@@ -11,7 +11,7 @@ import java.nio.file.Path;
  * Created by ybamelcash on 7/17/2015.
  */
 public interface EditorController {
-    public void rename(Path newPath);
+    public void rename();
     
     public void editorAreaChanged(String newText);
     
@@ -36,8 +36,8 @@ public interface EditorController {
     public EditorView getEditorView();
     
     public EditorModel getEditorModel();
-    
-    public void saveFile();
-    
-    public void saveAsFile();
+
+    public void setFileController(FileController fileController);
+
+    public FileController getFileController();
 }

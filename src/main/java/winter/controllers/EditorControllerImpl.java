@@ -1,9 +1,6 @@
 package winter.controllers;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
@@ -29,6 +26,7 @@ import java.util.function.Function;
 public class EditorControllerImpl implements EditorController {
     private EditorModel editorModel;
     private EditorView editorView;
+    private FileController fileController;
     
     public EditorControllerImpl(EditorModel editorModel) {
         this.editorModel = editorModel;
@@ -36,8 +34,26 @@ public class EditorControllerImpl implements EditorController {
     }
 
     @Override
-    public void rename(Path newPath) {
-        editorModel.setPath(newPath);
+    public void rename() {
+        editorModel.ifUntitled(count -> {
+            Errors.headerLessDialog(Errors.titles.RENAME, "Can not rename a non-existing file");
+        });
+        editorModel.getPath().ifPresent(path -> {
+            TextInputDialog renameDialog = new TextInputDialog(editorModel.getTitle());
+            renameDialog.setTitle("Rename File");
+            renameDialog.setHeaderText(null);
+            renameDialog.setContentText("Enter the new filename");
+
+            Optional<String> newFilenameOpt = renameDialog.showAndWait();
+            newFilenameOpt.ifPresent(newFilename -> {
+                Either<IOException, Either<String, Path>> result = FileUtils.renameFile(path, newFilename);
+                result.ifLeft(ex -> Errors.exceptionDialog(Errors.titles.RENAME, null, ex.getMessage(), ex));
+                result.ifRight(right -> {
+                    right.ifLeft(error -> Errors.headerLessDialog(Errors.titles.RENAME, error));
+                    right.ifRight(editorModel::setPath);
+                });
+            });
+        });
     }
 
     @Override
@@ -97,7 +113,7 @@ public class EditorControllerImpl implements EditorController {
             Optional<ButtonType> buttonType = saveAlert.showAndWait();
             return buttonType.map(button -> {
                 if (button == ButtonType.YES) {
-                    saveFile();
+                    fileController.saveFile();
                 } else if (button == ButtonType.CANCEL) {
                     return false;
                 }
@@ -114,33 +130,6 @@ public class EditorControllerImpl implements EditorController {
     public void autoIndent() {
         String autoIndentedNewLineString = editorModel.getAutoIndentedNewLineString();
         editorView.insertText(editorView.getCaretPosition(), autoIndentedNewLineString);
-    }
-
-    public void saveFile() {
-        Either<IOException, Boolean> result = FileUtils.saveFile(editorModel.getPath(), editorModel.getContents());
-        result.ifLeft(Errors::saveFileException);
-        result.ifRight(saved -> {
-            if (saved) {
-                editorModel.save();
-            } else {
-                saveAsFile();
-            }
-        });
-    }
-
-    public void saveAsFile() {
-        FileChooser saveFileChooser = Application.menus.fileMenu.getSaveFileChooser();
-        Application.menus.fileMenu.showSaveDialog().ifPresent(file -> {
-            Path path = file.toPath();
-            Optional<IOException> errorOpt = FileUtils.saveAsFile(path, editorModel.getContents());
-
-            errorOpt.ifPresent(Errors::saveFileException);
-            if (!errorOpt.isPresent()) {
-                saveFileChooser.setInitialDirectory(file.getParentFile());
-                editorModel.setPath(path);
-                editorModel.save();
-            }
-        });
     }
 
     @Override
@@ -175,5 +164,13 @@ public class EditorControllerImpl implements EditorController {
     @Override
     public EditorModel getEditorModel() {
         return editorModel;
+    }
+
+    public FileController getFileController() {
+        return fileController;
+    }
+
+    public void setFileController(FileController fileController) {
+        this.fileController = fileController;
     }
 }

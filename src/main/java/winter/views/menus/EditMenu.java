@@ -7,14 +7,18 @@ import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import winter.Resources;
-import winter.controllers.EditorsControllerImpl;
+import winter.controllers.EditorController;
+import winter.controllers.EditorSetController;
 
 /**
  * Created by ybamelcash on 6/21/2015.
  */
 public class EditMenu extends Menu {
-    public EditMenu() {
+    private EditorSetController editorSetController;
+    
+    public EditMenu(EditorSetController editorSetController) {
         super("Edit");
+        setEditorSetController(editorSetController);
         init();
     }
     
@@ -27,16 +31,18 @@ public class EditMenu extends Menu {
         MenuItem cut = new MenuItem("Cut", Resources.getIcon("cut.png"));
         MenuItem paste = new MenuItem("Paste", Resources.getIcon("paste.png"));
         
-        undo.disableProperty().bind(
-                ((BooleanBinding) EditorsControllerImpl.getActiveCodeArea().undoAvailableProperty()).not());
-        redo.disableProperty().bind(
-                ((BooleanBinding) EditorsControllerImpl.getActiveCodeArea().redoAvailableProperty()).not());
+        EditorController editorController = editorSetController.getActiveEditorController();
         
-        undo.setOnAction(e -> EditorsControllerImpl.undo());
-        redo.setOnAction(e -> EditorsControllerImpl.redo());
-        copy.setOnAction(e -> EditorsControllerImpl.copy());
-        cut.setOnAction(e -> EditorsControllerImpl.cut());
-        paste.setOnAction(e -> EditorsControllerImpl.paste());
+        undo.disableProperty().bind(
+                ((BooleanBinding) editorController.getEditorView().undoAvailableProperty()).not());
+        redo.disableProperty().bind(
+                ((BooleanBinding) editorController.getEditorView().redoAvailableProperty()).not());
+        
+        undo.setOnAction(e -> editorController.undo());
+        redo.setOnAction(e -> editorController.redo());
+        copy.setOnAction(e -> editorController.copy());
+        cut.setOnAction(e -> editorController.cut());
+        paste.setOnAction(e -> editorController.paste());
         
         undo.setAccelerator(new KeyCodeCombination(KeyCode.Z, KeyCodeCombination.CONTROL_DOWN));
         redo.setAccelerator(new KeyCodeCombination(KeyCode.Y, KeyCodeCombination.CONTROL_DOWN));
@@ -50,5 +56,13 @@ public class EditMenu extends Menu {
         getItems().addAll(undo, redo, new SeparatorMenuItem(), 
                 find, replace, new SeparatorMenuItem(),
                 copy, cut, paste);
+    }
+
+    public EditorSetController getEditorSetController() {
+        return editorSetController;
+    }
+
+    public void setEditorSetController(EditorSetController editorSetController) {
+        this.editorSetController = editorSetController;
     }
 }

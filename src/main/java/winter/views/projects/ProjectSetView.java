@@ -1,12 +1,15 @@
 package winter.views.projects;
 
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import winter.Application;
-import winter.controllers.FileControllerImpl;
 import winter.utils.Either;
 import winter.utils.Errors;
+import winter.utils.FileUtils;
+import winter.views.editors.EditorSetView;
 
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
@@ -17,13 +20,15 @@ import java.util.Optional;
 /**
  * Created by ybamelcash on 6/21/2015.
  */
-public class ProjectsView extends TitledPane {
+public class ProjectSetView extends TitledPane {
     private TreeView<ProjectNodeValue> tree = new TreeView<>(new TreeItem<>(new ProjectNodeValue()));
+    private EditorSetView editorSetView;
     
-    public ProjectsView() {
+    public ProjectSetView(EditorSetView editorSetView, ReadOnlyDoubleProperty heightProperty) {
+        this.editorSetView = editorSetView;
         setText("Projects");
         setContent(tree);
-        prefHeightProperty().bind(Application.topSplitPane.heightProperty()); 
+        prefHeightProperty().bind(heightProperty); 
         setCollapsible(false);
         
         createContextMenu();
@@ -34,18 +39,18 @@ public class ProjectsView extends TitledPane {
                 TreeItem<ProjectNodeValue> item = tree.getSelectionModel().getSelectedItem();
                 item.getValue().getPath().ifPresent(path -> {
                     if (!Files.isDirectory(path)) {
-                        Either<IOException, String> result = FileControllerImpl.openFile(path);
+                        Either<IOException, String> result = FileUtils.openFile(path);
                         result.getLeft().ifPresent(Errors::openFileException);
                         result.getRight().ifPresent(contents -> {
                             String filename = path.getFileName().toString();
-                            TabPane tabPane = Application.EDITORS_VIEW.getTabPane();
+                            TabPane tabPane = editorSetView.getTabPane();
                             Optional<Tab> existingTab = tabPane.getTabs()
                                     .stream()
                                     .filter(tab -> tab.getText().equals(filename))
                                     .findFirst();
                             existingTab.ifPresent(tab -> tabPane.getSelectionModel().select(tab));
                             if (!existingTab.isPresent()) {
-                                Application.EDITORS_VIEW.newEditorAreaTab(path, contents);
+                                editorSetView.newEditorAreaTab(path, contents);
                             }
                         });
                     }
