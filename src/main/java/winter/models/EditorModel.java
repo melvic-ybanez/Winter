@@ -4,7 +4,6 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import org.fxmisc.richtext.StyleSpans;
 import org.fxmisc.richtext.StyleSpansBuilder;
-import winter.controllers.EditorsControllerImpl;
 import winter.models.behaviors.*;
 import winter.utils.*;
 import winter.utils.Observable;
@@ -18,8 +17,7 @@ import java.util.regex.Matcher;
 /**
  * Created by ybamelcash on 7/16/2015.
  */
-public abstract class EditorModel implements Observable {
-    private List<Observer> observers;
+public abstract class EditorModel extends SimpleObservable {
     private Either<Integer, Path> pathEither;
     private SimpleStringProperty contentsProperty = new SimpleStringProperty();
     private SimpleStringProperty titleProperty = new SimpleStringProperty();
@@ -33,7 +31,7 @@ public abstract class EditorModel implements Observable {
     private ActiveParenIndexesBehavior activeParenIndexesBehavior;
 
     public EditorModel() {
-        observers = new ArrayList<>();
+        super();
     }
 
     public SimpleStringProperty contentsProperty() {
@@ -129,7 +127,7 @@ public abstract class EditorModel implements Observable {
 
     public void save() {
         setOrigContents(getContents());
-        EditorsControllerImpl.updateTabGraphic();
+        notifyObservers();
     }
     
     public boolean unsaved() {
@@ -138,18 +136,6 @@ public abstract class EditorModel implements Observable {
 
     public Either<Integer, Path> getPathEither() {
         return pathEither;
-    }
-
-    public void registerObserver(Observer observer) {
-        observers.add(observer);
-    }
-
-    public void notifyObservers() {
-        observers.forEach(Observer::update);
-    }
-
-    public void removeObserver(Observer observer) {
-        observers.remove(observer);
     }
 
     public void setOrigContents(String contents) {

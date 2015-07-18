@@ -36,4 +36,8 @@ public interface EditorController {
     public EditorView getEditorView();
     
     public EditorModel getEditorModel();
+    
+    public void saveFile();
+    
+    public void saveAsFile();
 }

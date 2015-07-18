@@ -6,7 +6,6 @@ import javafx.stage.FileChooser;
 import org.fxmisc.richtext.CodeArea;
 import winter.Application;
 import winter.models.EditorModel;
-import winter.models.MeruemEditorModel;
 import winter.utils.*;
 import winter.views.editors.EditorsView;
 
@@ -22,7 +21,7 @@ public class EditorsControllerImpl implements EditorsController {
     private EditorsView editorsView;
     
     public EditorsControllerImpl() {
-        editorsView = new EditorsView(this);
+        setEditorsView(new EditorsView(this));
     }
     
     public EditorController getActiveEditorController() {
@@ -33,44 +32,17 @@ public class EditorsControllerImpl implements EditorsController {
     public CodeArea getActiveCodeArea() {
         return (CodeArea) editorsView.getTabPane().getSelectionModel().getSelectedItem().getContent();
     }
-    
-    public static void openFile() {
+
+    public void openFile() {
         FileChooser openFileChooser = Application.menus.fileMenu.getOpenFileChooser();
         Application.menus.fileMenu.showOpenDialog().ifPresent(file -> {
             Path path = file.toPath();
-            Either<IOException, String> result = FileController.openFile(path);
+            Either<IOException, String> result = FileUtils.openFile(path);
             result.getLeft().ifPresent(Errors::openFileException);
             result.getRight().ifPresent(contents -> {
-                Application.EDITORS_VIEW.newEditorAreaTab(path, contents);
+                editorsView.newEditorAreaTab(path, contents);
             });
             openFileChooser.setInitialDirectory(file.getParentFile());
-        });
-    }
-    
-    public static void saveFile(MeruemEditorModel editorModel) {
-        Either<IOException, Boolean> result = FileController.saveFile(editorModel.getPath(), editorModel.getContents());
-        result.ifLeft(Errors::saveFileException);
-        result.ifRight(saved -> {
-            if (saved) {
-                editorModel.save();
-            } else {
-                saveAsFile(editorModel);
-            } 
-        });
-    }
-    
-    public static void saveAsFile(MeruemEditorModel editorModel) {
-        FileChooser saveFileChooser = Application.menus.fileMenu.getSaveFileChooser();
-        Application.menus.fileMenu.showSaveDialog().ifPresent(file -> {
-            Path path = file.toPath();
-            Optional<IOException> errorOpt = FileController.saveAsFile(path, editorModel.getContents());
-
-            errorOpt.ifPresent(Errors::saveFileException);
-            if (!errorOpt.isPresent()) {
-                saveFileChooser.setInitialDirectory(file.getParentFile());
-                EditorsControllerImpl.renameSelectedTab(path);
-                editorModel.save();
-            }
         });
     }
     
@@ -139,5 +111,13 @@ public class EditorsControllerImpl implements EditorsController {
     public List<EditorController> remove(Path path) {
         return StreamUtils.remove(editorsView.getEditorControllers().stream(), 
                 controller -> controller.getEditorModel().equalsPath(path)).collect(Collectors.toList());
+    }
+
+    public EditorsView getEditorsView() {
+        return editorsView;
+    }
+
+    public void setEditorsView(EditorsView editorsView) {
+        this.editorsView = editorsView;
     }
 }

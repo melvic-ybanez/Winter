@@ -28,4 +28,6 @@ public interface EditorsController {
     public boolean exists(Path path);
     
     public List<EditorController> remove(Path path);
+    
+    public void openFile();
 }

@@ -44,7 +44,7 @@ public class EditorsView extends BorderPane {
         
         renameItem.setOnAction(e -> renameTab());
         closeItem.setOnAction(e -> closeCurrentTab());
-        closeOtherItem.setOnAction(e -> EditorsControllerImpl.closeOtherTabs());
+        closeOtherItem.setOnAction(e -> editorsController.closeOtherTabs());
         closeAllItem.setOnAction(e -> closeAllTabs());
         
         closeItem.setAccelerator(new KeyCodeCombination(KeyCode.W, KeyCombination.CONTROL_DOWN));
@@ -139,7 +139,7 @@ public class EditorsView extends BorderPane {
 
             Optional<String> newFilenameOpt = renameDialog.showAndWait();
             newFilenameOpt.ifPresent(newFilename -> {
-                Either<IOException, Either<String, Path>> result = FileController.renameFile(path, newFilename);
+                Either<IOException, Either<String, Path>> result = FileControllerImpl.renameFile(path, newFilename);
                 result.ifLeft(ex -> Errors.exceptionDialog(Errors.titles.RENAME, null, ex.getMessage(), ex));
                 result.ifRight(right -> {
                     right.ifLeft(error -> Errors.headerLessDialog(Errors.titles.RENAME, error));

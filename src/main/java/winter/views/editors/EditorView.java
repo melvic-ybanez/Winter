@@ -34,14 +34,14 @@ public class EditorView extends CodeArea implements Observer {
 
         setParagraphGraphicFactory(LineNumberFactory.get(this));
         textProperty().addListener((obs, oldText, newText) -> {
-            EditorsControllerImpl.editorAreaChanged(this, newText);
+            editorController.editorAreaChanged(newText);
         });
         caretPositionProperty().addListener((obs, oldPos, newPos) -> {
-            EditorsControllerImpl.editorAreaChanged(this, getText());
+            editorController.editorAreaChanged(getText());
         });
 
         addEventHandler(KeyEvent.KEY_PRESSED, event -> {
-            if (EditorsControllerImpl.runAccelerators(event))
+            if (editorController.runAccelerators(event))
                 return;
 
             switch (event.getCode()) {
@@ -80,6 +80,8 @@ public class EditorView extends CodeArea implements Observer {
 
     @Override
     public void update() {
-        
+        if (getEditorModel().unsaved()) {
+            getEditorController().updateTabGraphic();
+        }
     }
 }

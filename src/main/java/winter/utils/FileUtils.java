@@ -1,7 +1,8 @@
-package winter.controllers;
+package winter.utils;
 
 import winter.utils.Either;
 import winter.utils.Errors;
+import winter.utils.SimpleObservable;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -11,9 +12,9 @@ import java.nio.file.Path;
 import java.util.Optional;
 
 /**
- * Created by ybamelcash on 6/24/2015.
+ * Created by ybamelcash on 7/18/2015.
  */
-public class FileController {
+public class FileUtils {
     public static Either<IOException, String> openFile(Path path) {
         StringBuilder contents = new StringBuilder();
         try (BufferedReader reader = Files.newBufferedReader(path)) {
@@ -32,9 +33,9 @@ public class FileController {
             return Either.right(contents.toString());
         } catch (IOException ex) {
             return Either.left(ex);
-        } 
+        }
     }
-    
+
     public static Either<IOException, Boolean> saveFile(Optional<Path> pathOpt, String contents) {
         return pathOpt.map(path -> {
             return saveAsFile(path, contents)
@@ -42,13 +43,12 @@ public class FileController {
                     .orElseGet(() -> Either.right(true));
         }).orElseGet(() -> Either.right(false));
     }
-    
+
     public static Optional<IOException> saveAsFile(Path path, String contents) {
-        Optional<IOException> errorOpt = writeToFile(path, contents);
-        return errorOpt;
+        return writeToFile(path, contents);
     }
     
-    private static Optional<IOException> writeToFile(Path path, String contents) {
+    public static Optional<IOException> writeToFile(Path path, String contents) {
         try (BufferedWriter writer = Files.newBufferedWriter(path)) {
             writer.write(contents);
             return Optional.empty();
@@ -56,7 +56,7 @@ public class FileController {
             return Optional.of(ex);
         }
     }
-    
+
     public static Either<IOException, Either<String, Path>> renameFile(Path path, String newName) {
         Path newPath = path.resolveSibling(newName);
         if (Files.exists(newPath)) {
@@ -69,5 +69,5 @@ public class FileController {
                 return Either.left(ex);
             }
         }
-    } 
-} 
+    }
+}

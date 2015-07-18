@@ -7,11 +7,16 @@ import javafx.scene.control.TabPane;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.FileChooser;
 import winter.Application;
 import winter.models.EditorModel;
+import winter.utils.Either;
+import winter.utils.Errors;
+import winter.utils.FileUtils;
 import winter.utils.Pair;
 import winter.views.editors.EditorView;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -92,7 +97,7 @@ public class EditorControllerImpl implements EditorController {
             Optional<ButtonType> buttonType = saveAlert.showAndWait();
             return buttonType.map(button -> {
                 if (button == ButtonType.YES) {
-                    saveFile(editorModel);
+                    saveFile();
                 } else if (button == ButtonType.CANCEL) {
                     return false;
                 }
@@ -109,6 +114,33 @@ public class EditorControllerImpl implements EditorController {
     public void autoIndent() {
         String autoIndentedNewLineString = editorModel.getAutoIndentedNewLineString();
         editorView.insertText(editorView.getCaretPosition(), autoIndentedNewLineString);
+    }
+
+    public void saveFile() {
+        Either<IOException, Boolean> result = FileUtils.saveFile(editorModel.getPath(), editorModel.getContents());
+        result.ifLeft(Errors::saveFileException);
+        result.ifRight(saved -> {
+            if (saved) {
+                editorModel.save();
+            } else {
+                saveAsFile();
+            }
+        });
+    }
+
+    public void saveAsFile() {
+        FileChooser saveFileChooser = Application.menus.fileMenu.getSaveFileChooser();
+        Application.menus.fileMenu.showSaveDialog().ifPresent(file -> {
+            Path path = file.toPath();
+            Optional<IOException> errorOpt = FileUtils.saveAsFile(path, editorModel.getContents());
+
+            errorOpt.ifPresent(Errors::saveFileException);
+            if (!errorOpt.isPresent()) {
+                saveFileChooser.setInitialDirectory(file.getParentFile());
+                editorModel.setPath(path);
+                editorModel.save();
+            }
+        });
     }
 
     @Override

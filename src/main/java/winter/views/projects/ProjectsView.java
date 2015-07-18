@@ -4,7 +4,7 @@ import javafx.beans.binding.Bindings;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import winter.Application;
-import winter.controllers.FileController;
+import winter.controllers.FileControllerImpl;
 import winter.utils.Either;
 import winter.utils.Errors;
 
@@ -34,7 +34,7 @@ public class ProjectsView extends TitledPane {
                 TreeItem<ProjectNodeValue> item = tree.getSelectionModel().getSelectedItem();
                 item.getValue().getPath().ifPresent(path -> {
                     if (!Files.isDirectory(path)) {
-                        Either<IOException, String> result = FileController.openFile(path);
+                        Either<IOException, String> result = FileControllerImpl.openFile(path);
                         result.getLeft().ifPresent(Errors::openFileException);
                         result.getRight().ifPresent(contents -> {
                             String filename = path.getFileName().toString();
