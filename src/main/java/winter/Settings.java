@@ -2,7 +2,6 @@ package winter;
 
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
-import javafx.scene.image.ImageView;
 import winter.utils.StringUtils;
 
 import java.util.List;

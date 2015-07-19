@@ -1,13 +1,9 @@
 package winter.views;
 
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.control.ToolBar;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.Border;
 import winter.Resources;
-import winter.views.edit.FindPane;
 
 /**
  * Created by ybamelcash on 7/8/2015.

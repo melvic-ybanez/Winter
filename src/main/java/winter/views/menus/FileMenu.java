@@ -10,10 +10,9 @@ import javafx.scene.input.KeyCombination;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import winter.Application;
 import winter.Resources;
-import winter.controllers.EditorSetController;
 import winter.Settings;
+import winter.controllers.EditorSetController;
 import winter.controllers.FileController;
 import winter.controllers.ProjectSetController;
 

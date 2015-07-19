@@ -6,14 +6,18 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import org.fxmisc.richtext.CodeArea;
-import winter.controllers.*;
+import winter.controllers.EditorController;
+import winter.controllers.EditorControllerImpl;
+import winter.controllers.EditorSetController;
 import winter.models.EditorModel;
 import winter.models.MeruemEditorModel;
 import winter.utils.Either;
 import winter.views.edit.FindPane;
 
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by ybamelcash on 6/21/2015.
@@ -54,6 +58,7 @@ public class EditorSetView extends BorderPane {
     public void newEditorAreaTab(Either<Integer, Path> pathEither, String contents) {
         EditorModel editorModel = new MeruemEditorModel(pathEither);
         EditorController editorController = new EditorControllerImpl(editorModel);
+        editorController.setFileController(editorSetController.getFileController());
         Optional<Path> pathOpt = editorModel.getPath();
         String title = editorModel.titleProperty().getValue();
         

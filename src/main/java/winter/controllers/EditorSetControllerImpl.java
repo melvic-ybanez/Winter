@@ -1,18 +1,16 @@
 package winter.controllers;
 
 import javafx.collections.ObservableList;
-import javafx.scene.control.*;
-import javafx.stage.FileChooser;
+import javafx.scene.control.Tab;
 import org.fxmisc.richtext.CodeArea;
-import winter.Application;
 import winter.models.EditorModel;
-import winter.utils.*;
+import winter.utils.StreamUtils;
 import winter.views.editors.EditorSetView;
-import winter.views.menus.FileMenu;
 
-import java.io.IOException;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -112,7 +110,7 @@ public class EditorSetControllerImpl implements EditorSetController {
     
     public void setFileController(FileController fileController) {
         this.fileController = fileController;
-        editorSetView.getEditorControllers().forEach(editorController -> 
+        editorSetView.getEditorControllers().forEach(editorController ->
                 editorController.setFileController(fileController));
     }
 

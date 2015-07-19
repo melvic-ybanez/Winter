@@ -2,10 +2,7 @@ package winter.controllers;
 
 import javafx.scene.input.KeyEvent;
 import winter.models.EditorModel;
-import winter.models.MeruemEditorModel;
 import winter.views.editors.EditorView;
-
-import java.nio.file.Path;
 
 /**
  * Created by ybamelcash on 7/17/2015.

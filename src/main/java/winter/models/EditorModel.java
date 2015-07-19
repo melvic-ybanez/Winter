@@ -5,12 +5,15 @@ import javafx.beans.property.SimpleStringProperty;
 import org.fxmisc.richtext.StyleSpans;
 import org.fxmisc.richtext.StyleSpansBuilder;
 import winter.models.behaviors.*;
-import winter.utils.*;
-import winter.utils.Observable;
-import winter.utils.Observer;
+import winter.utils.Constants;
+import winter.utils.Either;
+import winter.utils.Pair;
+import winter.utils.SimpleObservable;
 
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 
@@ -19,7 +22,7 @@ import java.util.regex.Matcher;
  */
 public abstract class EditorModel extends SimpleObservable {
     private Either<Integer, Path> pathEither;
-    private SimpleStringProperty contentsProperty = new SimpleStringProperty();
+    private SimpleStringProperty contentsProperty = new SimpleStringProperty("");
     private SimpleStringProperty titleProperty = new SimpleStringProperty();
     private SimpleIntegerProperty caretPositionProperty = new SimpleIntegerProperty();
     private String origContents = "";

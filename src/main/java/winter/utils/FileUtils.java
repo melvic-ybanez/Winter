@@ -1,9 +1,5 @@
 package winter.utils;
 
-import winter.utils.Either;
-import winter.utils.Errors;
-import winter.utils.SimpleObservable;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;

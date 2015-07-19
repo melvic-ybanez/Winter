@@ -1,7 +1,6 @@
 package winter.controllers;
 
 import javafx.stage.FileChooser;
-import winter.Application;
 import winter.models.EditorModel;
 import winter.utils.Either;
 import winter.utils.Errors;

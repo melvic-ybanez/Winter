@@ -1,11 +1,9 @@
 package winter.views.projects;
 
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
-import winter.Application;
 import winter.utils.Either;
 import winter.utils.Errors;
 import winter.utils.FileUtils;

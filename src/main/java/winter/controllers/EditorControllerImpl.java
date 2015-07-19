@@ -1,11 +1,12 @@
 package winter.controllers;
 
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.FileChooser;
-import winter.Application;
 import winter.models.EditorModel;
 import winter.utils.Either;
 import winter.utils.Errors;
@@ -59,15 +60,20 @@ public class EditorControllerImpl implements EditorController {
     @Override
     public void editorAreaChanged(String newText) {
         if (!newText.isEmpty()) {
-            Optional<Pair<Integer, Integer>> parenIndexesOpt = editorModel.getActiveParenIndexes();
-            int parenIndex1 = -1;
-            int parenIndex2 = -1;
-            if (parenIndexesOpt.isPresent()) {
-                Pair<Integer, Integer> parenIndexes = parenIndexesOpt.get();
-                parenIndex1 = parenIndexes.getFirst();
-                parenIndex2 = parenIndexes.getSecond();
+            int selectedIndex = fileController.getFileMenu()
+                    .getEditorSetController().getEditorSetView().getTabPane()
+                    .getSelectionModel().getSelectedIndex();
+            if (selectedIndex != -1) {
+                Optional<Pair<Integer, Integer>> parenIndexesOpt = editorModel.getActiveParenIndexes();
+                int parenIndex1 = -1;
+                int parenIndex2 = -1;
+                if (parenIndexesOpt.isPresent()) {
+                    Pair<Integer, Integer> parenIndexes = parenIndexesOpt.get();
+                    parenIndex1 = parenIndexes.getFirst();
+                    parenIndex2 = parenIndexes.getSecond();
+                }
+                editorView.setStyleSpans(0, editorModel.getStyleSpans(newText, parenIndex1, parenIndex2));
             }
-            editorView.setStyleSpans(0, editorModel.getStyleSpans(newText, parenIndex1, parenIndex2));
         }
 
         updateTabGraphic();

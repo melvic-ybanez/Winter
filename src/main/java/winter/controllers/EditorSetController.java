@@ -2,10 +2,7 @@ package winter.controllers;
 
 import javafx.scene.control.Tab;
 import org.fxmisc.richtext.CodeArea;
-import winter.models.EditorModel;
-import winter.models.MeruemEditorModel;
 import winter.views.editors.EditorSetView;
-import winter.views.editors.EditorView;
 
 import java.nio.file.Path;
 import java.util.List;
