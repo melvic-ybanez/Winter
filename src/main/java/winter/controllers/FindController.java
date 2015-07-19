@@ -1,5 +1,6 @@
 package winter.controllers;
 
+import winter.models.FindModel;
 import winter.views.edit.FindView;
 
 /**
@@ -13,4 +14,6 @@ public interface FindController {
     public FindView getFindView();
     
     public void setFindView(FindView findView);
+    
+    public FindModel getFindModel();
 }

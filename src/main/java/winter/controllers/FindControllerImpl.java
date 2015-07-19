@@ -1,12 +1,9 @@
 package winter.controllers;
 
-import org.fxmisc.richtext.CodeArea;
-import winter.models.EditorModel;
 import winter.models.FindModel;
 import winter.views.edit.FindView;
 import winter.views.editors.EditorView;
 
-import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
@@ -15,12 +12,12 @@ import java.util.function.Function;
 public class FindControllerImpl implements FindController {
     private FindModel findModel;
     private FindView findView;
-    private EditorSetController editorSetController;
+    private EditorController editorController;
     
-    public FindControllerImpl(FindModel findModel, EditorSetController editorSetController) {
+    public FindControllerImpl(FindModel findModel, EditorController editorController) {
         setFindView(new FindView(this, findModel));
         this.findModel = findModel;
-        this.editorSetController = editorSetController;
+        this.editorController = editorController;
     }
             
     @Override
@@ -34,7 +31,7 @@ public class FindControllerImpl implements FindController {
     }
     
     private void find(Function<String, Integer> findFunction) {
-        EditorView editorView = editorSetController.getActiveEditorView(); 
+        EditorView editorView = editorController.getEditorView(); 
         String contents = editorView.getText();
         int selectPosition = findFunction.apply(contents);
         if (selectPosition == -1) {
@@ -52,5 +49,10 @@ public class FindControllerImpl implements FindController {
 
     public void setFindView(FindView findView) {
         this.findView = findView;
+    }
+
+    @Override
+    public FindModel getFindModel() {
+        return findModel;
     }
 }

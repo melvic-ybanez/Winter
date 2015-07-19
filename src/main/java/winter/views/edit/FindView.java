@@ -33,7 +33,7 @@ public class FindView extends HBox {
         
         findField.textProperty().bindBidirectional(findModel.queryStringProperty());
         matchCaseCheck.selectedProperty().bindBidirectional(findModel.matchCaseProperty());
-        wordsCheck.selectedProperty().bindBidirectional(findModel.matchCaseProperty());
+        wordsCheck.selectedProperty().bindBidirectional(findModel.wordsProperty());
         
         HBox buttonsPane = new HBox();
         Button nextButton = new Button();
@@ -52,6 +52,9 @@ public class FindView extends HBox {
         
         nextButton.setOnAction(event -> findController.findNext());
         previousButton.setOnAction(event -> findController.findPrevious());
+        findField.textProperty().addListener((obs, oldText, newText) -> {
+            findController.getFindModel().setPosition(0);
+        });
     }
     
     public void displayNoMatchDialog() {

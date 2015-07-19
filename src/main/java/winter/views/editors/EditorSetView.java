@@ -8,6 +8,7 @@ import javafx.scene.layout.BorderPane;
 import org.fxmisc.richtext.CodeArea;
 import winter.controllers.*;
 import winter.models.EditorModel;
+import winter.models.FindModel;
 import winter.models.FindModelImpl;
 import winter.models.MeruemEditorModel;
 import winter.utils.Either;
@@ -26,14 +27,10 @@ public class EditorSetView extends BorderPane {
     private TabPane tabPane = new TabPane();
     private List<EditorController> editorControllers = new ArrayList<>();
     private int untitledCount = 0;
-    private FindController findController;
     
     public EditorSetView(EditorSetController editorSetController) {
         setEditorSetController(editorSetController);
         setCenter(tabPane);
-        
-        findController = new FindControllerImpl(new FindModelImpl(), editorSetController);
-        setBottom(findController.getFindView());
         
         createContextMenu();
         tabPane.getStyleClass().add("meruem-tabpane");
@@ -80,10 +77,8 @@ public class EditorSetView extends BorderPane {
             editorControllers.add(editorController);
             CodeArea codeArea = editorController.getEditorView();
             codeArea.replaceText(0, 0, contents);
-            
-            tab.setContent(codeArea); 
+              
             tab.textProperty().bind(editorModel.titleProperty());
-            
             tab.setGraphic(new Label()); 
             tab.graphicProperty().bindBidirectional(editorController.getEditorView().graphicProperty());
             
@@ -93,6 +88,14 @@ public class EditorSetView extends BorderPane {
             
             tabPane.getTabs().add(tab); 
             tabPane.getSelectionModel().select(tab); 
+            
+            FindController findController = new FindControllerImpl(
+                    new FindModelImpl(codeArea.getCaretPosition()), editorController);
+            
+            BorderPane tabContentPane = new BorderPane();
+            tabContentPane.setCenter(codeArea);
+            tabContentPane.setBottom(findController.getFindView());
+            tab.setContent(tabContentPane);
             
             tab.textProperty().bind(editorModel.titleProperty());
             tab.setOnCloseRequest(event -> {

@@ -1,9 +1,6 @@
 package winter.models;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -12,16 +9,19 @@ import java.util.function.Function;
  * Created by ybamelcash on 7/9/2015.
  */
 public class FindModelImpl implements FindModel {
-    private SimpleBooleanProperty wordsProperty = new SimpleBooleanProperty();
-    private SimpleBooleanProperty matchCaseProperty = new SimpleBooleanProperty();
-    private SimpleStringProperty queryStringProperty = new SimpleStringProperty("");
-    private int position = 0;
+    private BooleanProperty wordsProperty = new SimpleBooleanProperty();
+    private BooleanProperty matchCaseProperty = new SimpleBooleanProperty();
+    private StringProperty queryStringProperty = new SimpleStringProperty("");
+    private IntegerProperty positionProperty = new SimpleIntegerProperty(0);
     
-
+    public FindModelImpl(int initialPosition) {
+        setPosition(initialPosition);
+    }
+    
     @Override
     public int findNext(String source) {
         return find(source).apply((query, source1) -> {
-            int result = source1.indexOf(query, position);
+            int result = source1.indexOf(query, getPosition());
             setPosition(result % source.length() + query.length());
             return result;
         });
@@ -30,7 +30,7 @@ public class FindModelImpl implements FindModel {
     @Override
     public int findPrevious(String source) {
         return find(source).apply((query, source1) -> {
-            int result = source1.lastIndexOf(query, position + source.length());
+            int result = source1.lastIndexOf(query, getPosition() + source.length());
             setPosition(result % source.length() - 1);
             return result;
         });
@@ -72,11 +72,16 @@ public class FindModelImpl implements FindModel {
     }
 
     @Override
+    public IntegerProperty positionProperty() {
+        return positionProperty;
+    }
+
+    @Override
     public int getPosition() {
-        return position;
+        return positionProperty.get();
     }
 
     public void setPosition(int position) {
-        this.position = position;
+        this.positionProperty.set(position);
     }
 }

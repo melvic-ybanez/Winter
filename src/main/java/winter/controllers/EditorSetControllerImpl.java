@@ -2,6 +2,7 @@ package winter.controllers;
 
 import javafx.collections.ObservableList;
 import javafx.scene.control.Tab;
+import javafx.scene.layout.BorderPane;
 import org.fxmisc.richtext.CodeArea;
 import winter.models.EditorModel;
 import winter.utils.StreamUtils;
@@ -31,7 +32,7 @@ public class EditorSetControllerImpl implements EditorSetController {
     }
     
     public EditorView getActiveEditorView() {
-        return (EditorView) editorSetView.getTabPane().getSelectionModel().getSelectedItem().getContent();
+        return getActiveEditorController().getEditorView();
     }
     
     public boolean closeTab(Tab tab) {

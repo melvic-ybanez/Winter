@@ -1,6 +1,7 @@
 package winter.models;
 
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
 
 /**
@@ -16,6 +17,8 @@ public interface FindModel {
     public BooleanProperty matchCaseProperty();
     
     public StringProperty queryStringProperty();
+    
+    public IntegerProperty positionProperty();
     
     public String getQueryString();
     
