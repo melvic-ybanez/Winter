@@ -1,25 +1,29 @@
 package winter.models;
 
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.StringProperty;
 
 /**
- * Created by ybamelcash on 7/9/2015.
+ * Created by ybamelcash on 7/19/2015.
  */
-public class FindModel {
-    public static final SimpleBooleanProperty wordsProperty = new SimpleBooleanProperty();
-    public static final SimpleBooleanProperty matchCaseProperty = new SimpleBooleanProperty();
-    public static final SimpleStringProperty queryStringProperty = new SimpleStringProperty();
+public interface FindModel {
+    public int findNext(String str);
     
-    public static boolean isWords() {
-        return wordsProperty.get();
-    }
+    public int findPrevious(String str);
     
-    public static boolean isMatchCase() {
-        return matchCaseProperty.get();
-    }
+    public BooleanProperty wordsProperty();
     
-    public static String getQueryString() {
-        return queryStringProperty.get();
-    }
+    public BooleanProperty matchCaseProperty();
+    
+    public StringProperty queryStringProperty();
+    
+    public String getQueryString();
+    
+    public boolean isWords();
+    
+    public boolean isMatchCase();
+    
+    public void setPosition(int position);
+    
+    public int getPosition();
 }

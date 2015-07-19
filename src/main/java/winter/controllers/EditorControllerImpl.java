@@ -28,9 +28,11 @@ public class EditorControllerImpl implements EditorController {
     private EditorModel editorModel;
     private EditorView editorView;
     private FileController fileController;
+    private EditorSetController editorSetController;
     
-    public EditorControllerImpl(EditorModel editorModel) {
+    public EditorControllerImpl(EditorModel editorModel, EditorSetController editorSetController) {
         this.editorModel = editorModel;
+        this.editorSetController = editorSetController;
         editorView = new EditorView(this, editorModel);
     }
 
@@ -60,8 +62,7 @@ public class EditorControllerImpl implements EditorController {
     @Override
     public void editorAreaChanged(String newText) {
         if (!newText.isEmpty()) {
-            int selectedIndex = fileController.getFileMenu()
-                    .getEditorSetController().getEditorSetView().getTabPane()
+            int selectedIndex = editorSetController.getEditorSetView().getTabPane()
                     .getSelectionModel().getSelectedIndex();
             if (selectedIndex != -1) {
                 Optional<Pair<Integer, Integer>> parenIndexesOpt = editorModel.getActiveParenIndexes();

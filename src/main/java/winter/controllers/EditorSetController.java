@@ -3,6 +3,7 @@ package winter.controllers;
 import javafx.scene.control.Tab;
 import org.fxmisc.richtext.CodeArea;
 import winter.views.editors.EditorSetView;
+import winter.views.editors.EditorView;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.Optional;
 public interface EditorSetController {
     public EditorController getActiveEditorController();
     
-    public CodeArea getActiveCodeArea();
+    public EditorView getActiveEditorView();
     
     public boolean closeTab(Tab tab);
     

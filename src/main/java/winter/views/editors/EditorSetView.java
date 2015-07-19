@@ -6,13 +6,12 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import org.fxmisc.richtext.CodeArea;
-import winter.controllers.EditorController;
-import winter.controllers.EditorControllerImpl;
-import winter.controllers.EditorSetController;
+import winter.controllers.*;
 import winter.models.EditorModel;
+import winter.models.FindModelImpl;
 import winter.models.MeruemEditorModel;
 import winter.utils.Either;
-import winter.views.edit.FindPane;
+import winter.views.edit.FindView;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -27,13 +26,16 @@ public class EditorSetView extends BorderPane {
     private TabPane tabPane = new TabPane();
     private List<EditorController> editorControllers = new ArrayList<>();
     private int untitledCount = 0;
+    private FindController findController;
     
     public EditorSetView(EditorSetController editorSetController) {
         setEditorSetController(editorSetController);
         setCenter(tabPane);
-        setBottom(new FindPane());
+        
+        findController = new FindControllerImpl(new FindModelImpl(), editorSetController);
+        setBottom(findController.getFindView());
+        
         createContextMenu();
-        newUntitledTab();
         tabPane.getStyleClass().add("meruem-tabpane");
     }
     
@@ -57,7 +59,7 @@ public class EditorSetView extends BorderPane {
     
     public void newEditorAreaTab(Either<Integer, Path> pathEither, String contents) {
         EditorModel editorModel = new MeruemEditorModel(pathEither);
-        EditorController editorController = new EditorControllerImpl(editorModel);
+        EditorController editorController = new EditorControllerImpl(editorModel, editorSetController);
         editorController.setFileController(editorSetController.getFileController());
         Optional<Path> pathOpt = editorModel.getPath();
         String title = editorModel.titleProperty().getValue();
@@ -77,7 +79,7 @@ public class EditorSetView extends BorderPane {
             Tab tab = new Tab(title);
             editorControllers.add(editorController);
             CodeArea codeArea = editorController.getEditorView();
-            codeArea.replaceText(0, 0, contents); 
+            codeArea.replaceText(0, 0, contents);
             
             tab.setContent(codeArea); 
             tab.textProperty().bind(editorModel.titleProperty());
@@ -101,7 +103,7 @@ public class EditorSetView extends BorderPane {
     
     public void newEditorAreaTab(EditorModel model) {
         newEditorAreaTab(model.getPathEither(), model.getOrigContents());
-        editorSetController.getActiveCodeArea().replaceText(model.getContents());
+        editorSetController.getActiveEditorView().replaceText(model.getContents());
     }
     
     public void newEditorAreaTab(Path path, String contents) {

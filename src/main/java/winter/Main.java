@@ -37,6 +37,7 @@ public class Main extends javafx.application.Application {
         FileMenu fileMenu = fileController.getFileMenu();
         
         editorSetController.setFileController(fileController);
+        editorSetView.newUntitledTab();
         
         topSplitPane.getItems().addAll(projectSetView, editorSetView);
         topSplitPane.setDividerPositions(0.4f);

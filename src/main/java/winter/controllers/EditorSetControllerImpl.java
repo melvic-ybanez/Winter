@@ -6,6 +6,7 @@ import org.fxmisc.richtext.CodeArea;
 import winter.models.EditorModel;
 import winter.utils.StreamUtils;
 import winter.views.editors.EditorSetView;
+import winter.views.editors.EditorView;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -29,8 +30,8 @@ public class EditorSetControllerImpl implements EditorSetController {
         return editorSetView.getEditorControllers().get(activeIndex);
     }
     
-    public CodeArea getActiveCodeArea() {
-        return (CodeArea) editorSetView.getTabPane().getSelectionModel().getSelectedItem().getContent();
+    public EditorView getActiveEditorView() {
+        return (EditorView) editorSetView.getTabPane().getSelectionModel().getSelectedItem().getContent();
     }
     
     public boolean closeTab(Tab tab) {

@@ -52,3 +52,9 @@
     -fx-background-color: lightgray;
     -fx-effect: dropshadow(one-pass-box, gray, 2, 1, 0, 0);
 }
+
+.find-highlight {
+    -fx-fill: blue;
+    -fx-underline: true;
+    -fx-font-weight: bold;
+}

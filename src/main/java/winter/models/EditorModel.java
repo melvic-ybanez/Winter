@@ -23,7 +23,7 @@ import java.util.regex.Matcher;
 public abstract class EditorModel extends SimpleObservable {
     private Either<Integer, Path> pathEither;
     private SimpleStringProperty contentsProperty = new SimpleStringProperty("");
-    private SimpleStringProperty titleProperty = new SimpleStringProperty();
+    private SimpleStringProperty titleProperty = new SimpleStringProperty("");
     private SimpleIntegerProperty caretPositionProperty = new SimpleIntegerProperty();
     private String origContents = "";
 
