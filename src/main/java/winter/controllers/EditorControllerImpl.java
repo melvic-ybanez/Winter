@@ -42,12 +42,7 @@ public class EditorControllerImpl implements EditorController {
             Errors.headerLessDialog(Errors.titles.RENAME, "Can not rename a non-existing file");
         });
         editorModel.getPath().ifPresent(path -> {
-            TextInputDialog renameDialog = new TextInputDialog(editorModel.getTitle());
-            renameDialog.setTitle("Rename File");
-            renameDialog.setHeaderText(null);
-            renameDialog.setContentText("Enter the new filename");
-
-            Optional<String> newFilenameOpt = renameDialog.showAndWait();
+            Optional<String> newFilenameOpt = editorView.showRenameDialog();
             newFilenameOpt.ifPresent(newFilename -> {
                 Either<IOException, Either<String, Path>> result = FileUtils.renameFile(path, newFilename);
                 result.ifLeft(ex -> Errors.exceptionDialog(Errors.titles.RENAME, null, ex.getMessage(), ex));
@@ -113,11 +108,7 @@ public class EditorControllerImpl implements EditorController {
     @Override
     public boolean whenHasChanges(Runnable function) {
         if (editorModel.unsaved()) {
-            Alert saveAlert = new Alert(Alert.AlertType.CONFIRMATION);
-            saveAlert.setHeaderText(null);
-            saveAlert.setContentText("Do you want to save " + editorModel.getTitle() + "?");
-            saveAlert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
-            Optional<ButtonType> buttonType = saveAlert.showAndWait();
+            Optional<ButtonType> buttonType = editorView.showUnsavedDialog();
             return buttonType.map(button -> {
                 if (button == ButtonType.YES) {
                     fileController.saveFile();

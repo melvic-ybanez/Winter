@@ -3,7 +3,10 @@ package winter.views.editors;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.KeyEvent;
 import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
@@ -11,6 +14,8 @@ import winter.Settings;
 import winter.controllers.EditorController;
 import winter.models.EditorModel;
 import winter.utils.Observer;
+
+import java.util.Optional;
 
 /**
  * Created by ybamelcash on 7/16/2015.
@@ -54,6 +59,22 @@ public class EditorView extends CodeArea implements Observer {
             }
         });
 
+    }
+    
+    public Optional<String> showRenameDialog() {
+        TextInputDialog renameDialog = new TextInputDialog(editorModel.getTitle());
+        renameDialog.setTitle("Rename File");
+        renameDialog.setHeaderText(null);
+        renameDialog.setContentText("Enter the new filename");
+        return renameDialog.showAndWait();
+    }
+    
+    public Optional<ButtonType> showUnsavedDialog() {
+        Alert saveAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        saveAlert.setHeaderText(null);
+        saveAlert.setContentText("Do you want to save " + editorModel.getTitle() + "?");
+        saveAlert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+        return saveAlert.showAndWait();
     }
 
     public EditorModel getEditorModel() {
