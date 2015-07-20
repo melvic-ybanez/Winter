@@ -1,6 +1,7 @@
 package winter.models;
 
 import winter.Settings;
+import winter.factories.EditorBehaviors;
 import winter.utils.Either;
 import winter.utils.Pair;
 

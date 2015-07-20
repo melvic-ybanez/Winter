@@ -55,4 +55,8 @@ public class FindControllerImpl implements FindController {
     public FindModel getFindModel() {
         return findModel;
     }
+    
+    public void showFindView() {
+        findView.showUI();
+    }
 }

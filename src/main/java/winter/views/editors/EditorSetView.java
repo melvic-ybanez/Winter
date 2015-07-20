@@ -91,6 +91,7 @@ public class EditorSetView extends BorderPane {
             
             FindController findController = new FindControllerImpl(
                     new FindModelImpl(codeArea.getCaretPosition()), editorController);
+            editorController.getEditorView().setFindView(findController.getFindView());
             
             BorderPane tabContentPane = new BorderPane();
             tabContentPane.setCenter(codeArea);

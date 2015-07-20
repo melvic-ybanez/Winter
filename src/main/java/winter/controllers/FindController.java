@@ -16,4 +16,6 @@ public interface FindController {
     public void setFindView(FindView findView);
     
     public FindModel getFindModel();
+    
+    public void showFindView();
 }

@@ -1,4 +1,4 @@
-package winter.models;
+package winter.factories;
 
 import winter.Settings;
 import winter.models.behaviors.*;

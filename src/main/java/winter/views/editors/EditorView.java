@@ -12,8 +12,10 @@ import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
 import winter.Settings;
 import winter.controllers.EditorController;
+import winter.controllers.FindController;
 import winter.models.EditorModel;
 import winter.utils.Observer;
+import winter.views.edit.FindView;
 
 import java.util.Optional;
 
@@ -24,6 +26,7 @@ public class EditorView extends CodeArea implements Observer {
     private EditorModel editorModel;
     private EditorController editorController;
     private Property<Node> graphicProperty = new SimpleObjectProperty<>(new Label());
+    private FindView findView;
     
     public EditorView(EditorController editorController, EditorModel editorModel) {
         setEditorModel(editorModel);
@@ -102,5 +105,13 @@ public class EditorView extends CodeArea implements Observer {
         if (getEditorModel().unsaved()) {
             getEditorController().updateTabGraphic();
         }
+    }
+
+    public FindView getFindView() {
+        return findView;
+    }
+
+    public void setFindView(FindView findView) {
+        this.findView = findView;
     }
 }

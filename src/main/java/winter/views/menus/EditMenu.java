@@ -9,6 +9,7 @@ import javafx.scene.input.KeyCodeCombination;
 import winter.Resources;
 import winter.controllers.EditorController;
 import winter.controllers.EditorSetController;
+import winter.factories.Icons;
 
 /**
  * Created by ybamelcash on 6/21/2015.
@@ -24,7 +25,7 @@ public class EditMenu extends Menu {
     
     private void init() {
         MenuItem undo = new MenuItem("Undo", Resources.getIcon("undo.png"));
-        MenuItem redo = new MenuItem("Redo", Resources.getRedoIcon());
+        MenuItem redo = new MenuItem("Redo", Icons.getRedoImageView());
         MenuItem find = new MenuItem("Find...", Resources.getIcon("find.png"));
         MenuItem replace = new MenuItem("Replace...", Resources.getIcon("replace.png"));
         MenuItem copy = new MenuItem("Copy", Resources.getIcon("copy.png"));
@@ -43,6 +44,7 @@ public class EditMenu extends Menu {
         copy.setOnAction(e -> editorController.copy());
         cut.setOnAction(e -> editorController.cut());
         paste.setOnAction(e -> editorController.paste());
+        find.setOnAction(e -> editorSetController.getActiveEditorView().getFindView().showUI());
         
         undo.setAccelerator(new KeyCodeCombination(KeyCode.Z, KeyCodeCombination.CONTROL_DOWN));
         redo.setAccelerator(new KeyCodeCombination(KeyCode.Y, KeyCodeCombination.CONTROL_DOWN));

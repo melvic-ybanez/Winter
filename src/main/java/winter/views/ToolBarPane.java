@@ -4,6 +4,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Separator;
 import javafx.scene.control.ToolBar;
 import winter.Resources;
+import winter.factories.Icons;
 
 /**
  * Created by ybamelcash on 7/8/2015.
@@ -12,28 +13,28 @@ public class ToolBarPane extends ToolBar {
     public ToolBarPane() {
         super();
         getStyleClass().add("meruem-toolbar");
-        Button newButton = new Button("", Resources.getIcon("new.png")); 
-        Button openButton = new Button("", Resources.getIcon("open.png"));
-        Button saveButton = new Button("", Resources.getIcon("save.png"));
-        Button saveAsButton = new Button("", Resources.getIcon("save_as.png"));
+        Button newButton = Icons.createButtonIcon("new.png"); 
+        Button openButton = Icons.createButtonIcon("open.png");
+        Button saveButton = Icons.createButtonIcon("save.png");
+        Button saveAsButton = Icons.createButtonIcon("save_as.png");
         
-        Button undoButton = new Button("", Resources.getIcon("undo.png"));
-        Button redoButton = new Button("", Resources.getRedoIcon());
+        Button undoButton = Icons.createButtonIcon("undo.png");
+        Button redoButton = Icons.getRedoButton();
         
-        Button copyButton = new Button("", Resources.getIcon("copy.png"));
-        Button cutButton = new Button("", Resources.getIcon("cut.png"));
-        Button pasteButton = new Button("", Resources.getIcon("paste.png"));
+        Button copyButton = Icons.createButtonIcon("copy.png");
+        Button cutButton = Icons.createButtonIcon("cut.png");
+        Button pasteButton = Icons.createButtonIcon("paste.png");
         
-        Button findButton = new Button("", Resources.getIcon("find.png"));
-        Button replaceButton = new Button("", Resources.getIcon("replace.png"));
+        Button findButton = Icons.createButtonIcon("find.png");
+        Button replaceButton = Icons.createButtonIcon("replace.png");
         
-        Button runButton = new Button("", Resources.getIcon("run.png"));
-        Button replButton = new Button("", Resources.getIcon("repl.png"));
-        Button stopButton = new Button("", Resources.getIcon("stop.png"));
+        Button runButton = Icons.createButtonIcon("run.png");
+        Button replButton = Icons.createButtonIcon("repl.png");
+        Button stopButton = Icons.createButtonIcon("stop.png");;
         
-        Button preferencesButton = new Button("", Resources.getIcon("preferences.png"));
+        Button preferencesButton = Icons.createButtonIcon("preferences.png");;
         
-        Button helpButton = new Button("", Resources.getIcon("help.png"));
+        Button helpButton = Icons.createButtonIcon("help.png");;
         
         getItems().addAll(newButton, openButton, saveButton, saveAsButton, new Separator(),
                 undoButton, redoButton, new Separator(),
