@@ -40,9 +40,34 @@ public class FindModelImpl implements FindModel {
         return func -> {
             if (getQueryString().isEmpty()) return -1;
             String queryString = isMatchCase() ? getQueryString() : getQueryString().toLowerCase();
-            String source1 = isMatchCase() ? source : source.toLowerCase();
+            String newSource = isMatchCase() ? source : source.toLowerCase();
+            newSource += newSource;
             
-            int index = func.apply(queryString, source1 + source1);
+            int index = -1;
+            if (wordsProperty.get()) {
+                boolean isRightMost = false;
+                
+                while (!isRightMost) {
+                    index = func.apply(queryString, newSource);
+                    if (index == -1) break;
+                    char left = ' ';
+                    char right = ' ';
+
+                    boolean isLeftMost = index % source.length() == 0;
+                    if (!isLeftMost) {
+                        left = newSource.charAt(index - 1);
+                    }
+
+                    int rightIndex = index + queryString.length();
+                    isRightMost = rightIndex % source.length() == 0;
+                    if (!isRightMost) {
+                        right = newSource.charAt(rightIndex);
+                    }
+
+                    if (left == ' ' && right == ' ') break;     // We have found the word
+                    index = -1; 
+                }
+            } else index = func.apply(queryString, newSource);
             return index % source.length();
         };
     }
