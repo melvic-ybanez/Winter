@@ -1,4 +1,4 @@
-package winter.models;
+package winter.models.editors;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;

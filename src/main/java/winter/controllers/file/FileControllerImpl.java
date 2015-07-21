@@ -1,6 +1,8 @@
-package winter.controllers;
+package winter.controllers.file;
 
 import javafx.stage.FileChooser;
+import winter.controllers.ProjectSetController;
+import winter.controllers.editor.EditorSetController;
 import winter.models.EditorModel;
 import winter.utils.Either;
 import winter.utils.Errors;

@@ -1,4 +1,4 @@
-package winter.views.projects;
+package winter.views.project;
 
 import javafx.scene.control.Label;
 

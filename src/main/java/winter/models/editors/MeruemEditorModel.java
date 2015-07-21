@@ -1,4 +1,4 @@
-package winter.models;
+package winter.models.editors;
 
 import winter.Settings;
 import winter.factories.EditorBehaviors;

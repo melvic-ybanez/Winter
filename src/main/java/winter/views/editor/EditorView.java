@@ -1,4 +1,4 @@
-package winter.views.editors;
+package winter.views.editor;
 
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
@@ -11,8 +11,7 @@ import javafx.scene.input.KeyEvent;
 import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
 import winter.Settings;
-import winter.controllers.EditorController;
-import winter.controllers.FindController;
+import winter.controllers.editor.EditorController;
 import winter.models.EditorModel;
 import winter.utils.Observer;
 import winter.views.edit.FindView;

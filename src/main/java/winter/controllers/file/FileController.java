@@ -1,4 +1,4 @@
-package winter.controllers;
+package winter.controllers.file;
 
 import winter.views.menus.FileMenu;
 

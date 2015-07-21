@@ -10,15 +10,20 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import winter.controllers.*;
+import winter.controllers.editors.EditorSetController;
+import winter.controllers.editors.EditorSetControllerImpl;
+import winter.controllers.files.FileController;
+import winter.controllers.files.FileControllerImpl;
+import winter.controllers.projects.ProjectSetController;
+import winter.controllers.projects.ProjectSetControllerImpl;
 import winter.views.ConsolePane;
 import winter.views.ToolBarPane;
-import winter.views.editors.EditorSetView;
+import winter.views.editor.EditorSetView;
 import winter.views.menus.EditMenu;
 import winter.views.menus.FileMenu;
 import winter.views.menus.HelpMenu;
 import winter.views.menus.PreferencesMenu;
-import winter.views.projects.ProjectSetView;
+import winter.views.project.ProjectSetView;
 import winter.views.repl.REPLPane;
 
 public class Main extends javafx.application.Application {

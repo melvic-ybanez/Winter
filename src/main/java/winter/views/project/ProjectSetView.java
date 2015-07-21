@@ -1,4 +1,4 @@
-package winter.views.projects;
+package winter.views.project;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyDoubleProperty;
@@ -7,7 +7,7 @@ import javafx.scene.input.MouseButton;
 import winter.utils.Either;
 import winter.utils.Errors;
 import winter.utils.FileUtils;
-import winter.views.editors.EditorSetView;
+import winter.views.editor.EditorSetView;
 
 import java.io.IOException;
 import java.nio.file.DirectoryStream;

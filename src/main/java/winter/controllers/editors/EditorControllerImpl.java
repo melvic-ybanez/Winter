@@ -1,18 +1,17 @@
-package winter.controllers;
+package winter.controllers.editors;
 
-import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
-import winter.models.EditorModel;
+import winter.controllers.file.FileController;
+import winter.models.editor.EditorModel;
 import winter.utils.Either;
 import winter.utils.Errors;
 import winter.utils.FileUtils;
 import winter.utils.Pair;
-import winter.views.editors.EditorView;
+import winter.views.editor.EditorView;
 
 import java.io.IOException;
 import java.nio.file.Path;

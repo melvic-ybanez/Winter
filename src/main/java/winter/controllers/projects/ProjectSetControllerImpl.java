@@ -1,8 +1,8 @@
-package winter.controllers;
+package winter.controllers.projects;
 
 import javafx.beans.property.ReadOnlyDoubleProperty;
-import winter.views.editors.EditorSetView;
-import winter.views.projects.ProjectSetView;
+import winter.views.editor.EditorSetView;
+import winter.views.project.ProjectSetView;
 
 import java.nio.file.Path;
 

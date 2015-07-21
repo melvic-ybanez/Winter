@@ -1,6 +1,6 @@
-package winter.controllers;
+package winter.controllers.projects;
 
-import winter.views.projects.ProjectSetView;
+import winter.views.project.ProjectSetView;
 
 import java.nio.file.Path;
 

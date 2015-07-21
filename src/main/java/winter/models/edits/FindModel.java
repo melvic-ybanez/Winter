@@ -1,4 +1,4 @@
-package winter.models;
+package winter.models.edits;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;

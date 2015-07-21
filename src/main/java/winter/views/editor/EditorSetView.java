@@ -1,4 +1,4 @@
-package winter.views.editors;
+package winter.views.editor;
 
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
@@ -6,13 +6,15 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import org.fxmisc.richtext.CodeArea;
-import winter.controllers.*;
+import winter.controllers.edit.FindController;
+import winter.controllers.edit.FindControllerImpl;
+import winter.controllers.editor.EditorController;
+import winter.controllers.editor.EditorControllerImpl;
+import winter.controllers.editor.EditorSetController;
 import winter.models.EditorModel;
-import winter.models.FindModel;
 import winter.models.FindModelImpl;
 import winter.models.MeruemEditorModel;
 import winter.utils.Either;
-import winter.views.edit.FindView;
 
 import java.nio.file.Path;
 import java.util.ArrayList;

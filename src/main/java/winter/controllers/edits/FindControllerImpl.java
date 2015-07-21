@@ -1,8 +1,9 @@
-package winter.controllers;
+package winter.controllers.edits;
 
+import winter.controllers.editor.EditorController;
 import winter.models.FindModel;
 import winter.views.edit.FindView;
-import winter.views.editors.EditorView;
+import winter.views.editor.EditorView;
 
 import java.util.function.Function;
 

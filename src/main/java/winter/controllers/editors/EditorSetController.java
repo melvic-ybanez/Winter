@@ -1,9 +1,9 @@
-package winter.controllers;
+package winter.controllers.editors;
 
 import javafx.scene.control.Tab;
-import org.fxmisc.richtext.CodeArea;
-import winter.views.editors.EditorSetView;
-import winter.views.editors.EditorView;
+import winter.controllers.file.FileController;
+import winter.views.editor.EditorSetView;
+import winter.views.editor.EditorView;
 
 import java.nio.file.Path;
 import java.util.List;

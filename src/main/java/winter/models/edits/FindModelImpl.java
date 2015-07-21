@@ -1,4 +1,4 @@
-package winter.models;
+package winter.models.edits;
 
 import javafx.beans.property.*;
 
@@ -22,7 +22,7 @@ public class FindModelImpl implements FindModel {
     public int findNext(String source) {
         return find(source).apply((query, source1) -> {
             int result = source1.indexOf(query, getPosition());
-            setPosition(result % source.length() + query.length());
+            setPosition(result % source.length() + query.length()); 
             return result;
         });
     }

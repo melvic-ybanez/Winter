@@ -1,13 +1,12 @@
-package winter.controllers;
+package winter.controllers.editors;
 
 import javafx.collections.ObservableList;
 import javafx.scene.control.Tab;
-import javafx.scene.layout.BorderPane;
-import org.fxmisc.richtext.CodeArea;
-import winter.models.EditorModel;
+import winter.controllers.file.FileController;
+import winter.models.editor.EditorModel;
 import winter.utils.StreamUtils;
-import winter.views.editors.EditorSetView;
-import winter.views.editors.EditorView;
+import winter.views.editor.EditorSetView;
+import winter.views.editor.EditorView;
 
 import java.nio.file.Path;
 import java.util.ArrayList;

@@ -7,8 +7,8 @@ import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import winter.Resources;
-import winter.controllers.EditorController;
-import winter.controllers.EditorSetController;
+import winter.controllers.editors.EditorController;
+import winter.controllers.editors.EditorSetController;
 import winter.factories.Icons;
 
 /**
