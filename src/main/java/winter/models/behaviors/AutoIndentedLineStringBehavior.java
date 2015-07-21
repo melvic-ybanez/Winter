@@ -1,6 +1,6 @@
 package winter.models.behaviors;
 
-import winter.models.EditorModel;
+import winter.models.editors.EditorModel;
 
 /**
  * Created by ybamelcash on 7/17/2015.

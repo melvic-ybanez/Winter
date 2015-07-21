@@ -5,10 +5,9 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import winter.Resources;
-import winter.controllers.FindController;
+import winter.controllers.edits.FindController;
 import winter.factories.Icons;
-import winter.models.FindModel;
+import winter.models.edits.FindModel;
 
 /**
  * Created by ybamelcash on 7/8/2015.

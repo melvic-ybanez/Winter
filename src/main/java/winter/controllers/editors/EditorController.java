@@ -1,8 +1,8 @@
 package winter.controllers.editors;
 
 import javafx.scene.input.KeyEvent;
-import winter.controllers.file.FileController;
-import winter.models.editor.EditorModel;
+import winter.controllers.files.FileController;
+import winter.models.editors.EditorModel;
 import winter.views.editor.EditorView;
 
 /**

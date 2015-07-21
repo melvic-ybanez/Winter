@@ -1,6 +1,6 @@
 package winter.controllers.edits;
 
-import winter.models.FindModel;
+import winter.models.edits.FindModel;
 import winter.views.edit.FindView;
 
 /**

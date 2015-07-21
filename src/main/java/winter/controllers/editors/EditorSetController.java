@@ -1,7 +1,7 @@
 package winter.controllers.editors;
 
 import javafx.scene.control.Tab;
-import winter.controllers.file.FileController;
+import winter.controllers.files.FileController;
 import winter.views.editor.EditorSetView;
 import winter.views.editor.EditorView;
 

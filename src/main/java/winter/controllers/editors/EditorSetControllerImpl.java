@@ -2,8 +2,8 @@ package winter.controllers.editors;
 
 import javafx.collections.ObservableList;
 import javafx.scene.control.Tab;
-import winter.controllers.file.FileController;
-import winter.models.editor.EditorModel;
+import winter.controllers.files.FileController;
+import winter.models.editors.EditorModel;
 import winter.utils.StreamUtils;
 import winter.views.editor.EditorSetView;
 import winter.views.editor.EditorView;

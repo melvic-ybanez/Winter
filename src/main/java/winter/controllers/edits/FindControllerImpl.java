@@ -1,7 +1,7 @@
 package winter.controllers.edits;
 
-import winter.controllers.editor.EditorController;
-import winter.models.FindModel;
+import winter.controllers.editors.EditorController;
+import winter.models.edits.FindModel;
 import winter.views.edit.FindView;
 import winter.views.editor.EditorView;
 

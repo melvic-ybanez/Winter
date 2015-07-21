@@ -1,6 +1,6 @@
 package winter.models.behaviors;
 
-import winter.models.EditorModel;
+import winter.models.editors.EditorModel;
 import winter.utils.Pair;
 
 import java.util.Optional;
