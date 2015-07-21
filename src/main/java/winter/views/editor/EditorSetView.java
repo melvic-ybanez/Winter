@@ -11,10 +11,14 @@ import winter.controllers.edits.FindControllerImpl;
 import winter.controllers.editors.EditorController;
 import winter.controllers.editors.EditorControllerImpl;
 import winter.controllers.editors.EditorSetController;
+import winter.controllers.edits.ReplaceController;
+import winter.controllers.edits.ReplaceControllerImpl;
 import winter.models.editors.EditorModel;
 import winter.models.edits.FindModelImpl;
 import winter.models.editors.MeruemEditorModel;
+import winter.models.edits.ReplaceModelImpl;
 import winter.utils.Either;
+import winter.views.edit.ReplaceView;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -93,11 +97,13 @@ public class EditorSetView extends BorderPane {
             
             FindController findController = new FindControllerImpl(
                     new FindModelImpl(codeArea.getCaretPosition()), editorController);
-            editorController.getEditorView().setFindView(findController.getFindView());
+            ReplaceController replaceController = new ReplaceControllerImpl(new ReplaceModelImpl(), 
+                    findController.getFindView());
+            editorController.getEditorView().setReplaceView(replaceController.getReplaceView());
             
             BorderPane tabContentPane = new BorderPane();
             tabContentPane.setCenter(codeArea);
-            tabContentPane.setBottom(findController.getFindView());
+            tabContentPane.setBottom(replaceController.getReplaceView());
             tab.setContent(tabContentPane);
             
             tab.textProperty().bind(editorModel.titleProperty());

@@ -15,6 +15,7 @@ import winter.controllers.editors.EditorController;
 import winter.models.editors.EditorModel;
 import winter.utils.Observer;
 import winter.views.edit.FindView;
+import winter.views.edit.ReplaceView;
 
 import java.util.Optional;
 
@@ -25,7 +26,7 @@ public class EditorView extends CodeArea implements Observer {
     private EditorModel editorModel;
     private EditorController editorController;
     private Property<Node> graphicProperty = new SimpleObjectProperty<>(new Label());
-    private FindView findView;
+    private ReplaceView replaceView;
     
     public EditorView(EditorController editorController, EditorModel editorModel) {
         setEditorModel(editorModel);
@@ -107,10 +108,14 @@ public class EditorView extends CodeArea implements Observer {
     }
 
     public FindView getFindView() {
-        return findView;
+        return replaceView.getFindView();
     }
 
-    public void setFindView(FindView findView) {
-        this.findView = findView;
+    public ReplaceView getReplaceView() {
+        return replaceView; 
+    }
+
+    public void setReplaceView(ReplaceView replaceView) {
+        this.replaceView = replaceView;
     }
 }

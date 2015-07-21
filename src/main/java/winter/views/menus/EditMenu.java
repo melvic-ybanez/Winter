@@ -44,13 +44,13 @@ public class EditMenu extends Menu {
         copy.setOnAction(e -> editorController.copy());
         cut.setOnAction(e -> editorController.cut());
         paste.setOnAction(e -> editorController.paste());
-        find.setOnAction(e -> editorSetController.getActiveEditorView().getFindView().showUI());
+        find.setOnAction(e -> editorController.getEditorView().getFindView().showUI());
+        replace.setOnAction(e -> editorController.getEditorView().getReplaceView().showUI());
         
         undo.setAccelerator(new KeyCodeCombination(KeyCode.Z, KeyCodeCombination.CONTROL_DOWN));
         redo.setAccelerator(new KeyCodeCombination(KeyCode.Y, KeyCodeCombination.CONTROL_DOWN));
         find.setAccelerator(new KeyCodeCombination(KeyCode.F, KeyCodeCombination.CONTROL_DOWN));
-        replace.setAccelerator(new KeyCodeCombination(KeyCode.F, 
-                KeyCodeCombination.CONTROL_DOWN, KeyCodeCombination.SHIFT_DOWN));
+        replace.setAccelerator(new KeyCodeCombination(KeyCode.R, KeyCodeCombination.CONTROL_DOWN));
         copy.setAccelerator(new KeyCodeCombination(KeyCode.C, KeyCodeCombination.CONTROL_DOWN));
         cut.setAccelerator(new KeyCodeCombination(KeyCode.X, KeyCodeCombination.CONTROL_DOWN));
         paste.setAccelerator(new KeyCodeCombination(KeyCode.V, KeyCodeCombination.CONTROL_DOWN));

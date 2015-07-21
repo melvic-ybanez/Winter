@@ -8,11 +8,14 @@ import javafx.scene.layout.HBox;
 import winter.controllers.edits.FindController;
 import winter.factories.Icons;
 import winter.models.edits.FindModel;
+import winter.utils.Observable;
+import winter.utils.SimpleObservable;
 
 /**
  * Created by ybamelcash on 7/8/2015.
  */
 public class FindView extends BorderPane {
+    private Observable observable;
     private FindController findController;
     private FindModel findModel;
 
@@ -22,11 +25,11 @@ public class FindView extends BorderPane {
     private Button hideButton;
     
     public FindView(FindController findController, FindModel findModel) {
-        this.findController = findController;
-        this.findModel = findModel;
+        setFindController(findController);
+        setFindModel(findModel);
+        observable = new SimpleObservable();
         
-        setId("find-pane");
-        getStyleClass().add("meruem-toolbar");
+        getStyleClass().addAll("find-replace-pane", "meruem-toolbar");
     }
     
     public void showUI() {
@@ -78,6 +81,10 @@ public class FindView extends BorderPane {
             findController.getFindModel().setPosition(0);
         });
         hideButton.setOnAction(event -> setVisible(false));
+        visibleProperty().addListener((obs, wasVisible, isVisible) -> {
+            if (!isVisible) getObservable().notifyObservers();
+            System.out.println(isVisible);
+        });
     }
     
     public void displayNoMatchDialog() {
@@ -94,5 +101,25 @@ public class FindView extends BorderPane {
 
     public void setFindController(FindController findController) {
         this.findController = findController;
+    }
+
+    public TextField getFindField() {
+        return findField;
+    }
+
+    public void setFindField(TextField findField) {
+        this.findField = findField;
+    }
+
+    public FindModel getFindModel() {
+        return findModel;
+    }
+
+    public void setFindModel(FindModel findModel) {
+        this.findModel = findModel;
+    }
+
+    public Observable getObservable() {
+        return observable;
     }
 }

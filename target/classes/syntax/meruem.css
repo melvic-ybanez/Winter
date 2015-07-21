@@ -48,7 +48,7 @@
     -fx-spacing: 3;
 }
 
-#find-pane {
+.find-replace-pane {
     -fx-background-color: lightgray;
     -fx-effect: dropshadow(one-pass-box, gray, 2, 1, 0, 0);
 }
