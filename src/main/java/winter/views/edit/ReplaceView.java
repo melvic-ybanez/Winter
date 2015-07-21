@@ -17,16 +17,14 @@ public class ReplaceView extends VBox implements Observer {
     private TextField replaceField;
     private Button replaceButton;
     private Button replaceAllButton;
-    private BorderPane replacePane;
+    private HBox replacePane;
     
     public ReplaceView(FindView findView) {
         setFindView(findView);
-        replacePane = new BorderPane();
+        replacePane = new HBox();
         getChildren().addAll(findView, replacePane);
         getStyleClass().addAll("find-replace-pane");
-        visibleProperty().bind(Bindings.when(
-                replacePane.visibleProperty().not().and(findView.visibleProperty().not()))
-                .then(false).otherwise(true));
+        visibleProperty().bind(replacePane.visibleProperty().or(findView.visibleProperty()));
     } 
     
     public void showUI() {
@@ -42,7 +40,7 @@ public class ReplaceView extends VBox implements Observer {
             leftPane.getChildren().addAll(replaceField, replaceButton, replaceAllButton);
             leftPane.setStyle("-fx-spacing: 10");
             
-            replacePane.setLeft(leftPane);
+            replacePane.getChildren().add(leftPane);
 
             setSpacing(5);
             replacePane.setPadding(new Insets(0, 0, 3, 3));
@@ -53,6 +51,7 @@ public class ReplaceView extends VBox implements Observer {
         findView.showUI();
         findView.getFindField().requestFocus();
         replacePane.setVisible(true);
+        replacePane.setManaged(true);
     }
     
     private void registerEvents() {
@@ -72,6 +71,7 @@ public class ReplaceView extends VBox implements Observer {
     public void update() {
         if (!findView.isVisible()) {
             replacePane.setVisible(false);
+            replacePane.setManaged(false);
         }
     }
 }

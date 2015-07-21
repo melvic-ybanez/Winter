@@ -80,10 +80,9 @@ public class FindView extends BorderPane {
         findField.textProperty().addListener((obs, oldText, newText) -> {
             findController.getFindModel().setPosition(0);
         });
-        hideButton.setOnAction(event -> setVisible(false));
-        visibleProperty().addListener((obs, wasVisible, isVisible) -> {
-            if (!isVisible) getObservable().notifyObservers();
-            System.out.println(isVisible);
+        hideButton.setOnAction(event -> {
+            setVisible(false);
+            getObservable().notifyObservers();
         });
     }
     
