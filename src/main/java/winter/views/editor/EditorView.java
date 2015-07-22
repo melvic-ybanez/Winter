@@ -47,8 +47,10 @@ public class EditorView extends CodeArea implements Observer {
         });
 
         addEventHandler(KeyEvent.KEY_PRESSED, event -> {
-            if (editorController.runAccelerators(event))
+            if (editorController.runAccelerators(event)) {
+                event.consume();
                 return;
+            }
 
             switch (event.getCode()) {
                 case TAB:

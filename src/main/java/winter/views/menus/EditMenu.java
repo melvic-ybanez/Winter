@@ -32,20 +32,18 @@ public class EditMenu extends Menu {
         MenuItem cut = new MenuItem("Cut", Resources.getIcon("cut.png"));
         MenuItem paste = new MenuItem("Paste", Resources.getIcon("paste.png"));
         
-        EditorController editorController = editorSetController.getActiveEditorController();
-        
         undo.disableProperty().bind(
-                ((BooleanBinding) editorController.getEditorView().undoAvailableProperty()).not());
+                ((BooleanBinding) editorSetController.getActiveEditorView().undoAvailableProperty()).not());
         redo.disableProperty().bind(
-                ((BooleanBinding) editorController.getEditorView().redoAvailableProperty()).not());
+                ((BooleanBinding) editorSetController.getActiveEditorView().redoAvailableProperty()).not());
         
-        undo.setOnAction(e -> editorController.undo());
-        redo.setOnAction(e -> editorController.redo());
-        copy.setOnAction(e -> editorController.copy());
-        cut.setOnAction(e -> editorController.cut());
-        paste.setOnAction(e -> editorController.paste());
-        find.setOnAction(e -> editorController.getEditorView().getFindView().showUI());
-        replace.setOnAction(e -> editorController.getEditorView().getReplaceView().showUI());
+        undo.setOnAction(e -> editorSetController.getActiveEditorController().undo());
+        redo.setOnAction(e -> editorSetController.getActiveEditorController().redo());
+        copy.setOnAction(e -> editorSetController.getActiveEditorController().copy());
+        cut.setOnAction(e -> editorSetController.getActiveEditorController().cut());
+        paste.setOnAction(e -> editorSetController.getActiveEditorController().paste());
+        find.setOnAction(e -> editorSetController.getActiveEditorView().getFindView().showUI());
+        replace.setOnAction(e -> editorSetController.getActiveEditorView().getReplaceView().showUI());
         
         undo.setAccelerator(new KeyCodeCombination(KeyCode.Z, KeyCodeCombination.CONTROL_DOWN));
         redo.setAccelerator(new KeyCodeCombination(KeyCode.Y, KeyCodeCombination.CONTROL_DOWN));
