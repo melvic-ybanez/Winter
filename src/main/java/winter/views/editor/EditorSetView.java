@@ -96,7 +96,7 @@ public class EditorSetView extends BorderPane {
             tabPane.getSelectionModel().select(tab); 
             
             FindController findController = new FindControllerImpl(
-                    new FindModelImpl(codeArea.getCaretPosition()), editorController);
+                    new FindModelImpl(), editorController);
             ReplaceController replaceController = new ReplaceControllerImpl(new ReplaceModelImpl(), 
                     findController.getFindView());
             editorController.getEditorView().setReplaceView(replaceController.getReplaceView());

@@ -14,7 +14,7 @@ public class ReplaceModelImpl implements ReplaceModel {
         if (from == -1) return source;
         String prePos = source.substring(0, from);
         String postPos = source.substring(from + to); 
-        return prePos + replaceStringProperty() + postPos;
+        return prePos + getReplaceString() + postPos;
     }
 
     @Override

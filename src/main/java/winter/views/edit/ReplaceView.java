@@ -7,19 +7,25 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import winter.controllers.edits.ReplaceController;
+import winter.models.edits.ReplaceModel;
 import winter.utils.Observer;
 
 /**
  * Created by ybamelcash on 7/21/2015.
  */
 public class ReplaceView extends VBox implements Observer {
+    private ReplaceController replaceController;
+    private ReplaceModel replaceModel;
     private FindView findView;
     private TextField replaceField;
     private Button replaceButton;
     private Button replaceAllButton;
     private HBox replacePane;
     
-    public ReplaceView(FindView findView) {
+    public ReplaceView(ReplaceController replaceController, ReplaceModel replaceModel, FindView findView) {
+        setReplaceController(replaceController);
+        setReplaceModel(replaceModel);
         setFindView(findView);
         replacePane = new HBox();
         getChildren().addAll(findView, replacePane);
@@ -31,7 +37,7 @@ public class ReplaceView extends VBox implements Observer {
         if (replaceField == null) {
             replaceField = new TextField();
             replaceField.setPromptText("Enter the new string"); 
-            //replaceField.prefColumnCountProperty().bindBidirectional(findView.getFindField().prefColumnCountProperty());
+            replaceField.textProperty().bindBidirectional(replaceModel.replaceStringProperty());
             
             replaceButton = new Button("Replace");
             replaceAllButton = new Button("Replace All");
@@ -55,7 +61,7 @@ public class ReplaceView extends VBox implements Observer {
     }
     
     private void registerEvents() {
-        
+        replaceButton.setOnAction(e -> replaceController.replace());
     }
 
     public FindView getFindView() {
@@ -73,5 +79,21 @@ public class ReplaceView extends VBox implements Observer {
             replacePane.setVisible(false);
             replacePane.setManaged(false);
         }
+    }
+
+    public ReplaceController getReplaceController() {
+        return replaceController;
+    }
+
+    public void setReplaceController(ReplaceController replaceController) {
+        this.replaceController = replaceController;
+    }
+
+    public ReplaceModel getReplaceModel() {
+        return replaceModel;
+    }
+
+    public void setReplaceModel(ReplaceModel replaceModel) {
+        this.replaceModel = replaceModel;
     }
 }

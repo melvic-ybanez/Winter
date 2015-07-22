@@ -1,9 +1,12 @@
 package winter.controllers.edits;
 
+import javafx.beans.property.IntegerProperty;
 import winter.models.edits.FindModel;
 import winter.models.edits.ReplaceModel;
+import winter.utils.Observer;
 import winter.views.edit.FindView;
 import winter.views.edit.ReplaceView;
+import winter.views.editor.EditorView;
 
 /**
  * Created by ybamelcash on 7/21/2015.
@@ -14,13 +17,15 @@ public class ReplaceControllerImpl implements ReplaceController {
     
     public ReplaceControllerImpl(ReplaceModel replaceModel, FindView findView) {
         setReplaceModel(replaceModel);
-        setReplaceView(new ReplaceView(findView));
+        setReplaceView(new ReplaceView(this, replaceModel, findView));
     }
     
     @Override
     public void replace() {
-        FindModel findModel = replaceView.getFindView().getFindModel();
-        
+        EditorView editorView = replaceView.getFindView().getFindController().getEditorController().getEditorView();
+        String newContent = replaceModel.replace(editorView.getText(),
+                getFindModel().getPosition(), getFindModel().getQueryString().length());
+        editorView.replaceText(newContent);
     }
 
     @Override
@@ -42,5 +47,9 @@ public class ReplaceControllerImpl implements ReplaceController {
 
     public void setReplaceView(ReplaceView replaceView) {
         this.replaceView = replaceView;
+    }
+    
+    public FindModel getFindModel() {
+        return replaceView.getFindView().getFindModel();
     }
 }

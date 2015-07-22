@@ -60,4 +60,14 @@ public class FindControllerImpl implements FindController {
     public void showFindView() {
         findView.showUI();
     }
+
+    @Override
+    public EditorController getEditorController() {
+        return editorController;
+    }
+
+    @Override
+    public void setEditorController(EditorController editorController) {
+        this.editorController = editorController;
+    }
 }

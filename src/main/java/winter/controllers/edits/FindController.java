@@ -1,5 +1,6 @@
 package winter.controllers.edits;
 
+import winter.controllers.editors.EditorController;
 import winter.models.edits.FindModel;
 import winter.views.edit.FindView;
 
@@ -18,4 +19,8 @@ public interface FindController {
     public FindModel getFindModel();
     
     public void showFindView();
+    
+    public void setEditorController(EditorController editorController);
+    
+    public EditorController getEditorController();
 }

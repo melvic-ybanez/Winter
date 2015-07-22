@@ -1,6 +1,8 @@
 package winter.models.edits;
 
 import javafx.beans.property.*;
+import winter.utils.Observable;
+import winter.utils.SimpleObservable;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -12,27 +14,29 @@ public class FindModelImpl implements FindModel {
     private BooleanProperty wordsProperty = new SimpleBooleanProperty();
     private BooleanProperty matchCaseProperty = new SimpleBooleanProperty();
     private StringProperty queryStringProperty = new SimpleStringProperty("");
-    private IntegerProperty positionProperty = new SimpleIntegerProperty(0);
+    private int position;
     
-    public FindModelImpl(int initialPosition) {
-        setPosition(initialPosition);
+    public FindModelImpl() {
+        resetPosition();
     }
     
     @Override
     public int findNext(String source) {
+        if (position != -1) {
+            setPosition(position % source.length() + getQueryString().length());
+        }
         return find(source).apply((query, source1) -> {
-            int result = source1.indexOf(query, getPosition());
-            setPosition(result % source.length() + query.length()); 
-            return result;
+            return source1.indexOf(query, getPosition());
         });
     }
 
     @Override
     public int findPrevious(String source) {
+        if (position != -1) {
+            setPosition(position % source.length() - 1);
+        }
         return find(source).apply((query, source1) -> {
-            int result = source1.lastIndexOf(query, getPosition() + source.length());
-            setPosition(result % source.length() - 1);
-            return result;
+            return source1.lastIndexOf(query, getPosition() + source.length());
         });
     }
     
@@ -68,7 +72,11 @@ public class FindModelImpl implements FindModel {
                     index = -1; 
                 }
             } else index = func.apply(queryString, newSource);
-            return index % source.length();
+            
+            index %= source.length();
+            setPosition(index);
+            
+            return index;
         };
     }
 
@@ -97,16 +105,16 @@ public class FindModelImpl implements FindModel {
     }
 
     @Override
-    public IntegerProperty positionProperty() {
-        return positionProperty;
-    }
-
-    @Override
     public int getPosition() {
-        return positionProperty.get();
+        return position;
     }
 
     public void setPosition(int position) {
-        this.positionProperty.set(position);
+        this.position = position;
+    }
+
+    @Override
+    public void resetPosition() {
+        setPosition(-1);
     }
 }
