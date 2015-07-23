@@ -62,6 +62,7 @@ public class ReplaceView extends VBox implements Observer {
     
     private void registerEvents() {
         replaceButton.setOnAction(e -> replaceController.replace());
+        replaceAllButton.setOnAction(e -> replaceController.replaceAll());
     }
 
     public FindView getFindView() {
