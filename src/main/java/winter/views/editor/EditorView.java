@@ -30,7 +30,7 @@ public class EditorView extends CodeArea implements Observer {
     
     public EditorView(EditorController editorController, EditorModel editorModel) {
         setEditorModel(editorModel);
-        setEditorController(editorController);
+        setEditorController(editorController); 
         editorModel.registerObserver(this);
         
         getStyleClass().add("meruem-codearea");

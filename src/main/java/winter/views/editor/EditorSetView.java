@@ -18,7 +18,6 @@ import winter.models.edits.FindModelImpl;
 import winter.models.editors.MeruemEditorModel;
 import winter.models.edits.ReplaceModelImpl;
 import winter.utils.Either;
-import winter.views.edit.ReplaceView;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -33,17 +32,19 @@ public class EditorSetView extends BorderPane {
     private TabPane tabPane = new TabPane();
     private List<EditorController> editorControllers = new ArrayList<>();
     private int untitledCount = 0;
+    private ContextMenu tabContextMenu;
+    private ContextMenu editorContextMenu = new ContextMenu();
     
     public EditorSetView(EditorSetController editorSetController) {
         setEditorSetController(editorSetController);
         setCenter(tabPane);
         
-        createContextMenu();
+        createTabContextMenu();
         tabPane.getStyleClass().add("meruem-tabpane");
     }
     
-    private void createContextMenu() {
-        ContextMenu contextMenu = new ContextMenu();
+    private void createTabContextMenu() {
+        tabContextMenu = new ContextMenu();
         MenuItem renameItem = new MenuItem("Rename");
         MenuItem closeItem = new MenuItem("Close");
         MenuItem closeOtherItem = new MenuItem("Close Others");
@@ -56,8 +57,7 @@ public class EditorSetView extends BorderPane {
         
         closeItem.setAccelerator(new KeyCodeCombination(KeyCode.W, KeyCombination.CONTROL_DOWN));
         
-        contextMenu.getItems().addAll(renameItem, closeItem, closeOtherItem, closeAllItem);
-        tabPane.setContextMenu(contextMenu);
+        tabContextMenu.getItems().addAll(renameItem, closeItem, closeOtherItem, closeAllItem);
     }
     
     public void newEditorAreaTab(Either<Integer, Path> pathEither, String contents) {
@@ -79,10 +79,11 @@ public class EditorSetView extends BorderPane {
                 newEditorAreaTab(pathEither, contents);
             } 
         } else {
-            Tab tab = new Tab(title);
+            Tab tab = new Tab(title); 
             editorControllers.add(editorController);
             CodeArea codeArea = editorController.getEditorView();
             codeArea.replaceText(0, 0, contents);
+            codeArea.setContextMenu(editorContextMenu);
               
             tab.textProperty().bind(editorModel.titleProperty());
             tab.setGraphic(new Label()); 
@@ -110,6 +111,7 @@ public class EditorSetView extends BorderPane {
             tab.setOnCloseRequest(event -> {
                 if (!editorSetController.closeTab(tab)) event.consume();
             });
+            tab.setContextMenu(tabContextMenu);
         }
     }
     
@@ -157,5 +159,9 @@ public class EditorSetView extends BorderPane {
 
     public void setEditorSetController(EditorSetController editorSetController) {
         this.editorSetController = editorSetController;
+    }
+
+    public ContextMenu getEditorContextMenu() {
+        return editorContextMenu;
     }
 }
