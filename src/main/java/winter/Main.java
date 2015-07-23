@@ -17,7 +17,7 @@ import winter.controllers.files.FileControllerImpl;
 import winter.controllers.projects.ProjectSetController;
 import winter.controllers.projects.ProjectSetControllerImpl;
 import winter.views.ConsolePane;
-import winter.views.ToolBarPane;
+import winter.views.ToolBarView;
 import winter.views.editor.EditorSetView;
 import winter.views.menus.EditMenu;
 import winter.views.menus.FileMenu;
@@ -39,7 +39,6 @@ public class Main extends javafx.application.Application {
         ProjectSetController projectSetController = new ProjectSetControllerImpl(editorSetView, topSplitPane.heightProperty());
         ProjectSetView projectSetView = projectSetController.getProjectSetView();
         FileController fileController = new FileControllerImpl(editorSetController, projectSetController);
-        FileMenu fileMenu = fileController.getFileMenu();
         
         editorSetController.setFileController(fileController);
         editorSetView.newUntitledTab();
@@ -58,11 +57,12 @@ public class Main extends javafx.application.Application {
         SplitPane.setResizableWithParent(projectSetView, false);
         
         MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().addAll(fileMenu, 
-                new EditMenu(editorSetController), new PreferencesMenu(), new HelpMenu());
+        FileMenu fileMenu = fileController.getFileMenu();
+        EditMenu editMenu = new EditMenu(editorSetController); 
+        menuBar.getMenus().addAll(fileMenu, editMenu, new PreferencesMenu(), new HelpMenu());
         
         BorderPane mainPane = new BorderPane();
-        mainPane.setTop(new ToolBarPane());
+        mainPane.setTop(new ToolBarView(fileMenu, editMenu));
         mainPane.setCenter(mainSplitPane);
 
         BorderPane root = new BorderPane();

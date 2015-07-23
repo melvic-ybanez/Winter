@@ -31,6 +31,13 @@ public class FileMenu extends Menu {
     private FileController fileController;
     private Stage stage;
     
+    private MenuItem newFileItem;
+    private MenuItem openFileItem;
+    private MenuItem openFolderItem;
+    private MenuItem saveFileItem;
+    private MenuItem saveAsFileItem;
+    private MenuItem exitFileItem;
+    
     public FileMenu(FileController fileController, EditorSetController editorSetController, ProjectSetController projectSetController) {
         super("File");
         setEditorSetController(editorSetController);
@@ -40,12 +47,12 @@ public class FileMenu extends Menu {
     }
     
     private void init() {
-        MenuItem newFileItem = new MenuItem("New File", Resources.getIcon("new.png"));
-        MenuItem openFileItem = new MenuItem("Open File...", Resources.getIcon("open.png"));
-        MenuItem openFolderItem = new MenuItem("Open Folder...");
-        MenuItem saveFileItem = new MenuItem("Save", Resources.getIcon("save.png"));
-        MenuItem saveAsFileItem = new MenuItem("Save As...", Resources.getIcon("save_as.png"));
-        MenuItem exitFileItem = new MenuItem("Exit"); 
+        newFileItem = new MenuItem("New File", Resources.getIcon("new.png"));
+        openFileItem = new MenuItem("Open File...", Resources.getIcon("open.png"));
+        openFolderItem = new MenuItem("Open Folder...");
+        saveFileItem = new MenuItem("Save", Resources.getIcon("save.png"));
+        saveAsFileItem = new MenuItem("Save As...", Resources.getIcon("save_as.png"));
+        exitFileItem = new MenuItem("Exit"); 
 
         openFileItem.setOnAction(e -> fileController.openFile());
         openFolderItem.setOnAction(e -> openFolder());
@@ -143,5 +150,21 @@ public class FileMenu extends Menu {
 
     public void setFileController(FileController fileController) {
         this.fileController = fileController;
+    }
+
+    public MenuItem getNewFileItem() {
+        return newFileItem;
+    }
+
+    public MenuItem getOpenFileItem() {
+        return openFileItem;
+    }
+
+    public MenuItem getSaveFileItem() {
+        return saveFileItem;
+    }
+
+    public MenuItem getSaveAsFileItem() {
+        return saveAsFileItem;
     }
 }
