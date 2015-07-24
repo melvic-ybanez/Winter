@@ -3,7 +3,9 @@ package winter.views.project;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
+import winter.Resources;
 import winter.utils.Either;
 import winter.utils.Errors;
 import winter.utils.FileUtils;
@@ -99,6 +101,13 @@ public class ProjectSetView extends TitledPane {
     
     private TreeItem<ProjectNodeValue> createFolder(Path folderPath) {
         TreeItem<ProjectNodeValue> folderNode = new TreeItem<>(new ProjectNodeValue(folderPath));
+        
+        // For now, empty-and non-empty folder icons are the same
+        folderNode.graphicProperty().bind(Bindings
+                .when(folderNode.leafProperty())
+                .then(Resources.getIcon("non-empty-folder.png"))
+                .otherwise(Resources.getIcon("non-empty-folder.png")));
+        
         try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(folderPath)) {
             for (Path path : directoryStream) {
                 if (Files.isDirectory(path)) {
@@ -106,6 +115,7 @@ public class ProjectSetView extends TitledPane {
                     folderNode.getChildren().add(folder);
                 } else {
                     TreeItem<ProjectNodeValue> file = new TreeItem<>(new ProjectNodeValue(path));
+                    file.setGraphic(Resources.getIcon("file.png"));
                     folderNode.getChildren().add(file);
                 }
             }

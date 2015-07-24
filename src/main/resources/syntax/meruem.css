@@ -60,5 +60,6 @@
 }
 
 .winter-divider > *.split-pane-divider {
-    -fx-padding: 0 0.007em 0 0.007em;
+    -fx-padding: 0;
+    -fx-background-color: transparent;
 }
