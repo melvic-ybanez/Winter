@@ -18,6 +18,7 @@ import winter.views.edit.FindView;
 import winter.views.edit.ReplaceView;
 
 import java.util.Optional;
+import java.util.function.IntFunction;
 
 /**
  * Created by ybamelcash on 7/16/2015.
@@ -43,7 +44,7 @@ public class EditorView extends CodeArea implements Observer {
             editorController.editorAreaChanged(newText);
         });
         caretPositionProperty().addListener((obs, oldPos, newPos) -> {
-            editorController.editorAreaChanged(getText());
+            editorController.editorAreaChanged(getText()); 
         });
 
         addEventHandler(KeyEvent.KEY_PRESSED, event -> {

@@ -16,15 +16,12 @@ import winter.controllers.files.FileController;
 import winter.controllers.files.FileControllerImpl;
 import winter.controllers.projects.ProjectSetController;
 import winter.controllers.projects.ProjectSetControllerImpl;
-import winter.views.ConsolePane;
+import winter.views.ConsoleView;
 import winter.views.ToolBarView;
 import winter.views.editor.EditorSetView;
-import winter.views.menus.EditMenu;
-import winter.views.menus.FileMenu;
-import winter.views.menus.HelpMenu;
-import winter.views.menus.PreferencesMenu;
+import winter.views.menus.*;
 import winter.views.project.ProjectSetView;
-import winter.views.repl.REPLPane;
+import winter.views.repl.REPLView;
 
 public class Main extends javafx.application.Application {
 
@@ -46,8 +43,8 @@ public class Main extends javafx.application.Application {
         topSplitPane.getItems().addAll(projectSetView, editorSetView);
         topSplitPane.setDividerPositions(0.4f);
         
-        bottomSplitPane.getItems().addAll(new ConsolePane(bottomSplitPane.heightProperty()), 
-                new REPLPane(bottomSplitPane.heightProperty()));
+        bottomSplitPane.getItems().addAll(new ConsoleView(bottomSplitPane.heightProperty()), 
+                new REPLView(bottomSplitPane.heightProperty()));
         bottomSplitPane.setDividerPositions(0.5f);
         
         mainSplitPane.getItems().addAll(topSplitPane, bottomSplitPane);
@@ -59,10 +56,13 @@ public class Main extends javafx.application.Application {
         MenuBar menuBar = new MenuBar();
         FileMenu fileMenu = fileController.getFileMenu();
         EditMenu editMenu = new EditMenu(editorSetController); 
-        menuBar.getMenus().addAll(fileMenu, editMenu, new PreferencesMenu(), new HelpMenu());
+        ToolBarView toolBarView = new ToolBarView(fileMenu, editMenu);
+        menuBar.getMenus().addAll(fileMenu, 
+                editMenu, new ViewMenu(editorSetController, projectSetController, toolBarView), 
+                new PreferencesMenu(), new HelpMenu());
         
         BorderPane mainPane = new BorderPane();
-        mainPane.setTop(new ToolBarView(fileMenu, editMenu));
+        mainPane.setTop(toolBarView);
         mainPane.setCenter(mainSplitPane);
 
         BorderPane root = new BorderPane();
