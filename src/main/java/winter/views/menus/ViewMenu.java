@@ -28,10 +28,10 @@ public class ViewMenu extends Menu {
     
     private void init() {
         CheckMenuItem lineNumbersItem = new CheckMenuItem("Line Numbers");  
-        MenuItem consoleItem = new MenuItem("Console");
-        MenuItem projectItem = new MenuItem("Project");
-        MenuItem replItem = new MenuItem("REPL");
-        MenuItem toolBarItem = new MenuItem("Toolbar");
+        CheckMenuItem consoleItem = new CheckMenuItem("Console");
+        CheckMenuItem projectItem = new CheckMenuItem("Projects");
+        CheckMenuItem replItem = new CheckMenuItem("REPL");
+        CheckMenuItem toolBarItem = new CheckMenuItem("Toolbar");
         
         getItems().addAll(lineNumbersItem, new SeparatorMenuItem(),
                 consoleItem, projectItem, replItem, new SeparatorMenuItem(),
@@ -48,5 +48,11 @@ public class ViewMenu extends Menu {
                 } 
             });
         });
+        
+        toolBarItem.setSelected(true);
+        toolBar.visibleProperty().bind(toolBarItem.selectedProperty());
+        
+        projectItem.setSelected(true);
+        projectSetController.getProjectSetView().visibleProperty().bind(projectItem.selectedProperty());
     }
 }

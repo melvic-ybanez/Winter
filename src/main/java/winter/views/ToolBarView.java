@@ -59,6 +59,8 @@ public class ToolBarView extends ToolBar {
                 findButton, replaceButton, new Separator(),
                 runButton, replButton, stopButton, new Separator(),
                 preferencesButton, helpButton);
+        
+        managedProperty().bind(visibleProperty());
     }
     
     private Tooltip createTooltip(MenuItem menuItem) {

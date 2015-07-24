@@ -55,6 +55,8 @@ public class ProjectSetView extends TitledPane {
                 });
             }
         });
+        
+        managedProperty().bind(visibleProperty());
     }
     
     private void createContextMenu() {

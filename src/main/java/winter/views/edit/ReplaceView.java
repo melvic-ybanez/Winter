@@ -57,7 +57,7 @@ public class ReplaceView extends VBox implements Observer {
         findView.showUI();
         findView.getFindField().requestFocus();
         replacePane.setVisible(true);
-        replacePane.setManaged(true);
+        replacePane.managedProperty().bind(replacePane.visibleProperty());
     }
     
     private void registerEvents() {
@@ -78,7 +78,6 @@ public class ReplaceView extends VBox implements Observer {
     public void update() {
         if (!findView.isVisible()) {
             replacePane.setVisible(false);
-            replacePane.setManaged(false);
         }
     }
 

@@ -41,15 +41,24 @@ public class Main extends javafx.application.Application {
         editorSetView.newUntitledTab();
         
         topSplitPane.getItems().addAll(projectSetView, editorSetView);
-        topSplitPane.setDividerPositions(0.4f);
+        projectSetView.visibleProperty().addListener((obs, wasVisible, isVisible) -> {
+            if (isVisible) {
+                topSplitPane.setDividerPosition(0, 0.3f);
+            } else {
+                topSplitPane.setDividerPosition(0, 0);
+            }
+        });
+        topSplitPane.getStyleClass().add("winter-divider");
         
         bottomSplitPane.getItems().addAll(new ConsoleView(bottomSplitPane.heightProperty()), 
                 new REPLView(bottomSplitPane.heightProperty()));
         bottomSplitPane.setDividerPositions(0.5f);
+        bottomSplitPane.getStyleClass().add("winter-divider");
         
         mainSplitPane.getItems().addAll(topSplitPane, bottomSplitPane);
         mainSplitPane.setOrientation(Orientation.VERTICAL);
         mainSplitPane.setDividerPositions(0.8f);
+        mainSplitPane.getStyleClass().add("winter-divider");
 
         SplitPane.setResizableWithParent(projectSetView, false);
         
