@@ -16,6 +16,10 @@ import winter.controllers.files.FileController;
 import winter.controllers.files.FileControllerImpl;
 import winter.controllers.projects.ProjectSetController;
 import winter.controllers.projects.ProjectSetControllerImpl;
+import winter.controllers.repls.REPLController;
+import winter.controllers.repls.REPLControllerImpl;
+import winter.models.repls.REPLModel;
+import winter.models.repls.REPLModelImpl;
 import winter.views.ConsoleView;
 import winter.views.ToolBarView;
 import winter.views.editor.EditorSetView;
@@ -36,6 +40,8 @@ public class Main extends javafx.application.Application {
         ProjectSetController projectSetController = new ProjectSetControllerImpl(editorSetView, topSplitPane.heightProperty());
         ProjectSetView projectSetView = projectSetController.getProjectSetView();
         FileController fileController = new FileControllerImpl(editorSetController, projectSetController);
+        REPLModel replModel = new REPLModelImpl();
+        REPLController replController = new REPLControllerImpl(replModel, bottomSplitPane.heightProperty());
         
         editorSetController.setFileController(fileController);
         editorSetView.newUntitledTab();
@@ -50,8 +56,7 @@ public class Main extends javafx.application.Application {
         });
         topSplitPane.getStyleClass().add("winter-divider");
         
-        bottomSplitPane.getItems().addAll(new ConsoleView(bottomSplitPane.heightProperty()), 
-                new REPLView(bottomSplitPane.heightProperty()));
+        bottomSplitPane.getItems().addAll(new ConsoleView(bottomSplitPane.heightProperty()), replController.getREPLView());
         bottomSplitPane.setDividerPositions(0.5f);
         bottomSplitPane.getStyleClass().add("winter-divider");
         
