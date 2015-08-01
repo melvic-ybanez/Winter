@@ -16,68 +16,55 @@ import winter.controllers.files.FileController;
 import winter.controllers.files.FileControllerImpl;
 import winter.controllers.projects.ProjectSetController;
 import winter.controllers.projects.ProjectSetControllerImpl;
-import winter.controllers.repls.REPLController;
-import winter.controllers.repls.REPLControllerImpl;
-import winter.models.repls.REPLModel;
-import winter.models.repls.REPLModelImpl;
-import winter.views.ConsoleView;
+import winter.models.statuses.StatusModel;
+import winter.models.statuses.StatusModelImpl;
+import winter.views.StatusView;
 import winter.views.ToolBarView;
 import winter.views.editor.EditorSetView;
 import winter.views.menus.*;
 import winter.views.project.ProjectSetView;
-import winter.views.repl.REPLView;
 
 public class Main extends javafx.application.Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         SplitPane mainSplitPane = new SplitPane();
-        SplitPane topSplitPane = new SplitPane();
-        SplitPane bottomSplitPane = new SplitPane();
 
         EditorSetController editorSetController = new EditorSetControllerImpl();
         EditorSetView editorSetView = editorSetController.getEditorSetView();
-        ProjectSetController projectSetController = new ProjectSetControllerImpl(editorSetView, topSplitPane.heightProperty());
+        ProjectSetController projectSetController = new ProjectSetControllerImpl(editorSetView, mainSplitPane.heightProperty());
         ProjectSetView projectSetView = projectSetController.getProjectSetView();
         FileController fileController = new FileControllerImpl(editorSetController, projectSetController);
-        REPLModel replModel = new REPLModelImpl();
-        REPLController replController = new REPLControllerImpl(replModel, bottomSplitPane.heightProperty());
         
         editorSetController.setFileController(fileController);
         editorSetView.newUntitledTab();
         
-        topSplitPane.getItems().addAll(projectSetView, editorSetView);
+        mainSplitPane.getItems().addAll(projectSetView, editorSetView);
         projectSetView.visibleProperty().addListener((obs, wasVisible, isVisible) -> {
             if (isVisible) {
-                topSplitPane.setDividerPosition(0, 0.3f);
+                mainSplitPane.setDividerPosition(0, 0.3f);
             } else {
-                topSplitPane.setDividerPosition(0, 0);
+                mainSplitPane.setDividerPosition(0, 0);
             }
         });
-        topSplitPane.getStyleClass().add("winter-divider");
-        
-        bottomSplitPane.getItems().addAll(new ConsoleView(bottomSplitPane.heightProperty()), replController.getREPLView());
-        bottomSplitPane.setDividerPositions(0.5f);
-        bottomSplitPane.getStyleClass().add("winter-divider");
-        
-        mainSplitPane.getItems().addAll(topSplitPane, bottomSplitPane);
-        mainSplitPane.setOrientation(Orientation.VERTICAL);
-        mainSplitPane.setDividerPositions(0.8f);
         mainSplitPane.getStyleClass().add("winter-divider");
 
         SplitPane.setResizableWithParent(projectSetView, false);
         
         MenuBar menuBar = new MenuBar();
         FileMenu fileMenu = fileController.getFileMenu();
-        EditMenu editMenu = new EditMenu(editorSetController); 
+        EditMenu editMenu = new EditMenu(editorSetController);
         ToolBarView toolBarView = new ToolBarView(fileMenu, editMenu);
         menuBar.getMenus().addAll(fileMenu, 
                 editMenu, new ViewMenu(editorSetController, projectSetController, toolBarView), 
                 new PreferencesMenu(), new HelpMenu());
         
+        StatusModel statusModel = new StatusModelImpl();
+        
         BorderPane mainPane = new BorderPane();
         mainPane.setTop(toolBarView);
         mainPane.setCenter(mainSplitPane);
+        mainPane.setBottom(new StatusView(statusModel));
 
         BorderPane root = new BorderPane();
         root.setTop(menuBar);

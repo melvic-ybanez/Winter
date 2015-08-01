@@ -27,15 +27,12 @@ public class ViewMenu extends Menu {
     }
     
     private void init() {
-        CheckMenuItem lineNumbersItem = new CheckMenuItem("Line Numbers");  
-        CheckMenuItem consoleItem = new CheckMenuItem("Console");
+        CheckMenuItem lineNumbersItem = new CheckMenuItem("Line Numbers");
         CheckMenuItem projectItem = new CheckMenuItem("Projects");
-        CheckMenuItem replItem = new CheckMenuItem("REPL");
         CheckMenuItem toolBarItem = new CheckMenuItem("Toolbar");
         
         getItems().addAll(lineNumbersItem, new SeparatorMenuItem(),
-                consoleItem, projectItem, replItem, new SeparatorMenuItem(),
-                toolBarItem);
+                projectItem, toolBarItem);
         
         lineNumbersItem.setSelected(true);
         lineNumbersItem.selectedProperty().addListener((obs, wasSelected, isSelected) -> {

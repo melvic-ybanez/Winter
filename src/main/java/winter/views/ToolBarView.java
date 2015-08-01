@@ -57,7 +57,6 @@ public class ToolBarView extends ToolBar {
                 undoButton, redoButton, new Separator(),
                 copyButton, cutButton, pasteButton, new Separator(),
                 findButton, replaceButton, new Separator(),
-                runButton, replButton, stopButton, new Separator(),
                 preferencesButton, helpButton);
         
         managedProperty().bind(visibleProperty());

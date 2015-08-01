@@ -17,5 +17,7 @@
     <orderEntry type="library" name="Maven: org.fxmisc.flowless:flowless:0.4.3" level="project" />
     <orderEntry type="library" name="Maven: org.fxmisc.wellbehaved:wellbehavedfx:0.1.1" level="project" />
     <orderEntry type="library" name="Maven: com.typesafe:config:1.3.0" level="project" />
+    <orderEntry type="library" name="Maven: org.controlsfx:controlsfx:8.40.9" level="project" />
+    <orderEntry type="library" name="Maven: org.controlsfx:openjfx-dialogs:1.0.3" level="project" />
   </component>
 </module>

@@ -49,7 +49,7 @@
 }
 
 .find-replace-pane {
-    -fx-background-color: lightgray;
+    -fx-background-color: #DAD8D8;
     -fx-effect: dropshadow(one-pass-box, gray, 2, 1, 0, 0);
 }
 

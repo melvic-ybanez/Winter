@@ -30,11 +30,11 @@ public class EditorView extends CodeArea implements Observer {
     private ReplaceView replaceView;
     
     public EditorView(EditorController editorController, EditorModel editorModel) {
-        setEditorModel(editorModel);
+        setEditorModel(editorModel); 
         setEditorController(editorController); 
         editorModel.registerObserver(this);
         
-        getStyleClass().add("meruem-codearea");
+        getStyleClass().add("meruem-codearea"); 
         
         /* These are hardcoded values for now */
         setStyle("-fx-font-family: Consolas");
@@ -64,7 +64,6 @@ public class EditorView extends CodeArea implements Observer {
                     break;
             }
         });
-
     }
     
     public Optional<String> showRenameDialog() {
