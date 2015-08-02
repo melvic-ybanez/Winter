@@ -49,8 +49,17 @@
 }
 
 .find-replace-pane {
-    -fx-background-color: #DAD8D8;
+    -fx-background-color: #E9E8E8;
     -fx-effect: dropshadow(one-pass-box, gray, 2, 1, 0, 0);
+}
+
+.find-replace-pane .text-field {
+    -fx-text-box-border: #A5A3A3; 
+    -fx-prompt-text-fill: gray;
+}
+
+.find-replace-pane .text-field:focused {
+    -fx-prompt-text-fill: transparent;
 }
 
 .find-highlight {

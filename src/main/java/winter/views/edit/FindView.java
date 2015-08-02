@@ -35,7 +35,7 @@ public class FindView extends BorderPane {
     public void showUI() {
         if (findField == null) {
             findField = new TextField();
-            findField.setPromptText("Enter the string to search");
+            findField.setPromptText("Search String");
 
             HBox checkBoxPane = new HBox();
             CheckBox matchCaseCheck = new CheckBox("Match Case");

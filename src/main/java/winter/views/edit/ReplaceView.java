@@ -36,7 +36,7 @@ public class ReplaceView extends VBox implements Observer {
     public void showUI() {
         if (replaceField == null) {
             replaceField = new TextField();
-            replaceField.setPromptText("Enter the new string"); 
+            replaceField.setPromptText("Replacement String"); 
             replaceField.textProperty().bindBidirectional(replaceModel.replaceStringProperty());
             
             replaceButton = new Button("Replace");
