@@ -35,6 +35,8 @@ public class Main extends javafx.application.Application {
         ProjectSetController projectSetController = new ProjectSetControllerImpl(editorSetView, mainSplitPane.heightProperty());
         ProjectSetView projectSetView = projectSetController.getProjectSetView();
         FileController fileController = new FileControllerImpl(editorSetController, projectSetController);
+        StatusModel statusModel = new StatusModelImpl(editorSetController);
+        StatusView statusView = new StatusView(statusModel);
         
         editorSetController.setFileController(fileController);
         editorSetView.newUntitledTab();
@@ -59,12 +61,10 @@ public class Main extends javafx.application.Application {
                 editMenu, new ViewMenu(editorSetController, projectSetController, toolBarView), 
                 new PreferencesMenu(), new HelpMenu());
         
-        StatusModel statusModel = new StatusModelImpl();
-        
         BorderPane mainPane = new BorderPane();
         mainPane.setTop(toolBarView);
         mainPane.setCenter(mainSplitPane);
-        mainPane.setBottom(new StatusView(statusModel));
+        mainPane.setBottom(statusView);
 
         BorderPane root = new BorderPane();
         root.setTop(menuBar);

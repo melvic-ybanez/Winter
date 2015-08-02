@@ -1,14 +1,22 @@
 package winter.views;
 
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.Separator;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import org.controlsfx.control.StatusBar;
 import winter.models.statuses.StatusModel;
+import winter.utils.Observer;
 
 /**
  * Created by ybamelcash on 8/1/2015.
  */
-public class StatusView extends StatusBar {
+public class StatusView extends StatusBar implements Observer {
     private Label lineLabel = new Label("");
     private Label columnLabel = new Label("");
 
@@ -16,15 +24,18 @@ public class StatusView extends StatusBar {
     
     public StatusView(StatusModel statusModel) {
         setStatusModel(statusModel);
+        statusModel.registerObserver(this);
         init();
     }
     
     private void init() {
         setText("");
-        
-        getRightItems().addAll(lineLabel);
-        
-        lineLabel.textProperty().bind(new SimpleStringProperty("Line: " + statusModel.lineNumberProperty().get()));
+        HBox rightPane = new HBox();
+        rightPane.getChildren().addAll(new Separator(Orientation.VERTICAL), lineLabel, columnLabel);
+        rightPane.setSpacing(5);
+        rightPane.setPadding(new Insets(0, 15, 0, 15));
+        rightPane.setAlignment(Pos.CENTER_RIGHT);
+        getRightItems().add(rightPane);
     }
 
     public StatusModel getStatusModel() {
@@ -33,5 +44,11 @@ public class StatusView extends StatusBar {
 
     public void setStatusModel(StatusModel statusModel) {
         this.statusModel = statusModel;
+    }
+
+    @Override
+    public void update() {
+        lineLabel.setText("Line: " + (statusModel.getLineNumber() + 1));
+        columnLabel.setText("Column: " + (statusModel.getColumnNumber() + 1));
     }
 }

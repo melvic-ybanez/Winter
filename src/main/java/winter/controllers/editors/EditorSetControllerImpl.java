@@ -4,6 +4,8 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.Tab;
 import winter.controllers.files.FileController;
 import winter.models.editors.EditorModel;
+import winter.utils.Observable;
+import winter.utils.SimpleObservable;
 import winter.utils.StreamUtils;
 import winter.views.editor.EditorSetView;
 import winter.views.editor.EditorView;
@@ -20,9 +22,19 @@ import java.util.stream.Collectors;
 public class EditorSetControllerImpl implements EditorSetController {
     private EditorSetView editorSetView;
     private FileController fileController;
+    private Observable observable;
     
     public EditorSetControllerImpl() {
         setEditorSetView(new EditorSetView(this));
+        this.observable = new SimpleObservable();
+        editorSetView.getTabPane()
+                .getSelectionModel()
+                .selectedIndexProperty()
+                .addListener((obs, oldSelection, newSelection) -> {
+                    if (((Integer) newSelection) != -1) {
+                        observable.notifyObservers();    
+                    }
+                });
     }
     
     public EditorController getActiveEditorController() {
@@ -32,6 +44,10 @@ public class EditorSetControllerImpl implements EditorSetController {
     
     public EditorView getActiveEditorView() {
         return getActiveEditorController().getEditorView();
+    }
+    
+    public EditorModel getActiveEditorModel() {
+        return getActiveEditorController().getEditorModel();
     }
     
     public boolean closeTab(Tab tab) {
@@ -72,7 +88,6 @@ public class EditorSetControllerImpl implements EditorSetController {
         List<EditorModel> unclosedEditors = new ArrayList<>();
         ObservableList<Tab> tabs = editorSetView.getTabPane().getTabs();
         for (int i = 0; i < tabs.size(); i++) {
-            Tab tab = tabs.get(i);
             EditorController editorController = editorSetView.getEditorControllers().get(i);
             if (!editorController.whenHasChanges(() -> {})) {
                 unclosedEditors.add(editorController.getEditorModel());
@@ -117,5 +132,10 @@ public class EditorSetControllerImpl implements EditorSetController {
 
     public FileController getFileController() {
         return fileController;
+    }
+
+    @Override
+    public Observable getObservable() {
+        return observable;
     }
 }

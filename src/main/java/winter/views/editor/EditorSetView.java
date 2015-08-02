@@ -89,8 +89,6 @@ public class EditorSetView extends BorderPane {
             tab.setGraphic(new Label()); 
             tab.graphicProperty().bindBidirectional(editorController.getEditorView().graphicProperty());
             
-            editorModel.contentsProperty().bind(codeArea.textProperty());
-            editorModel.caretPositionProperty().bind(codeArea.caretPositionProperty());
             editorModel.setOrigContents(contents);
             
             tabPane.getTabs().add(tab); 

@@ -1,7 +1,9 @@
 package winter.models.editors;
 
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import org.fxmisc.richtext.StyleSpans;
 import org.fxmisc.richtext.StyleSpansBuilder;
 import winter.models.behaviors.*;
@@ -22,9 +24,11 @@ import java.util.regex.Matcher;
  */
 public abstract class EditorModel extends SimpleObservable {
     private Either<Integer, Path> pathEither;
-    private SimpleStringProperty contentsProperty = new SimpleStringProperty("");
-    private SimpleStringProperty titleProperty = new SimpleStringProperty("");
-    private SimpleIntegerProperty caretPositionProperty = new SimpleIntegerProperty();
+    private StringProperty contentsProperty = new SimpleStringProperty("");
+    private StringProperty titleProperty = new SimpleStringProperty("");
+    private IntegerProperty caretPositionProperty = new SimpleIntegerProperty();
+    private IntegerProperty lineNumberProperty = new SimpleIntegerProperty();
+    private IntegerProperty columnNumberProperty = new SimpleIntegerProperty();
     private String origContents = "";
 
     private ParenIndexesBehavior parenIndexesBehavior;
@@ -35,14 +39,24 @@ public abstract class EditorModel extends SimpleObservable {
 
     public EditorModel() {
         super();
+        lineNumberProperty.addListener((obs, oldLineNumber, newLineNumber) -> notifyObservers());
+        columnNumberProperty.addListener((obs, oldColumnNumber, newColumnNumber) -> notifyObservers());
     }
 
-    public SimpleStringProperty contentsProperty() {
+    public StringProperty contentsProperty() {
         return contentsProperty;
     }
 
-    public SimpleIntegerProperty caretPositionProperty() {
+    public IntegerProperty caretPositionProperty() {
         return caretPositionProperty;
+    }
+    
+    public IntegerProperty lineNumberProperty() {
+        return lineNumberProperty;
+    }
+    
+    public IntegerProperty columnNumberProperty() {
+        return columnNumberProperty;
     }
 
     public boolean equalsPath(Path path) {
@@ -90,7 +104,7 @@ public abstract class EditorModel extends SimpleObservable {
         return builder.create();
     }
 
-    public SimpleStringProperty titleProperty() {
+    public StringProperty titleProperty() {
         return titleProperty;
     }
 
@@ -188,6 +202,14 @@ public abstract class EditorModel extends SimpleObservable {
 
     public StyleClassBehavior getStyleClassBehavior() {
         return styleClassBehavior;
+    }
+    
+    public int getLineNumber() {
+        return lineNumberProperty.get();
+    }
+    
+    public int getColumnNumber() {
+        return columnNumberProperty.get();
     }
 
     public ActiveParenIndexesBehavior getActiveParenIndexesBehavior() {

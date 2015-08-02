@@ -33,6 +33,11 @@ public class EditorView extends CodeArea implements Observer {
         setEditorModel(editorModel); 
         setEditorController(editorController); 
         editorModel.registerObserver(this);
+
+        editorModel.contentsProperty().bind(textProperty());
+        editorModel.caretPositionProperty().bind(caretPositionProperty());
+        editorModel.lineNumberProperty().bind(currentParagraphProperty()); 
+        editorModel.columnNumberProperty().bind(caretColumnProperty());
         
         getStyleClass().add("meruem-codearea"); 
         

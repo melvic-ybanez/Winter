@@ -2,6 +2,8 @@ package winter.controllers.editors;
 
 import javafx.scene.control.Tab;
 import winter.controllers.files.FileController;
+import winter.models.editors.EditorModel;
+import winter.utils.Observable;
 import winter.views.editor.EditorSetView;
 import winter.views.editor.EditorView;
 
@@ -16,6 +18,8 @@ public interface EditorSetController {
     public EditorController getActiveEditorController();
     
     public EditorView getActiveEditorView();
+    
+    public EditorModel getActiveEditorModel();
     
     public boolean closeTab(Tab tab);
     
@@ -36,4 +40,6 @@ public interface EditorSetController {
     public void setFileController(FileController fileController);
     
     public FileController getFileController();
+    
+    public Observable getObservable();
 }
