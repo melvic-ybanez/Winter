@@ -10,7 +10,10 @@ import javafx.scene.control.Separator;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import org.controlsfx.control.StatusBar;
+import winter.controllers.editors.EditorSetController;
+import winter.models.editors.EditorModel;
 import winter.models.statuses.StatusModel;
+import winter.utils.Observable;
 import winter.utils.Observer;
 
 /**
@@ -23,7 +26,7 @@ public class StatusView extends StatusBar implements Observer {
     private StatusModel statusModel;
     
     public StatusView(StatusModel statusModel) {
-        setStatusModel(statusModel);
+        setStatusModel(statusModel); 
         statusModel.registerObserver(this);
         init();
     }
@@ -50,5 +53,12 @@ public class StatusView extends StatusBar implements Observer {
     public void update() {
         lineLabel.setText("Line: " + (statusModel.getLineNumber() + 1));
         columnLabel.setText("Column: " + (statusModel.getColumnNumber() + 1));
+        if (statusModel.areChangesSaved()) {
+            setText("Changes saved.");
+        }
+    }
+    
+    private EditorSetController getEditorSetController() {
+        return statusModel.getEditorSetController();
     }
 }

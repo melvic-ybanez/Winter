@@ -13,6 +13,7 @@ import org.fxmisc.richtext.LineNumberFactory;
 import winter.Settings;
 import winter.controllers.editors.EditorController;
 import winter.models.editors.EditorModel;
+import winter.utils.Observable;
 import winter.utils.Observer;
 import winter.views.edit.FindView;
 import winter.views.edit.ReplaceView;

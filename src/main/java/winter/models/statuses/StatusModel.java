@@ -15,4 +15,10 @@ public interface StatusModel extends Observable {
     public int getLineNumber();
     
     public int getColumnNumber();
+    
+    public void setEditorSetController(EditorSetController editorSetController);
+    
+    public EditorSetController getEditorSetController();
+    
+    public boolean areChangesSaved();
 }

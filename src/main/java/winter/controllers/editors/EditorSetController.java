@@ -17,6 +17,8 @@ import java.util.Optional;
 public interface EditorSetController {
     public EditorController getActiveEditorController();
     
+    public EditorController getPreviousEditorController();
+    
     public EditorView getActiveEditorView();
     
     public EditorModel getActiveEditorModel();

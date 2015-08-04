@@ -23,6 +23,7 @@ public class EditorSetControllerImpl implements EditorSetController {
     private EditorSetView editorSetView;
     private FileController fileController;
     private Observable observable;
+    private EditorController previousEditorController;
     
     public EditorSetControllerImpl() {
         setEditorSetView(new EditorSetView(this));
@@ -31,7 +32,9 @@ public class EditorSetControllerImpl implements EditorSetController {
                 .getSelectionModel()
                 .selectedIndexProperty()
                 .addListener((obs, oldSelection, newSelection) -> {
-                    if (((Integer) newSelection) != -1) {
+                    int selectedIndex = (Integer) newSelection;
+                    if (selectedIndex != -1) {
+                        previousEditorController = editorSetView.getEditorControllers().get(selectedIndex);
                         observable.notifyObservers();    
                     }
                 });
@@ -137,5 +140,10 @@ public class EditorSetControllerImpl implements EditorSetController {
     @Override
     public Observable getObservable() {
         return observable;
+    }
+
+    @Override
+    public EditorController getPreviousEditorController() {
+        return previousEditorController;
     }
 }
