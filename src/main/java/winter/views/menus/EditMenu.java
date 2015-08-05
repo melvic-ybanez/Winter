@@ -38,7 +38,7 @@ public class EditMenu extends Menu {
     
     private List<MenuItem> createMenuItems() {
         undoItem = new MenuItem("Undo", Resources.getIcon("undo.png"));
-        redoItem = new MenuItem("Redo", Icons.getRedoImageView());
+        redoItem = new MenuItem("Redo", Resources.getIcon("redo.png"));
         findItem = new MenuItem("Find...", Resources.getIcon("find.png"));
         replaceItem = new MenuItem("Replace...", Resources.getIcon("replace.png"));
         copyItem = new MenuItem("Copy", Resources.getIcon("copy.png"));

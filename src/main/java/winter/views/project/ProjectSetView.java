@@ -103,10 +103,7 @@ public class ProjectSetView extends TitledPane {
         TreeItem<ProjectNodeValue> folderNode = new TreeItem<>(new ProjectNodeValue(folderPath));
         
         // For now, empty-and non-empty folder icons are the same
-        folderNode.graphicProperty().bind(Bindings
-                .when(folderNode.leafProperty())
-                .then(Resources.getIcon("non-empty-folder.png"))
-                .otherwise(Resources.getIcon("non-empty-folder.png")));
+        folderNode.setGraphic(Resources.getIcon("open.png"));
         
         try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(folderPath)) {
             for (Path path : directoryStream) {

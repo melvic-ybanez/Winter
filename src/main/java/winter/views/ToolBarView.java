@@ -15,7 +15,7 @@ public class ToolBarView extends ToolBar {
     private Button saveButton = Icons.createButtonIcon("save.png");
     private Button saveAsButton = Icons.createButtonIcon("save_as.png");
     private Button undoButton = Icons.createButtonIcon("undo.png");
-    private Button redoButton = Icons.getRedoButton();
+    private Button redoButton = Icons.createButtonIcon("redo.png");
     private Button copyButton = Icons.createButtonIcon("copy.png");
     private Button cutButton = Icons.createButtonIcon("cut.png");
     private Button pasteButton = Icons.createButtonIcon("paste.png");
