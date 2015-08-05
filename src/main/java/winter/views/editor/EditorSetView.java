@@ -79,17 +79,17 @@ public class EditorSetView extends BorderPane {
                 newEditorAreaTab(pathEither, contents);
             } 
         } else {
-            Tab tab = new Tab(title); 
+            editorModel.setOrigContents(contents);
             editorControllers.add(editorController);
+            
             CodeArea codeArea = editorController.getEditorView();
             codeArea.replaceText(0, 0, contents);
             codeArea.setContextMenu(editorContextMenu);
-              
+
+            Tab tab = new Tab(title);
             tab.textProperty().bind(editorModel.titleProperty());
             tab.setGraphic(new Label()); 
             tab.graphicProperty().bindBidirectional(editorController.getEditorView().graphicProperty());
-            
-            editorModel.setOrigContents(contents);
             
             tabPane.getTabs().add(tab); 
             tabPane.getSelectionModel().select(tab); 

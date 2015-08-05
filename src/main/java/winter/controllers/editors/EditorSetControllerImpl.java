@@ -33,9 +33,14 @@ public class EditorSetControllerImpl implements EditorSetController {
                 .selectedIndexProperty()
                 .addListener((obs, oldSelection, newSelection) -> {
                     int selectedIndex = (Integer) newSelection;
+                    int prevSelectedIndex = (Integer) oldSelection;
                     if (selectedIndex != -1) {
-                        previousEditorController = editorSetView.getEditorControllers().get(selectedIndex);
-                        observable.notifyObservers();    
+                        if (prevSelectedIndex == -1) {
+                            previousEditorController = editorSetView.getEditorControllers().get(selectedIndex); 
+                        } else {
+                            previousEditorController = editorSetView.getEditorControllers().get(prevSelectedIndex);
+                        }
+                        observable.notifyObservers();
                     }
                 });
     }

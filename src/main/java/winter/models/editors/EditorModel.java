@@ -39,8 +39,6 @@ public abstract class EditorModel extends SimpleObservable {
 
     public EditorModel() {
         super();
-        lineNumberProperty.addListener((obs, oldLineNumber, newLineNumber) -> notifyObservers());
-        columnNumberProperty.addListener((obs, oldColumnNumber, newColumnNumber) -> notifyObservers());
     }
 
     public StringProperty contentsProperty() {

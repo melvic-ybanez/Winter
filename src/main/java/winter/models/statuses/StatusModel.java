@@ -7,7 +7,7 @@ import winter.utils.Observable;
 /**
  * Created by ybamelcash on 8/1/2015.
  */
-public interface StatusModel extends Observable {
+public interface StatusModel {
     public IntegerProperty lineNumberProperty();
     
     public IntegerProperty columnNumberProperty();
@@ -21,4 +21,8 @@ public interface StatusModel extends Observable {
     public EditorSetController getEditorSetController();
     
     public boolean areChangesSaved();
+    
+    public Observable getLineNumberObservable();
+    
+    public Observable getTextObservable();
 }

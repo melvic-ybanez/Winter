@@ -18,39 +18,48 @@ public class StatusModelImpl extends SimpleObservable implements StatusModel {
     private IntegerProperty lineNumberProperty = new SimpleIntegerProperty();
     private IntegerProperty columnNumberProperty = new SimpleIntegerProperty();
     
+    private Observable lineNumberObservable = new SimpleObservable();
+    private Observable textObservable = new SimpleObservable();
+    
     private boolean changesSaved;
     
     private EditorSetController editorSetController;
+
+    private Observer activeModelListener = () -> {
+        EditorModel activeModel = editorSetController.getActiveEditorModel();
+        if (!activeModel.unsaved()) {
+            textObservable.notifyObservers();
+            changesSaved = true;
+        }
+    };
     
     public StatusModelImpl(EditorSetController editorSetController) {
         this.editorSetController = editorSetController;
         registerObservers();
-        
-        lineNumberProperty.addListener((observable, oldLineNumber, newLineNumber) -> notifyObservers());
-        columnNumberProperty.addListener((observable, oldColumnNumber, newColumnNumber) -> notifyObservers()); 
     }
     
     private void registerObservers() {
-        Observer activeModelListener = () -> {
-            EditorModel activeModel = editorSetController.getActiveEditorModel();
-            if (!activeModel.unsaved() && !changesSaved) {
-                changesSaved = true;
-                notifyObservers();
-            }
-        };
-        
         editorSetController.getObservable().registerObserver(() -> {
             EditorModel activeModel = editorSetController.getActiveEditorModel();
             lineNumberProperty.bind(activeModel.lineNumberProperty());
             columnNumberProperty.bind(activeModel.columnNumberProperty());
-            changesSaved = false;
-            notifyObservers();
+            lineNumberObservable.notifyObservers();
 
             // Listen to the new active editor model
             editorSetController.getPreviousEditorController().getEditorModel().removeObserver(activeModelListener);
             activeModel.registerObserver(activeModelListener);
-            changesSaved = !activeModel.unsaved();    
+            changesSaved = !activeModel.unsaved() && !activeModel.isUntitled();    
         });
+        
+        Runnable notifyLineNumberObservers = () -> {
+            changesSaved = !editorSetController.getActiveEditorModel().unsaved();
+            lineNumberObservable.notifyObservers();
+        };
+
+        lineNumberProperty.addListener((observable, oldLineNumber, newLineNumber) ->
+                notifyLineNumberObservers.run());
+        columnNumberProperty.addListener((observable, oldColumnNumber, newColumnNumber) ->
+                notifyLineNumberObservers.run());
     }
 
     @Override
@@ -86,5 +95,15 @@ public class StatusModelImpl extends SimpleObservable implements StatusModel {
     @Override
     public void setEditorSetController(EditorSetController editorSetController) {
         this.editorSetController = editorSetController;
+    }
+
+    @Override
+    public Observable getLineNumberObservable() {
+        return lineNumberObservable;
+    }
+
+    @Override
+    public Observable getTextObservable() {
+        return textObservable;
     }
 }

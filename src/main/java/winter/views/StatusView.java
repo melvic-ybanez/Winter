@@ -19,16 +19,16 @@ import winter.utils.Observer;
 /**
  * Created by ybamelcash on 8/1/2015.
  */
-public class StatusView extends StatusBar implements Observer {
+public class StatusView extends StatusBar {
     private Label lineLabel = new Label("");
     private Label columnLabel = new Label("");
 
     private StatusModel statusModel;
     
     public StatusView(StatusModel statusModel) {
-        setStatusModel(statusModel); 
-        statusModel.registerObserver(this);
+        setStatusModel(statusModel);
         init();
+        registerObservers();
     }
     
     private void init() {
@@ -40,6 +40,22 @@ public class StatusView extends StatusBar implements Observer {
         rightPane.setAlignment(Pos.CENTER_RIGHT);
         getRightItems().add(rightPane);
     }
+    
+    private void registerObservers() {
+        statusModel.getLineNumberObservable().registerObserver(() -> {
+            lineLabel.setText("Line: " + (statusModel.getLineNumber() + 1));
+            columnLabel.setText("Column: " + (statusModel.getColumnNumber() + 1));    
+            setText("");
+        });
+        
+        statusModel.getTextObservable().registerObserver(() -> {
+            if (!statusModel.areChangesSaved()) {
+                setText("Changes saved.");
+            } else {
+                setText("File is already updated.");
+            }
+        });
+    }
 
     public StatusModel getStatusModel() {
         return statusModel;
@@ -47,15 +63,6 @@ public class StatusView extends StatusBar implements Observer {
 
     public void setStatusModel(StatusModel statusModel) {
         this.statusModel = statusModel;
-    }
-
-    @Override
-    public void update() {
-        lineLabel.setText("Line: " + (statusModel.getLineNumber() + 1));
-        columnLabel.setText("Column: " + (statusModel.getColumnNumber() + 1));
-        if (statusModel.areChangesSaved()) {
-            setText("Changes saved.");
-        }
     }
     
     private EditorSetController getEditorSetController() {
