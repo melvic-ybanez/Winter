@@ -9,7 +9,7 @@ import javafx.scene.image.ImageView;
 public class Resources {
     public static ImageView getIcon(String name) {
         ImageView img = new ImageView(Resources.class.getResource("/icons/" + name).toString());
-        int sizeLimit = 24;
+        int sizeLimit = 20;
         if (img.getImage().getHeight() > sizeLimit) {
             img.setFitHeight(sizeLimit);
             img.setFitWidth(sizeLimit);
