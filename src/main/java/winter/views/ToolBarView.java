@@ -1,9 +1,11 @@
 package winter.views;
 
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import winter.factories.Icons;
 import winter.views.menus.EditMenu;
 import winter.views.menus.FileMenu;
+import winter.views.menus.ViewMenu;
 
 /**
  * Created by ybamelcash on 7/8/2015.
@@ -24,21 +26,21 @@ public class ToolBarView extends ToolBar {
     private Button runButton = Icons.createButtonIcon("run.png");
     private Button replButton = Icons.createButtonIcon("repl.png");
     private Button stopButton = Icons.createButtonIcon("stop.png");
+    private Button viewProjectsButton = Icons.createButtonIcon("view_projects.png");
     private Button preferencesButton = Icons.createButtonIcon("preferences.png");
     private Button helpButton = Icons.createButtonIcon("help.png");
     
     private FileMenu fileMenu;
     private EditMenu editMenu;
+    private ViewMenu viewMenu;
     
     public ToolBarView(FileMenu fileMenu, EditMenu editMenu) {
         super();
         this.fileMenu = fileMenu;
         this.editMenu = editMenu;
-        initUI();
-        registerEvents();
     }
     
-    private void initUI() {
+    public void createUI() {
         getStyleClass().add("meruem-toolbar");
         
         newButton.setTooltip(createTooltip(fileMenu.getNewFileItem()));
@@ -46,6 +48,7 @@ public class ToolBarView extends ToolBar {
         openFolderButton.setTooltip(createTooltip(fileMenu.getOpenFolderItem()));
         saveButton.setTooltip(createTooltip(fileMenu.getSaveFileItem()));
         saveAsButton.setTooltip(createTooltip(fileMenu.getSaveAsFileItem()));
+        
         undoButton.setTooltip(createTooltip(editMenu.getUndoItem()));
         redoButton.setTooltip(createTooltip(editMenu.getRedoItem()));
         copyButton.setTooltip(createTooltip(editMenu.getCopyItem()));
@@ -53,14 +56,18 @@ public class ToolBarView extends ToolBar {
         pasteButton.setTooltip(createTooltip(editMenu.getPasteItem()));
         findButton.setTooltip(createTooltip(editMenu.getFindItem()));
         replaceButton.setTooltip(createTooltip(editMenu.getReplaceItem()));
+        
+        //viewProjectsButton.setTooltip(createTooltip(viewMenu.getLineNumbersItem()));
 
         getItems().addAll(newButton, openFileButton, openFolderButton, saveButton, saveAsButton, new Separator(),
                 undoButton, redoButton, new Separator(),
                 copyButton, cutButton, pasteButton, new Separator(),
                 findButton, replaceButton, new Separator(),
-                preferencesButton, helpButton);
+                viewProjectsButton, preferencesButton, helpButton);
         
         managedProperty().bind(visibleProperty());
+        
+        registerEvents();
     }
     
     private Tooltip createTooltip(MenuItem menuItem) {
@@ -73,6 +80,7 @@ public class ToolBarView extends ToolBar {
         openFolderButton.setOnAction(fileMenu.getOpenFolderItem().getOnAction());
         saveButton.setOnAction(fileMenu.getSaveFileItem().getOnAction());
         saveAsButton.setOnAction(fileMenu.getSaveAsFileItem().getOnAction());
+        
         undoButton.setOnAction(editMenu.getUndoItem().getOnAction());
         redoButton.setOnAction(editMenu.getRedoItem().getOnAction());
         copyButton.setOnAction(editMenu.getCopyItem().getOnAction());
@@ -81,7 +89,14 @@ public class ToolBarView extends ToolBar {
         findButton.setOnAction(editMenu.getFindItem().getOnAction());
         replaceButton.setOnAction(editMenu.getReplaceItem().getOnAction());
         
+        viewProjectsButton.setOnAction(event -> 
+                viewMenu.getProjectsItem().setSelected(!viewMenu.getProjectsItem().isSelected()));
+        
         undoButton.disableProperty().bind(editMenu.getUndoItem().disableProperty());
         redoButton.disableProperty().bind(editMenu.getRedoItem().disableProperty());
+    }
+
+    public void setViewMenu(ViewMenu viewMenu) {
+        this.viewMenu = viewMenu;
     }
 }

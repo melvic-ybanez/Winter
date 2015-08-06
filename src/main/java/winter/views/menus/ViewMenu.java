@@ -1,20 +1,23 @@
 package winter.views.menus;
 
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.control.*;
 import org.fxmisc.richtext.LineNumberFactory;
+import winter.controllers.editors.EditorController;
 import winter.controllers.editors.EditorSetController;
 import winter.controllers.projects.ProjectSetController;
+import winter.utils.Observer;
 import winter.views.editor.EditorView;
 
 /**
  * Created by ybamelcash on 7/5/2015.
  */
-public class ViewMenu extends Menu {
+public class ViewMenu extends Menu implements Observer {
     private EditorSetController editorSetController;
     private ProjectSetController projectSetController;
     private ToolBar toolBar;
+
+    private CheckMenuItem lineNumbersItem = new CheckMenuItem("Line Numbers");
+    private CheckMenuItem projectsItem = new CheckMenuItem("Projects");
     
     public ViewMenu(EditorSetController editorSetController, 
                     ProjectSetController projectSetController, 
@@ -24,32 +27,48 @@ public class ViewMenu extends Menu {
         this.projectSetController = projectSetController;
         this.toolBar = toolBar;
         init();
+        editorSetController.getObservable().registerObserver(this);
     }
     
     private void init() {
-        CheckMenuItem lineNumbersItem = new CheckMenuItem("Line Numbers");
-        CheckMenuItem projectItem = new CheckMenuItem("Projects");
         CheckMenuItem toolBarItem = new CheckMenuItem("Toolbar");
         
         getItems().addAll(lineNumbersItem, new SeparatorMenuItem(),
-                projectItem, toolBarItem);
+                projectsItem, toolBarItem);
         
         lineNumbersItem.setSelected(true);
         lineNumbersItem.selectedProperty().addListener((obs, wasSelected, isSelected) -> {
             editorSetController.getEditorSetView().getEditorControllers().forEach(controller -> {
-                EditorView editorView = controller.getEditorView();
-                if (isSelected) {
-                    editorView.setParagraphGraphicFactory(LineNumberFactory.get(editorView));
-                } else {
-                    editorView.setParagraphGraphicFactory(null);
-                } 
+                toggleLineNumber(controller, isSelected);
             });
         });
         
         toolBarItem.setSelected(true);
         toolBar.visibleProperty().bind(toolBarItem.selectedProperty());
         
-        projectItem.setSelected(true);
-        projectSetController.getProjectSetView().visibleProperty().bind(projectItem.selectedProperty());
+        projectsItem.setSelected(true);
+        projectSetController.getProjectSetView().visibleProperty().bind(projectsItem.selectedProperty());
+    }
+    
+    private void toggleLineNumber(EditorController editorController, boolean isSelected) {
+        EditorView editorView = editorController.getEditorView();
+        if (isSelected) {
+            editorView.setParagraphGraphicFactory(LineNumberFactory.get(editorView));
+        } else {
+            editorView.setParagraphGraphicFactory(null);
+        }
+    }
+
+    @Override
+    public void update() {
+        toggleLineNumber(editorSetController.getActiveEditorController(), lineNumbersItem.isSelected());
+    }
+
+    public CheckMenuItem getLineNumbersItem() {
+        return lineNumbersItem;
+    }
+
+    public CheckMenuItem getProjectsItem() {
+        return projectsItem;
     }
 }

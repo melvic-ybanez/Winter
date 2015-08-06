@@ -6,6 +6,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import winter.Resources;
+import winter.factories.Icons;
 import winter.utils.Either;
 import winter.utils.Errors;
 import winter.utils.FileUtils;
@@ -29,6 +30,7 @@ public class ProjectSetView extends TitledPane {
     public ProjectSetView(EditorSetView editorSetView, ReadOnlyDoubleProperty heightProperty) {
         this.editorSetView = editorSetView;
         setText("Projects");
+        setGraphic(Resources.getIcon("view_projects.png"));
         setContent(tree);
         prefHeightProperty().bind(heightProperty); 
         setCollapsible(false);

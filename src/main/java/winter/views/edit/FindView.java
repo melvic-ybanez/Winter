@@ -55,7 +55,7 @@ public class FindView extends BorderPane {
             buttonsPane.setAlignment(Pos.CENTER);
             buttonsPane.setSpacing(7);
 
-            hideButton = Icons.createButtonIcon("hide.png", "Hide this panel");
+            hideButton = Icons.createButtonIcon("hide_below.png", "Hide this panel");
             hideButton.setAlignment(Pos.CENTER_RIGHT);
 
             HBox leftPane = new HBox();
