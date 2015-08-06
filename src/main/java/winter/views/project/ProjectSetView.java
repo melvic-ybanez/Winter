@@ -127,11 +127,11 @@ public class ProjectSetView extends TitledPane {
     private TreeItem<ProjectNodeValue> createFolder(Path folderPath) {
         TreeItem<ProjectNodeValue> folderNode = new TreeItem<>(new ProjectNodeValue(folderPath));
         
-        folderNode.setGraphic(Resources.getIcon("open.png")); 
+        folderNode.setGraphic(Resources.getIcon("close_folder.png")); 
         folderNode.graphicProperty().bind(
                 Bindings.when(folderNode.expandedProperty())
                         .then(Resources.getIcon("open_folder.png"))
-                        .otherwise(Resources.getIcon("open.png")));
+                        .otherwise(Resources.getIcon("close_folder.png")));
         
         try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(folderPath)) {
             for (Path path : directoryStream) {

@@ -48,8 +48,8 @@ public class FileMenu extends Menu {
     
     private void init() {
         newFileItem = new MenuItem("New File", Resources.getIcon("new.png"));
-        openFileItem = new MenuItem("Open File...", Resources.getIcon("open.png"));
-        openFolderItem = new MenuItem("Open Folder...");
+        openFileItem = new MenuItem("Open File...", Resources.getIcon("open_file.png"));
+        openFolderItem = new MenuItem("Open Folder...", Resources.getIcon("close_folder.png"));
         saveFileItem = new MenuItem("Save", Resources.getIcon("save.png"));
         saveAsFileItem = new MenuItem("Save As...", Resources.getIcon("save_as.png"));
         exitFileItem = new MenuItem("Exit"); 
@@ -166,5 +166,9 @@ public class FileMenu extends Menu {
 
     public MenuItem getSaveAsFileItem() {
         return saveAsFileItem;
+    }
+
+    public MenuItem getOpenFolderItem() {
+        return openFolderItem;
     }
 }

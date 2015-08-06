@@ -1,7 +1,6 @@
 package winter.views;
 
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCombination;
 import winter.factories.Icons;
 import winter.views.menus.EditMenu;
 import winter.views.menus.FileMenu;
@@ -11,7 +10,8 @@ import winter.views.menus.FileMenu;
  */
 public class ToolBarView extends ToolBar {
     private Button newButton = Icons.createButtonIcon("new.png");
-    private Button openButton = Icons.createButtonIcon("open.png");
+    private Button openFileButton = Icons.createButtonIcon("open_file.png");
+    private Button openFolderButton = Icons.createButtonIcon("close_folder.png");
     private Button saveButton = Icons.createButtonIcon("save.png");
     private Button saveAsButton = Icons.createButtonIcon("save_as.png");
     private Button undoButton = Icons.createButtonIcon("undo.png");
@@ -42,7 +42,8 @@ public class ToolBarView extends ToolBar {
         getStyleClass().add("meruem-toolbar");
         
         newButton.setTooltip(createTooltip(fileMenu.getNewFileItem()));
-        openButton.setTooltip(createTooltip(fileMenu.getOpenFileItem()));
+        openFileButton.setTooltip(createTooltip(fileMenu.getOpenFileItem()));
+        openFolderButton.setTooltip(createTooltip(fileMenu.getOpenFolderItem()));
         saveButton.setTooltip(createTooltip(fileMenu.getSaveFileItem()));
         saveAsButton.setTooltip(createTooltip(fileMenu.getSaveAsFileItem()));
         undoButton.setTooltip(createTooltip(editMenu.getUndoItem()));
@@ -53,7 +54,7 @@ public class ToolBarView extends ToolBar {
         findButton.setTooltip(createTooltip(editMenu.getFindItem()));
         replaceButton.setTooltip(createTooltip(editMenu.getReplaceItem()));
 
-        getItems().addAll(newButton, openButton, saveButton, saveAsButton, new Separator(),
+        getItems().addAll(newButton, openFileButton, openFolderButton, saveButton, saveAsButton, new Separator(),
                 undoButton, redoButton, new Separator(),
                 copyButton, cutButton, pasteButton, new Separator(),
                 findButton, replaceButton, new Separator(),
@@ -68,7 +69,8 @@ public class ToolBarView extends ToolBar {
     
     private void registerEvents() {
         newButton.setOnAction(fileMenu.getNewFileItem().getOnAction());
-        openButton.setOnAction(fileMenu.getOpenFileItem().getOnAction());
+        openFileButton.setOnAction(fileMenu.getOpenFileItem().getOnAction());
+        openFolderButton.setOnAction(fileMenu.getOpenFolderItem().getOnAction());
         saveButton.setOnAction(fileMenu.getSaveFileItem().getOnAction());
         saveAsButton.setOnAction(fileMenu.getSaveAsFileItem().getOnAction());
         undoButton.setOnAction(editMenu.getUndoItem().getOnAction());
