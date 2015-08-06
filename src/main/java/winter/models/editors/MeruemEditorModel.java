@@ -1,7 +1,7 @@
 package winter.models.editors;
 
 import winter.Settings;
-import winter.factories.EditorBehaviors;
+import winter.factories.EditorModelBehaviors;
 import winter.utils.Either;
 import winter.utils.Pair;
 
@@ -53,11 +53,11 @@ public class MeruemEditorModel extends EditorModel {
     public MeruemEditorModel(Either<Integer, Path> pathEither) {
         super();
         setPathEither(pathEither);
-        setActiveParenIndexesBehavior(EditorBehaviors.createDefaultActiveParenIndexes());
-        setAutoIndentedLineStringBehavior(EditorBehaviors.createLispAutoIndentedLineString());
-        setParenIndexesBehavior(EditorBehaviors.createDefaultParenIndexes());
-        setMatchingParenIndexBehavior(EditorBehaviors.createDefaultMatchingParenIndex());
-        setStyleClassBehavior(EditorBehaviors.createMeruemStyleClass());
+        setActiveParenIndexesBehavior(EditorModelBehaviors.createDefaultActiveParenIndexes());
+        setAutoIndentedLineStringBehavior(EditorModelBehaviors.createLispAutoIndentedLineString());
+        setParenIndexesBehavior(EditorModelBehaviors.createDefaultParenIndexes());
+        setMatchingParenIndexBehavior(EditorModelBehaviors.createDefaultMatchingParenIndex());
+        setStyleClassBehavior(EditorModelBehaviors.createMeruemStyleClass());
     }
     
     public Optional<Pair<Integer, Integer>> getParenIndexes(char paren) {

@@ -66,4 +66,12 @@ public class FileUtils {
             }
         }
     }
+    
+    public static Either<IOException, Path> moveFile(Path source, Path dest) {
+        try {
+            return Either.right(Files.move(source, dest));
+        } catch (IOException e) {
+            return Either.left(e);
+        }
+    }
 }

@@ -159,6 +159,10 @@ public class EditorSetView extends BorderPane {
         this.editorSetController = editorSetController;
     }
 
+    public EditorSetController getEditorSetController() {
+        return editorSetController;
+    }
+
     public ContextMenu getEditorContextMenu() {
         return editorContextMenu;
     }

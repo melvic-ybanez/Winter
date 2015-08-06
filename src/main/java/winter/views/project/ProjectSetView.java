@@ -3,10 +3,13 @@ package winter.views.project;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import winter.Resources;
-import winter.factories.Icons;
+import winter.controllers.projects.FileProjectController;
+import winter.controllers.projects.FolderProjectController;
+import winter.controllers.projects.ProjectController;
+import winter.models.projects.ProjectModel;
+import winter.models.projects.ProjectModelImpl;
 import winter.utils.Either;
 import winter.utils.Errors;
 import winter.utils.FileUtils;
@@ -22,7 +25,7 @@ import java.util.Optional;
  * Created by ybamelcash on 6/21/2015.
  */
 public class ProjectSetView extends TitledPane {
-    private TreeView<ProjectNodeValue> tree = new TreeView<>(new TreeItem<>(new ProjectNodeValue()));
+    private TreeView<ProjectNodeView> tree = new TreeView<>(new TreeItem<>());
     private EditorSetView editorSetView;
     private ContextMenu folderContextMenu;
     private ContextMenu fileContextMenu;
@@ -45,26 +48,25 @@ public class ProjectSetView extends TitledPane {
     
     private void registerEvents() {
         tree.setOnMouseClicked(event -> {
-            TreeItem<ProjectNodeValue> item = tree.getSelectionModel().getSelectedItem();
+            TreeItem<ProjectNodeView> item = tree.getSelectionModel().getSelectedItem();
             if (event.getClickCount() == 2 && event.getButton() == MouseButton.PRIMARY) {
-                item.getValue().getPath().ifPresent(path -> {
-                    if (!Files.isDirectory(path)) {
-                        Either<IOException, String> result = FileUtils.openFile(path);
-                        result.getLeft().ifPresent(Errors::openFileException);
-                        result.getRight().ifPresent(contents -> {
-                            String filename = path.getFileName().toString();
-                            TabPane tabPane = editorSetView.getTabPane();
-                            Optional<Tab> existingTab = tabPane.getTabs()
-                                    .stream()
-                                    .filter(tab -> tab.getText().equals(filename))
-                                    .findFirst();
-                            existingTab.ifPresent(tab -> tabPane.getSelectionModel().select(tab));
-                            if (!existingTab.isPresent()) {
-                                editorSetView.newEditorAreaTab(path, contents);
-                            }
-                        });
-                    }
-                });
+                Path path = item.getValue().getProjectModel().getPath();
+                if (!Files.isDirectory(path)) {
+                    Either<IOException, String> result = FileUtils.openFile(path);
+                    result.getLeft().ifPresent(Errors::openFileException);
+                    result.getRight().ifPresent(contents -> {
+                        String filename = path.getFileName().toString();
+                        TabPane tabPane = editorSetView.getTabPane();
+                        Optional<Tab> existingTab = tabPane.getTabs()
+                                .stream()
+                                .filter(tab -> tab.getText().equals(filename))
+                                .findFirst();
+                        existingTab.ifPresent(tab -> tabPane.getSelectionModel().select(tab));
+                        if (!existingTab.isPresent()) {
+                            editorSetView.newEditorAreaTab(path, contents);
+                        }
+                    });
+                }
             } else if (event.getButton() == MouseButton.SECONDARY) {
                 
             }
@@ -109,10 +111,10 @@ public class ProjectSetView extends TitledPane {
     }
     
     public void displayProject(Path projectPath) {
-        TreeItem<ProjectNodeValue> root = tree.getRoot();
-        Optional<TreeItem<ProjectNodeValue>> existingProject = root.getChildren()
+        TreeItem<ProjectNodeView> root = tree.getRoot();
+        Optional<TreeItem<ProjectNodeView>> existingProject = root.getChildren()
                 .stream()
-                .filter(item -> item.getValue().getPath().equals(Optional.of(projectPath)))
+                .filter(item -> item.getValue().getProjectModel().getPath().equals(Optional.of(projectPath)))
                 .findFirst();
         if (existingProject.isPresent()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -121,13 +123,15 @@ public class ProjectSetView extends TitledPane {
             alert.setContentText("A project with the same name is already open.");
             alert.showAndWait();
         } else {
-            TreeItem<ProjectNodeValue> projectTree = createFolder(projectPath);
+            TreeItem<ProjectNodeView> projectTree = createFolder(projectPath);
             root.getChildren().add(projectTree);
         }
     }
     
-    private TreeItem<ProjectNodeValue> createFolder(Path folderPath) {
-        TreeItem<ProjectNodeValue> folderNode = new TreeItem<>(new ProjectNodeValue(folderPath));
+    private TreeItem<ProjectNodeView> createFolder(Path folderPath) {
+        ProjectModel folderProjectModel = new ProjectModelImpl(folderPath);
+        ProjectController folderProjectController = new FolderProjectController(folderProjectModel);
+        TreeItem<ProjectNodeView> folderNode = new TreeItem<>(folderProjectController.getProjectNodeView());
         
         folderNode.setGraphic(Resources.getIcon("close_folder.png")); 
         folderNode.graphicProperty().bind(
@@ -138,10 +142,13 @@ public class ProjectSetView extends TitledPane {
         try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(folderPath)) {
             for (Path path : directoryStream) {
                 if (Files.isDirectory(path)) {
-                    TreeItem<ProjectNodeValue> folder = createFolder(path);
+                    TreeItem<ProjectNodeView> folder = createFolder(path);
                     folderNode.getChildren().add(folder);
                 } else {
-                    TreeItem<ProjectNodeValue> file = new TreeItem<>(new ProjectNodeValue(path));
+                    ProjectModel fileProjectModel = new ProjectModelImpl(path);
+                    ProjectController fileProjectController = new FileProjectController(fileProjectModel, 
+                            editorSetView.getEditorSetController());
+                    TreeItem<ProjectNodeView> file = new TreeItem<>(fileProjectController.getProjectNodeView());
                     file.setGraphic(Resources.getIcon("file.png"));
                     folderNode.getChildren().add(file);
                 }

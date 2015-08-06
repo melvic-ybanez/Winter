@@ -49,7 +49,12 @@ public class Errors {
     
     public static Optional<ButtonType> saveFileException(IOException ex) {
         return Errors.exceptionDialog("Save File Exception",
-                "An exception has occured while saving the file", ex.getMessage(), ex);
+                "An exception has occurred while saving the file", ex.getMessage(), ex);
+    }
+    
+    public static Optional<ButtonType> moveFileException(IOException ex) {
+        return Errors.exceptionDialog("Move File Exception",
+                "An exception has occurred while moving the file", ex.getMessage(), ex);
     }
     
     public static Optional<ButtonType> headerLessDialog(String title, String contents) {

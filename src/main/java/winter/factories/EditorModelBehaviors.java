@@ -12,7 +12,7 @@ import java.util.function.Function;
 /**
  * Created by ybamelcash on 7/17/2015.
  */
-public class EditorBehaviors {
+public class EditorModelBehaviors {
     public static ParenIndexesBehavior createDefaultParenIndexes() {
         return editorModel -> paren -> {
             int caretPos = editorModel.getCaretPosition();
