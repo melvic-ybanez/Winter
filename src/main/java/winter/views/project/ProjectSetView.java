@@ -23,6 +23,8 @@ import java.util.Optional;
 public class ProjectSetView extends TitledPane {
     private TreeView<ProjectNodeValue> tree = new TreeView<>(new TreeItem<>(new ProjectNodeValue()));
     private EditorSetView editorSetView;
+    private ContextMenu folderContextMenu;
+    private ContextMenu fileContextMenu;
     
     public ProjectSetView(EditorSetView editorSetView, ReadOnlyDoubleProperty heightProperty) {
         this.editorSetView = editorSetView;
@@ -34,9 +36,15 @@ public class ProjectSetView extends TitledPane {
         createContextMenu();
         
         tree.setShowRoot(false);
+        registerEvents();
+        
+        managedProperty().bind(visibleProperty());
+    }
+    
+    private void registerEvents() {
         tree.setOnMouseClicked(event -> {
+            TreeItem<ProjectNodeValue> item = tree.getSelectionModel().getSelectedItem();
             if (event.getClickCount() == 2 && event.getButton() == MouseButton.PRIMARY) {
-                TreeItem<ProjectNodeValue> item = tree.getSelectionModel().getSelectedItem();
                 item.getValue().getPath().ifPresent(path -> {
                     if (!Files.isDirectory(path)) {
                         Either<IOException, String> result = FileUtils.openFile(path);
@@ -55,10 +63,10 @@ public class ProjectSetView extends TitledPane {
                         });
                     }
                 });
+            } else if (event.getButton() == MouseButton.SECONDARY) {
+                
             }
         });
-        
-        managedProperty().bind(visibleProperty());
     }
     
     private void createContextMenu() {
@@ -79,6 +87,23 @@ public class ProjectSetView extends TitledPane {
                 .then((ContextMenu) null)
                 .otherwise(contextMenu)
         );
+    }
+    
+    private ContextMenu createFolderContextMenu() {
+        if (folderContextMenu == null) {
+            folderContextMenu = new ContextMenu();
+            MenuItem newFileItem = new MenuItem("New File...");
+            MenuItem newFolderItem = new MenuItem("New Folder...");
+            MenuItem renameItem = new MenuItem("Rename...");
+            MenuItem moveItem = new MenuItem("Move...");
+            MenuItem deleteItem = new MenuItem("Delete");
+
+            folderContextMenu.getItems().addAll(newFileItem,
+                    newFolderItem, new SeparatorMenuItem(),
+                    renameItem, moveItem,
+                    new SeparatorMenuItem(), deleteItem);
+        }
+        return folderContextMenu;
     }
     
     public void displayProject(Path projectPath) {
@@ -102,7 +127,6 @@ public class ProjectSetView extends TitledPane {
     private TreeItem<ProjectNodeValue> createFolder(Path folderPath) {
         TreeItem<ProjectNodeValue> folderNode = new TreeItem<>(new ProjectNodeValue(folderPath));
         
-        // For now, empty-and non-empty folder icons are the same
         folderNode.setGraphic(Resources.getIcon("open.png")); 
         folderNode.graphicProperty().bind(
                 Bindings.when(folderNode.expandedProperty())
