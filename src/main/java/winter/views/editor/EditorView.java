@@ -45,7 +45,7 @@ public class EditorView extends CodeArea implements Observer {
         /* These are hardcoded values for now */
         setStyle("-fx-font-family: Consolas");
 
-        setParagraphGraphicFactory(LineNumberFactory.get(this));
+        setParagraphGraphicFactory(new LineNumberView(this)); 
         textProperty().addListener((obs, oldText, newText) -> {
             editorController.editorAreaChanged(newText);
         });
@@ -83,7 +83,7 @@ public class EditorView extends CodeArea implements Observer {
     public Optional<ButtonType> showUnsavedDialog() {
         Alert saveAlert = new Alert(Alert.AlertType.CONFIRMATION);
         saveAlert.setHeaderText(null);
-        saveAlert.setContentText("Do you want to save " + editorModel.getTitle() + "?");
+        saveAlert.setContentText("Do you want to save the changes made to " + editorModel.getTitle() + "?");
         saveAlert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
         return saveAlert.showAndWait();
     }

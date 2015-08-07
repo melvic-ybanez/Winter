@@ -7,6 +7,7 @@ import winter.controllers.editors.EditorSetController;
 import winter.controllers.projects.ProjectSetController;
 import winter.utils.Observer;
 import winter.views.editor.EditorView;
+import winter.views.editor.LineNumberView;
 
 /**
  * Created by ybamelcash on 7/5/2015.
@@ -53,7 +54,7 @@ public class ViewMenu extends Menu implements Observer {
     private void toggleLineNumber(EditorController editorController, boolean isSelected) {
         EditorView editorView = editorController.getEditorView();
         if (isSelected) {
-            editorView.setParagraphGraphicFactory(LineNumberFactory.get(editorView));
+            editorView.setParagraphGraphicFactory(new LineNumberView(editorView));
         } else {
             editorView.setParagraphGraphicFactory(null);
         }
