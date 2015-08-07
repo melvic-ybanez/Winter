@@ -10,15 +10,12 @@ import winter.views.project.ProjectSetView;
  * Created by ybamelcash on 6/23/2015.
  */
 public class FolderProjectController extends ProjectController {
-    private ProjectSetView projectSetView;
-    
-    public FolderProjectController(ProjectModel projectModel, ProjectSetView projectSetView) {
+    public FolderProjectController(ProjectModel projectModel) {
         super(projectModel);
-        this.projectSetView = projectSetView;
         setProjectNodeView(new ProjectNodeView(projectModel, this) {
             @Override
             public ContextMenu getMenu() {
-                return projectSetView.createFolderContextMenu();
+                return createFolderContextMenu();
             }
         });
         setOpenBehavior(ProjectControllerBehaviors.doNothing());

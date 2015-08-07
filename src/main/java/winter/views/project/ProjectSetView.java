@@ -87,35 +87,6 @@ public class ProjectSetView extends TitledPane {
         });
     }
     
-    public ContextMenu createFileContextMenu() {
-        if (fileContextMenu == null) {
-            fileContextMenu = new ContextMenu();
-            MenuItem openItem = new MenuItem("Open");
-            MenuItem deleteItem = new MenuItem("Delete");
-            MenuItem renameItem = new MenuItem("Rename...");
-            MenuItem moveItem = new MenuItem("Move...");
-
-            fileContextMenu.getItems().addAll(openItem, deleteItem, renameItem, moveItem);
-        }
-        return fileContextMenu;
-    }
-    
-    public ContextMenu createFolderContextMenu() {
-        if (folderContextMenu == null) {
-            folderContextMenu = new ContextMenu();
-            MenuItem newFileItem = new MenuItem("New File...");
-            MenuItem newFolderItem = new MenuItem("New Folder...");
-            MenuItem deleteItem = new MenuItem("Delete");
-            MenuItem renameItem = new MenuItem("Rename...");
-            MenuItem moveItem = new MenuItem("Move...");
-
-            folderContextMenu.getItems().addAll(newFileItem, 
-                    newFolderItem, new SeparatorMenuItem(),
-                    deleteItem, renameItem, moveItem);
-        }
-        return folderContextMenu;
-    }
-    
     public void displayProject(Path projectPath) {
         ProjectNodeView root = (ProjectNodeView) tree.getRoot();
         Optional<TreeItem<String>> existingProject = root.getChildren()
@@ -136,7 +107,7 @@ public class ProjectSetView extends TitledPane {
     
     private ProjectNodeView createFolder(Path folderPath) {
         ProjectModel folderProjectModel = new ProjectModelImpl(folderPath);
-        ProjectController folderProjectController = new FolderProjectController(folderProjectModel, this);
+        ProjectController folderProjectController = new FolderProjectController(folderProjectModel);
         ProjectNodeView folderNode = folderProjectController.getProjectNodeView();
         
         folderNode.setGraphic(Resources.getIcon("close_folder.png")); 
@@ -152,7 +123,7 @@ public class ProjectSetView extends TitledPane {
                     folderNode.getChildren().add(folder);
                 } else {
                     ProjectModel fileProjectModel = new ProjectModelImpl(path);
-                    ProjectController fileProjectController = new FileProjectController(fileProjectModel, this,  
+                    ProjectController fileProjectController = new FileProjectController(fileProjectModel,  
                             editorSetView.getEditorSetController());
                     ProjectNodeView fileNode = fileProjectController.getProjectNodeView();
                     fileNode.setGraphic(Resources.getIcon("file.png"));

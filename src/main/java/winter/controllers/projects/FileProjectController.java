@@ -18,18 +18,15 @@ import java.util.Optional;
  */
 public class FileProjectController extends ProjectController {
     private EditorSetController editorSetController;
-    private ProjectSetView projectSetView;
     
-    public FileProjectController(ProjectModel projectModel, 
-                                 ProjectSetView projectSetView, EditorSetController editorSetController) {
+    public FileProjectController(ProjectModel projectModel, EditorSetController editorSetController) {
         super(projectModel);
         setProjectNodeView(new ProjectNodeView(projectModel, this) {
             @Override
             public ContextMenu getMenu() {
-                return projectSetView.createFileContextMenu();
+                return createFileContextMenu();
             }
         });
-        this.projectSetView = projectSetView;
         setOpenBehavior(ProjectControllerBehaviors.openTextFile(projectModel, editorSetController));
     }
 }
