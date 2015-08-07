@@ -21,6 +21,8 @@ public class ProjectController {
     private Consumer<String> renameBehavior;
     private Consumer<Path> moveBehavior;
     private Runnable openBehavior;
+    private Runnable refreshBehavior;
+    private Runnable closeBehavior;
     
     private ProjectModel projectModel;
     private ProjectNodeView projectNodeView;
@@ -51,6 +53,14 @@ public class ProjectController {
     
     public void open() {
         openBehavior.run();
+    }
+    
+    public void close() {
+        closeBehavior.run();
+    }
+    
+    public void refresh() {
+        refreshBehavior.run();
     }
 
     public ProjectModel getProjectModel() {

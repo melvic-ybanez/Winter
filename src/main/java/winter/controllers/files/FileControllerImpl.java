@@ -30,7 +30,7 @@ public class FileControllerImpl implements FileController {
         fileMenu.showOpenDialog().ifPresent(file -> {
             Path path = file.toPath();
             Either<IOException, String> result = FileUtils.openFile(path);
-            result.getLeft().ifPresent(Errors::openFileException);
+            result.getLeft().ifPresent(Errors::openFileExceptionDialog);
             result.getRight().ifPresent(contents -> {
                 EditorSetView editorSetView = fileMenu.getEditorSetController().getEditorSetView();
                 editorSetView.newEditorAreaTab(path, contents);
@@ -43,7 +43,7 @@ public class FileControllerImpl implements FileController {
     public void saveFile() {
         EditorModel editorModel = getEditorSetController().getActiveEditorController().getEditorModel();
         Either<IOException, Boolean> result = FileUtils.saveFile(editorModel.getPath(), editorModel.getContents());
-        result.ifLeft(Errors::saveFileException);
+        result.ifLeft(Errors::saveFileExceptionDialog);
         result.ifRight(saved -> {
             if (saved) {
                 editorModel.save();
@@ -61,7 +61,7 @@ public class FileControllerImpl implements FileController {
             EditorModel editorModel = getEditorSetController().getActiveEditorController().getEditorModel();
             Optional<IOException> errorOpt = FileUtils.saveAsFile(path, editorModel.getContents());
 
-            errorOpt.ifPresent(Errors::saveFileException);
+            errorOpt.ifPresent(Errors::saveFileExceptionDialog);
             if (!errorOpt.isPresent()) {
                 saveFileChooser.setInitialDirectory(file.getParentFile());
                 editorModel.setPath(path);

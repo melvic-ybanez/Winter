@@ -71,7 +71,16 @@ public class FileUtils {
         try {
             return Either.right(Files.move(source, dest));
         } catch (IOException e) {
-            return Either.left(e);
+            return Either.left(e); 
+        }
+    }
+    
+    public static Optional<IOException> deleteFile(Path path) {
+        try {
+            Files.delete(path);
+            return Optional.empty();
+        } catch (IOException e) {
+            return Optional.of(e);
         }
     }
 }

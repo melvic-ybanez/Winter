@@ -56,19 +56,44 @@ public abstract class ProjectNodeView extends TreeItem<String> {
 
     public ContextMenu createFolderContextMenu() {
         ContextMenu folderContextMenu = new ContextMenu();
-        MenuItem newFileItem = new MenuItem("Add new File...", Resources.getIcon("new.png"));
-        MenuItem newFolderItem = new MenuItem("Add new Folder...", Resources.getIcon("close_folder.png"));
+        MenuItem addFileItem = createAddFileItem();
+        MenuItem addFolderItem = createAddFolderItem();
+        MenuItem deleteItem = createDeleteItem();
+        MenuItem renameItem = createRenameItem();
+        MenuItem moveItem = createMoveItem();
+
+        folderContextMenu.getItems().addAll(addFileItem,
+                addFolderItem, new SeparatorMenuItem(),
+                deleteItem, renameItem, moveItem);
+        return folderContextMenu;
+    }
+    
+    public ContextMenu createProjectContextMenu() {
+        ContextMenu projectContextMenu = new ContextMenu();
+        MenuItem addFileItem = createAddFileItem();
+        MenuItem addFolderItem = createAddFolderItem();
         MenuItem deleteItem = createDeleteItem();
         MenuItem renameItem = createRenameItem();
         MenuItem moveItem = createMoveItem();
         MenuItem refreshItem = new MenuItem("Refresh", Resources.getIcon("refresh.png"));
         MenuItem closeItem = new MenuItem("Close", Resources.getIcon("close.png"));
-
-        folderContextMenu.getItems().addAll(newFileItem,
-                newFolderItem, new SeparatorMenuItem(),
+        MenuItem closeAllItems = new MenuItem("Close All");
+                
+        projectContextMenu.getItems().addAll(addFileItem,
+                addFolderItem, new SeparatorMenuItem(),
                 deleteItem, renameItem, moveItem, new SeparatorMenuItem(),
-                refreshItem, closeItem);
-        return folderContextMenu;
+                refreshItem, closeItem, closeAllItems);
+        return projectContextMenu;
+    }
+    
+    private MenuItem createAddFileItem() {
+        MenuItem newFileItem = new MenuItem("Add new File...", Resources.getIcon("new.png"));
+        return newFileItem;
+    }
+    
+    private MenuItem createAddFolderItem() {
+        MenuItem newFolderItem = new MenuItem("Add new Folder...", Resources.getIcon("close_folder.png"));
+        return newFolderItem;
     }
     
     private MenuItem createDeleteItem() {

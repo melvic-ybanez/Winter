@@ -42,19 +42,25 @@ public class Errors {
         return alert.showAndWait();
     }
     
-    public static Optional<ButtonType> openFileException(IOException ex) {
-        return Errors.exceptionDialog("Open File Exception",
-                "An exception has occurred while opening the file", ex.getMessage(), ex);
+    public static Optional<ButtonType> openFileExceptionDialog(IOException ex) {
+        return fileIOExceptionDialog(ex, "Open File", "opening the file");
     }
     
-    public static Optional<ButtonType> saveFileException(IOException ex) {
-        return Errors.exceptionDialog("Save File Exception",
-                "An exception has occurred while saving the file", ex.getMessage(), ex);
+    public static Optional<ButtonType> saveFileExceptionDialog(IOException ex) {
+        return fileIOExceptionDialog(ex, "Save File", "saving the file");
     }
     
-    public static Optional<ButtonType> moveFileException(IOException ex) {
-        return Errors.exceptionDialog("Move File Exception",
-                "An exception has occurred while moving the file", ex.getMessage(), ex);
+    public static Optional<ButtonType> moveFileExceptionDialog(IOException ex) {
+        return fileIOExceptionDialog(ex, "Move File", "moving the file");
+    }
+
+    public static Optional<ButtonType> deleteFileExceptionDialog(IOException ex) {
+        return fileIOExceptionDialog(ex, "Delete File", "deleting the file");
+    }
+
+    public static Optional<ButtonType> fileIOExceptionDialog(IOException ex, String title, String action) {
+        return Errors.exceptionDialog(title + " Exception",
+                "An exception has occurred while " + action + ".", ex.getMessage(), ex);
     }
     
     public static Optional<ButtonType> headerLessDialog(String title, String contents) {

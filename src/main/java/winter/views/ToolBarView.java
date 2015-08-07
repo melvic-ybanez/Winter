@@ -57,7 +57,7 @@ public class ToolBarView extends ToolBar {
         findButton.setTooltip(createTooltip(editMenu.getFindItem()));
         replaceButton.setTooltip(createTooltip(editMenu.getReplaceItem()));
         
-        //viewProjectsButton.setTooltip(createTooltip(viewMenu.getLineNumbersItem()));
+        // viewProjectsButton.setTooltip(createTooltip(viewMenu.getLineNumbersItem()));
 
         getItems().addAll(newButton, openFileButton, openFolderButton, saveButton, saveAsButton, new Separator(),
                 undoButton, redoButton, new Separator(),

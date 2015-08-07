@@ -8,6 +8,7 @@ import winter.Resources;
 import winter.controllers.projects.FileProjectController;
 import winter.controllers.projects.FolderProjectController;
 import winter.controllers.projects.ProjectController;
+import winter.controllers.projects.ProjectProjectController;
 import winter.models.projects.ProjectModel;
 import winter.models.projects.ProjectModelImpl;
 import winter.utils.Either;
@@ -69,7 +70,7 @@ public class ProjectSetView extends TitledPane {
                 Path path = item.getProjectModel().getPath();
                 if (!Files.isDirectory(path)) {
                     Either<IOException, String> result = FileUtils.openFile(path);
-                    result.getLeft().ifPresent(Errors::openFileException);
+                    result.getLeft().ifPresent(Errors::openFileExceptionDialog);
                     result.getRight().ifPresent(contents -> {
                         String filename = path.getFileName().toString();
                         TabPane tabPane = editorSetView.getTabPane();
@@ -100,14 +101,16 @@ public class ProjectSetView extends TitledPane {
             alert.setContentText("A project with the same name is already open.");
             alert.showAndWait();
         } else {
-            ProjectNodeView projectTree = createFolder(projectPath);
+            ProjectNodeView projectTree = createFolder(projectPath, true); 
             root.getChildren().add(projectTree);
         }
     }
     
-    private ProjectNodeView createFolder(Path folderPath) {
+    private ProjectNodeView createFolder(Path folderPath, boolean isProject) {
         ProjectModel folderProjectModel = new ProjectModelImpl(folderPath);
-        ProjectController folderProjectController = new FolderProjectController(folderProjectModel);
+        ProjectController folderProjectController = isProject  
+                ? new ProjectProjectController(folderProjectModel)
+                : new FolderProjectController(folderProjectModel);
         ProjectNodeView folderNode = folderProjectController.getProjectNodeView();
         
         folderNode.setGraphic(Resources.getIcon("close_folder.png")); 
@@ -134,6 +137,10 @@ public class ProjectSetView extends TitledPane {
             Errors.exceptionDialog("Add Folder Exception", "Unable to add folder: " + folderPath, ex.getMessage(), ex);
         }
         return folderNode;
+    }
+    
+    private ProjectNodeView createFolder(Path folderPath) {
+        return createFolder(folderPath, false);
     }
     
     public void removeProject(String name) {
