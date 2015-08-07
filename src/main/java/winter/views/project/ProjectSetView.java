@@ -25,7 +25,7 @@ import java.util.Optional;
  * Created by ybamelcash on 6/21/2015.
  */
 public class ProjectSetView extends TitledPane {
-    private TreeView<ProjectNodeView> tree = new TreeView<>(new TreeItem<>());
+    private TreeView<String> tree = new TreeView<>();
     private EditorSetView editorSetView;
     private ContextMenu folderContextMenu;
     private ContextMenu fileContextMenu;
@@ -38,9 +38,24 @@ public class ProjectSetView extends TitledPane {
         prefHeightProperty().bind(heightProperty); 
         setCollapsible(false);
         
-        createContextMenu();
-        
+        tree.setRoot(ProjectNodeView.createDummy());
         tree.setShowRoot(false);
+        tree.setCellFactory(treeView -> {
+            return new TreeCell<String>() {
+                @Override
+                public void updateItem(String item, boolean isEmpty) {
+                    super.updateItem(item, isEmpty);
+                    if (isEmpty) {
+                        setText(null);
+                        setGraphic(null);
+                    } else {
+                        setText(getItem() == null ? "" : getItem());
+                        setGraphic(getTreeItem().getGraphic());
+                        setContextMenu(((ProjectNodeView) getTreeItem()).getMenu());
+                    }
+                } 
+            };
+        });
         registerEvents();
         
         managedProperty().bind(visibleProperty());
@@ -48,9 +63,10 @@ public class ProjectSetView extends TitledPane {
     
     private void registerEvents() {
         tree.setOnMouseClicked(event -> {
-            TreeItem<ProjectNodeView> item = tree.getSelectionModel().getSelectedItem();
+            ProjectNodeView item = (ProjectNodeView) tree.getSelectionModel().getSelectedItem();
+            if (item == null) return;
             if (event.getClickCount() == 2 && event.getButton() == MouseButton.PRIMARY) {
-                Path path = item.getValue().getProjectModel().getPath();
+                Path path = item.getProjectModel().getPath();
                 if (!Files.isDirectory(path)) {
                     Either<IOException, String> result = FileUtils.openFile(path);
                     result.getLeft().ifPresent(Errors::openFileException);
@@ -67,54 +83,44 @@ public class ProjectSetView extends TitledPane {
                         }
                     });
                 }
-            } else if (event.getButton() == MouseButton.SECONDARY) {
-                
             }
         });
     }
     
-    private void createContextMenu() {
-        ContextMenu contextMenu = new ContextMenu();
-        MenuItem newFileItem = new MenuItem("New File...");
-        MenuItem newFolderItem = new MenuItem("New Folder...");
-        MenuItem renameItem = new MenuItem("Rename...");
-        MenuItem moveItem = new MenuItem("Move...");
-        MenuItem deleteItem = new MenuItem("Delete");
-        
-        contextMenu.getItems().addAll(newFileItem,
-                newFolderItem, new SeparatorMenuItem(),
-                renameItem, moveItem,
-                new SeparatorMenuItem(), deleteItem);
-        
-        tree.contextMenuProperty().bind(
-                Bindings.when(tree.getRoot().leafProperty())
-                .then((ContextMenu) null)
-                .otherwise(contextMenu)
-        );
+    public ContextMenu createFileContextMenu() {
+        if (fileContextMenu == null) {
+            fileContextMenu = new ContextMenu();
+            MenuItem openItem = new MenuItem("Open");
+            MenuItem deleteItem = new MenuItem("Delete");
+            MenuItem renameItem = new MenuItem("Rename...");
+            MenuItem moveItem = new MenuItem("Move...");
+
+            fileContextMenu.getItems().addAll(openItem, deleteItem, renameItem, moveItem);
+        }
+        return fileContextMenu;
     }
     
-    private ContextMenu createFolderContextMenu() {
+    public ContextMenu createFolderContextMenu() {
         if (folderContextMenu == null) {
             folderContextMenu = new ContextMenu();
             MenuItem newFileItem = new MenuItem("New File...");
             MenuItem newFolderItem = new MenuItem("New Folder...");
+            MenuItem deleteItem = new MenuItem("Delete");
             MenuItem renameItem = new MenuItem("Rename...");
             MenuItem moveItem = new MenuItem("Move...");
-            MenuItem deleteItem = new MenuItem("Delete");
 
-            folderContextMenu.getItems().addAll(newFileItem,
+            folderContextMenu.getItems().addAll(newFileItem, 
                     newFolderItem, new SeparatorMenuItem(),
-                    renameItem, moveItem,
-                    new SeparatorMenuItem(), deleteItem);
+                    deleteItem, renameItem, moveItem);
         }
         return folderContextMenu;
     }
     
     public void displayProject(Path projectPath) {
-        TreeItem<ProjectNodeView> root = tree.getRoot();
-        Optional<TreeItem<ProjectNodeView>> existingProject = root.getChildren()
+        ProjectNodeView root = (ProjectNodeView) tree.getRoot();
+        Optional<TreeItem<String>> existingProject = root.getChildren()
                 .stream()
-                .filter(item -> item.getValue().getProjectModel().getPath().equals(Optional.of(projectPath)))
+                .filter(item -> ((ProjectNodeView) item).getProjectModel().getPath().equals(projectPath))
                 .findFirst();
         if (existingProject.isPresent()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -123,15 +129,15 @@ public class ProjectSetView extends TitledPane {
             alert.setContentText("A project with the same name is already open.");
             alert.showAndWait();
         } else {
-            TreeItem<ProjectNodeView> projectTree = createFolder(projectPath);
+            ProjectNodeView projectTree = createFolder(projectPath);
             root.getChildren().add(projectTree);
         }
     }
     
-    private TreeItem<ProjectNodeView> createFolder(Path folderPath) {
+    private ProjectNodeView createFolder(Path folderPath) {
         ProjectModel folderProjectModel = new ProjectModelImpl(folderPath);
-        ProjectController folderProjectController = new FolderProjectController(folderProjectModel);
-        TreeItem<ProjectNodeView> folderNode = new TreeItem<>(folderProjectController.getProjectNodeView());
+        ProjectController folderProjectController = new FolderProjectController(folderProjectModel, this);
+        ProjectNodeView folderNode = folderProjectController.getProjectNodeView();
         
         folderNode.setGraphic(Resources.getIcon("close_folder.png")); 
         folderNode.graphicProperty().bind(
@@ -142,15 +148,15 @@ public class ProjectSetView extends TitledPane {
         try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(folderPath)) {
             for (Path path : directoryStream) {
                 if (Files.isDirectory(path)) {
-                    TreeItem<ProjectNodeView> folder = createFolder(path);
+                    ProjectNodeView folder = createFolder(path);
                     folderNode.getChildren().add(folder);
                 } else {
                     ProjectModel fileProjectModel = new ProjectModelImpl(path);
-                    ProjectController fileProjectController = new FileProjectController(fileProjectModel, 
+                    ProjectController fileProjectController = new FileProjectController(fileProjectModel, this,  
                             editorSetView.getEditorSetController());
-                    TreeItem<ProjectNodeView> file = new TreeItem<>(fileProjectController.getProjectNodeView());
-                    file.setGraphic(Resources.getIcon("file.png"));
-                    folderNode.getChildren().add(file);
+                    ProjectNodeView fileNode = fileProjectController.getProjectNodeView();
+                    fileNode.setGraphic(Resources.getIcon("file.png"));
+                    folderNode.getChildren().add(fileNode);
                 }
             }
         } catch (IOException ex) {
@@ -161,5 +167,9 @@ public class ProjectSetView extends TitledPane {
     
     public void removeProject(String name) {
         
+    }
+
+    public TreeView<String> getTree() {
+        return tree;
     }
 }

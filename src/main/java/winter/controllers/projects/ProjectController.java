@@ -27,7 +27,6 @@ public class ProjectController {
     
     public ProjectController(ProjectModel projectModel) {
         setProjectModel(projectModel);
-        setProjectNodeView(new ProjectNodeView(projectModel, this));
     }
     
     public void newFile() {
