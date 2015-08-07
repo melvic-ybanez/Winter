@@ -16,12 +16,14 @@ public class ToolBarView extends ToolBar {
     private Button openFolderButton = Icons.createButtonIcon("close_folder.png");
     private Button saveButton = Icons.createButtonIcon("save.png");
     private Button saveAsButton = Icons.createButtonIcon("save_as.png");
+    private Button restartButton = Icons.createButtonIcon("restart.png");
     private Button undoButton = Icons.createButtonIcon("undo.png");
     private Button redoButton = Icons.createButtonIcon("redo.png");
     private Button copyButton = Icons.createButtonIcon("copy.png");
     private Button cutButton = Icons.createButtonIcon("cut.png");
     private Button pasteButton = Icons.createButtonIcon("paste.png");
     private Button findButton = Icons.createButtonIcon("find.png");
+    private Button findFileButton = Icons.createButtonIcon("find_file.png");
     private Button replaceButton = Icons.createButtonIcon("replace.png");
     private Button runButton = Icons.createButtonIcon("run.png");
     private Button replButton = Icons.createButtonIcon("repl.png");
@@ -56,13 +58,13 @@ public class ToolBarView extends ToolBar {
         pasteButton.setTooltip(createTooltip(editMenu.getPasteItem()));
         findButton.setTooltip(createTooltip(editMenu.getFindItem()));
         replaceButton.setTooltip(createTooltip(editMenu.getReplaceItem()));
-        
-        // viewProjectsButton.setTooltip(createTooltip(viewMenu.getLineNumbersItem()));
+        viewProjectsButton.setTooltip(new Tooltip(viewMenu.getProjectsItem().getText()));
 
-        getItems().addAll(newButton, openFileButton, openFolderButton, saveButton, saveAsButton, new Separator(),
+        getItems().addAll(newButton, 
+                openFileButton, openFolderButton, saveButton, saveAsButton, restartButton, new Separator(),
                 undoButton, redoButton, new Separator(),
                 copyButton, cutButton, pasteButton, new Separator(),
-                findButton, replaceButton, new Separator(),
+                findButton, replaceButton, findFileButton, new Separator(),
                 viewProjectsButton, preferencesButton, helpButton);
         
         managedProperty().bind(visibleProperty());
