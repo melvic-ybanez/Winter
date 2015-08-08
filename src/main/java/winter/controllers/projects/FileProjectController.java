@@ -17,10 +17,9 @@ import java.util.Optional;
  * Created by ybamelcash on 8/6/2015.
  */
 public class FileProjectController extends ProjectController {
-    private EditorSetController editorSetController;
-    
     public FileProjectController(ProjectModel projectModel, EditorSetController editorSetController) {
         super(projectModel);
+        setEditorSetController(editorSetController);
         setProjectNodeView(new ProjectNodeView(projectModel, this) {
             @Override
             public ContextMenu getMenu() {

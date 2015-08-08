@@ -1,5 +1,6 @@
 package winter.controllers.projects;
 
+import winter.controllers.editors.EditorSetController;
 import winter.models.projects.ProjectModel;
 import winter.utils.Either;
 import winter.utils.Observable;
@@ -26,6 +27,7 @@ public class ProjectController {
     
     private ProjectModel projectModel;
     private ProjectNodeView projectNodeView;
+    private EditorSetController editorSetController;
     
     public ProjectController(ProjectModel projectModel) {
         setProjectModel(projectModel);
@@ -125,5 +127,13 @@ public class ProjectController {
 
     public void setOpenBehavior(Runnable openBehavior) {
         this.openBehavior = openBehavior;
+    }
+
+    public EditorSetController getEditorSetController() {
+        return editorSetController;
+    }
+
+    public void setEditorSetController(EditorSetController editorSetController) {
+        this.editorSetController = editorSetController;
     }
 }

@@ -2,6 +2,7 @@ package winter.factories;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextInputDialog;
 import winter.controllers.editors.EditorSetController;
 import winter.models.projects.ProjectModel;
 import winter.utils.Either;
@@ -58,9 +59,21 @@ public class ProjectControllerBehaviors {
         return delete(projectNodeView, path).apply(() -> FileUtils.deleteDirectory(path));
     }
     
-    public static Runnable newFileIn() {
+    public static Runnable newFile(ProjectNodeView projectNodeView, Path path) {
         return () -> {
-            
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setTitle("New File");
+            dialog.setHeaderText(null);
+            dialog.setContentText("Enter filename:");
+            Optional<String> answer = dialog.showAndWait();
+            answer.ifPresent(filename -> {
+                Either<IOException, Path> result = FileUtils.createFile(path.resolve(filename));
+                result.ifLeft(Errors::addFileExceptionDialog);
+                result.ifRight(newFile -> {
+                    ProjectNodeView newNode = projectNodeView.addNewFile(newFile);
+                    newNode.getProjectController().open();
+                });
+            });
         };
     };
     

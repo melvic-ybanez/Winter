@@ -38,15 +38,15 @@ public class EditorControllerImpl implements EditorController {
     @Override
     public void rename() {
         editorModel.ifUntitled(count -> {
-            Errors.headerLessDialog(Errors.titles.RENAME, "Can not rename a non-existing file");
+            Errors.headerLessDialog(Errors.titles.RENAME_FILE, "Can not rename a non-existing file");
         });
         editorModel.getPath().ifPresent(path -> {
             Optional<String> newFilenameOpt = editorView.showRenameDialog();
             newFilenameOpt.ifPresent(newFilename -> {
                 Either<IOException, Either<String, Path>> result = FileUtils.renameFile(path, newFilename);
-                result.ifLeft(ex -> Errors.exceptionDialog(Errors.titles.RENAME, null, ex.getMessage(), ex));
+                result.ifLeft(ex -> Errors.exceptionDialog(Errors.titles.RENAME_FILE, null, ex.getMessage(), ex));
                 result.ifRight(right -> {
-                    right.ifLeft(error -> Errors.headerLessDialog(Errors.titles.RENAME, error));
+                    right.ifLeft(error -> Errors.headerLessDialog(Errors.titles.RENAME_FILE, error));
                     right.ifRight(editorModel::setPath);
                 });
             });

@@ -109,8 +109,8 @@ public class ProjectSetView extends TitledPane {
     private ProjectNodeView createFolder(Path folderPath, boolean isProject) {
         ProjectModel folderProjectModel = new ProjectModelImpl(folderPath);
         ProjectController folderProjectController = isProject  
-                ? new ProjectProjectController(folderProjectModel)
-                : new DirectoryProjectController(folderProjectModel);
+                ? new ProjectProjectController(folderProjectModel, editorSetView.getEditorSetController())
+                : new DirectoryProjectController(folderProjectModel, editorSetView.getEditorSetController());
         ProjectNodeView folderNode = folderProjectController.getProjectNodeView();
         
         folderNode.setGraphic(Resources.getIcon("close_folder.png")); 
@@ -125,12 +125,7 @@ public class ProjectSetView extends TitledPane {
                     ProjectNodeView folder = createFolder(path);
                     folderNode.getChildren().add(folder); 
                 } else {
-                    ProjectModel fileProjectModel = new ProjectModelImpl(path);
-                    ProjectController fileProjectController = new FileProjectController(fileProjectModel,  
-                            editorSetView.getEditorSetController());
-                    ProjectNodeView fileNode = fileProjectController.getProjectNodeView();
-                    fileNode.setGraphic(Resources.getIcon("file.png"));
-                    folderNode.getChildren().add(fileNode);
+                    folderNode.addNewFile(path);
                 }
             }
         } catch (IOException ex) {

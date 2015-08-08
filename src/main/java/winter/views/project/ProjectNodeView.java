@@ -2,8 +2,13 @@ package winter.views.project;
 
 import javafx.scene.control.*;
 import winter.Resources;
+import winter.controllers.projects.FileProjectController;
 import winter.controllers.projects.ProjectController;
 import winter.models.projects.ProjectModel;
+import winter.models.projects.ProjectModelImpl;
+import winter.views.editor.EditorSetView;
+
+import java.nio.file.Path;
 
 /**
  * Created by ybamelcash on 6/24/2015.
@@ -82,8 +87,19 @@ public abstract class ProjectNodeView extends TreeItem<String> {
         return projectContextMenu;
     }
     
+    public ProjectNodeView addNewFile(Path path) {
+        ProjectModel fileProjectModel = new ProjectModelImpl(path);
+        ProjectController fileProjectController = new FileProjectController(fileProjectModel,
+                projectController.getEditorSetController());
+        ProjectNodeView fileNode = fileProjectController.getProjectNodeView();
+        fileNode.setGraphic(Resources.getIcon("file.png"));
+        getChildren().add(fileNode);
+        return fileNode;
+    }
+    
     private MenuItem createAddFileItem() {
         MenuItem newFileItem = new MenuItem("Add new File...", Resources.getIcon("new.png"));
+        newFileItem.setOnAction(e -> projectController.newFile());
         return newFileItem;
     }
     

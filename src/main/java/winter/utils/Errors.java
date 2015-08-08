@@ -30,7 +30,7 @@ public class Errors {
         Label label = new Label("Exception stacktrace:");
         TextArea textArea = new TextArea(exString);
         textArea.setEditable(false);
-        textArea.setWrapText(true);
+        textArea.setStyle("-fx-text-fill: darkred");
 
 
         BorderPane borderPane = new BorderPane();
@@ -43,19 +43,23 @@ public class Errors {
     }
     
     public static Optional<ButtonType> openFileExceptionDialog(IOException ex) {
-        return fileIOExceptionDialog(ex, "Open File", "opening the file");
+        return fileIOExceptionDialog(ex, titles.OPEN_FILE, "opening the file");
     }
     
     public static Optional<ButtonType> saveFileExceptionDialog(IOException ex) {
-        return fileIOExceptionDialog(ex, "Save File", "saving the file");
+        return fileIOExceptionDialog(ex, titles.SAVE_FILE, "saving the file");
     }
     
     public static Optional<ButtonType> moveFileExceptionDialog(IOException ex) {
-        return fileIOExceptionDialog(ex, "Move File", "moving the file");
+        return fileIOExceptionDialog(ex, titles.MOVE_FILE, "moving the file");
     }
 
     public static Optional<ButtonType> deleteFileExceptionDialog(IOException ex) {
-        return fileIOExceptionDialog(ex, titles.DELETE, "deleting the file");
+        return fileIOExceptionDialog(ex, titles.DELETE_FILE, "deleting the file");
+    }
+
+    public static Optional<ButtonType> addFileExceptionDialog(IOException ex) {
+        return fileIOExceptionDialog(ex, titles.ADD_FILE, "adding the file");
     }
 
     public static Optional<ButtonType> fileIOExceptionDialog(IOException ex, String title, String action) {
@@ -78,7 +82,11 @@ public class Errors {
     }
     
     public static class titles {
-        public static final String RENAME = "Rename File Error";
-        public static final String DELETE = "Delete File Error";
+        public static final String RENAME_FILE = "Rename File Error";
+        public static final String DELETE_FILE = "Delete File Error";
+        public static final String ADD_FILE = "Add File Error";
+        public static final String SAVE_FILE = "Save File Error";
+        public static final String MOVE_FILE = "Move File Error";
+        public static final String OPEN_FILE = "Open File Error";
     }
 }
