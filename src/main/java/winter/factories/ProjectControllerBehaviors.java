@@ -10,7 +10,6 @@ import winter.utils.FileUtils;
 import winter.views.editor.EditorSetView;
 import winter.views.project.ProjectNodeView;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Optional;
@@ -55,8 +54,8 @@ public class ProjectControllerBehaviors {
         return delete(projectNodeView, path).apply(() -> FileUtils.deleteFile(path));
     }
     
-    public static Runnable deleteFolder(ProjectNodeView projectNodeView, Path path) {
-        return delete(projectNodeView, path).apply(() -> FileUtils.deleteFolder(path));
+    public static Runnable deleteDirectory(ProjectNodeView projectNodeView, Path path) {
+        return delete(projectNodeView, path).apply(() -> FileUtils.deleteDirectory(path));
     }
     
     public static Runnable newFileIn() {

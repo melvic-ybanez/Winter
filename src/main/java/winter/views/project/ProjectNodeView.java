@@ -1,13 +1,9 @@
 package winter.views.project;
 
-import com.sun.javafx.scene.control.ReadOnlyUnbackedObservableList;
 import javafx.scene.control.*;
 import winter.Resources;
 import winter.controllers.projects.ProjectController;
 import winter.models.projects.ProjectModel;
-
-import java.nio.file.Path;
-import java.util.Optional;
 
 /**
  * Created by ybamelcash on 6/24/2015.
@@ -57,7 +53,7 @@ public abstract class ProjectNodeView extends TreeItem<String> {
     public ContextMenu createFolderContextMenu() {
         ContextMenu folderContextMenu = new ContextMenu();
         MenuItem addFileItem = createAddFileItem();
-        MenuItem addFolderItem = createAddFolderItem();
+        MenuItem addFolderItem = createAddDirectoryItem();
         MenuItem deleteItem = createDeleteItem();
         MenuItem renameItem = createRenameItem();
         MenuItem moveItem = createMoveItem();
@@ -71,7 +67,7 @@ public abstract class ProjectNodeView extends TreeItem<String> {
     public ContextMenu createProjectContextMenu() {
         ContextMenu projectContextMenu = new ContextMenu();
         MenuItem addFileItem = createAddFileItem();
-        MenuItem addFolderItem = createAddFolderItem();
+        MenuItem addFolderItem = createAddDirectoryItem();
         MenuItem deleteItem = createDeleteItem();
         MenuItem renameItem = createRenameItem();
         MenuItem moveItem = createMoveItem();
@@ -91,9 +87,9 @@ public abstract class ProjectNodeView extends TreeItem<String> {
         return newFileItem;
     }
     
-    private MenuItem createAddFolderItem() {
-        MenuItem newFolderItem = new MenuItem("Add new Folder...", Resources.getIcon("close_folder.png"));
-        return newFolderItem;
+    private MenuItem createAddDirectoryItem() {
+        MenuItem newDirectoryItem = new MenuItem("Add new Directory...", Resources.getIcon("close_folder.png"));
+        return newDirectoryItem;
     }
     
     private MenuItem createDeleteItem() {

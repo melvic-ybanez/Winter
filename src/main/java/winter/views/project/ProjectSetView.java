@@ -6,7 +6,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import winter.Resources;
 import winter.controllers.projects.FileProjectController;
-import winter.controllers.projects.FolderProjectController;
+import winter.controllers.projects.DirectoryProjectController;
 import winter.controllers.projects.ProjectController;
 import winter.controllers.projects.ProjectProjectController;
 import winter.models.projects.ProjectModel;
@@ -110,7 +110,7 @@ public class ProjectSetView extends TitledPane {
         ProjectModel folderProjectModel = new ProjectModelImpl(folderPath);
         ProjectController folderProjectController = isProject  
                 ? new ProjectProjectController(folderProjectModel)
-                : new FolderProjectController(folderProjectModel);
+                : new DirectoryProjectController(folderProjectModel);
         ProjectNodeView folderNode = folderProjectController.getProjectNodeView();
         
         folderNode.setGraphic(Resources.getIcon("close_folder.png")); 

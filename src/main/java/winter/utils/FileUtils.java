@@ -59,7 +59,7 @@ public class FileUtils {
             return Either.right(Either.left(Errors.messages.fileAlreadyExists(newPath)));
         } else {
             try {
-                newPath = Files.move(path, newPath);
+                newPath = Files.move(path, newPath); 
                 return Either.right(Either.<String, Path>right(newPath));
             } catch (IOException ex) {
                 return Either.left(ex);
@@ -68,28 +68,22 @@ public class FileUtils {
     }
     
     public static Either<IOException, Path> moveFile(Path source, Path dest) {
-        try {
-            return Either.right(Files.move(source, dest));
-        } catch (IOException e) {
-            return Either.left(e); 
-        }
+        return IOSupplier.get(() -> Files.move(source, dest));
+    }
+    
+    public static Either<IOException, Path> createFile(Path path) {
+        return IOSupplier.get(() -> Files.createFile(path));
+    }
+    
+    public static Either<IOException, Path> createDirectory(Path path) {
+        return IOSupplier.get(() -> Files.createDirectory(path));
     }
     
     public static Optional<IOException> deleteFile(Path path) {
-        try {
-            Files.delete(path);
-            return Optional.empty();
-        } catch (IOException e) {
-            return Optional.of(e);
-        }
+        return IORunnable.run(() -> Files.delete(path));
     }
     
-    public static Optional<IOException> deleteFolder(Path path) {
-        try {
-            org.apache.commons.io.FileUtils.deleteDirectory(path.toFile());
-            return Optional.empty();
-        } catch (IOException ex) {
-            return Optional.of(ex);
-        }
+    public static Optional<IOException> deleteDirectory(Path path) {
+        return IORunnable.run(() -> org.apache.commons.io.FileUtils.deleteDirectory(path.toFile()));
     }
 }
