@@ -123,7 +123,7 @@ public class ProjectSetView extends TitledPane {
             for (Path path : directoryStream) {
                 if (Files.isDirectory(path)) {
                     ProjectNodeView folder = createFolder(path);
-                    folderNode.getChildren().add(folder);
+                    folderNode.getChildren().add(folder); 
                 } else {
                     ProjectModel fileProjectModel = new ProjectModelImpl(path);
                     ProjectController fileProjectController = new FileProjectController(fileProjectModel,  

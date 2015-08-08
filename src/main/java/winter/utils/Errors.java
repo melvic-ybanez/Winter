@@ -55,7 +55,7 @@ public class Errors {
     }
 
     public static Optional<ButtonType> deleteFileExceptionDialog(IOException ex) {
-        return fileIOExceptionDialog(ex, "Delete File", "deleting the file");
+        return fileIOExceptionDialog(ex, titles.DELETE, "deleting the file");
     }
 
     public static Optional<ButtonType> fileIOExceptionDialog(IOException ex, String title, String action) {
@@ -79,5 +79,6 @@ public class Errors {
     
     public static class titles {
         public static final String RENAME = "Rename File Error";
+        public static final String DELETE = "Delete File Error";
     }
 }

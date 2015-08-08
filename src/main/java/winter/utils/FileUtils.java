@@ -83,4 +83,13 @@ public class FileUtils {
             return Optional.of(e);
         }
     }
+    
+    public static Optional<IOException> deleteFolder(Path path) {
+        try {
+            org.apache.commons.io.FileUtils.deleteDirectory(path.toFile());
+            return Optional.empty();
+        } catch (IOException ex) {
+            return Optional.of(ex);
+        }
+    }
 }

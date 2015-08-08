@@ -28,5 +28,6 @@ public class FileProjectController extends ProjectController {
             }
         });
         setOpenBehavior(ProjectControllerBehaviors.openTextFile(projectModel, editorSetController));
+        setDeleteBehavior(ProjectControllerBehaviors.deleteFile(getProjectNodeView(), getProjectModel().getPath()));
     }
 }

@@ -19,5 +19,6 @@ public class FolderProjectController extends ProjectController {
             }
         });
         setOpenBehavior(ProjectControllerBehaviors.doNothing());
+        setDeleteBehavior(ProjectControllerBehaviors.deleteFolder(getProjectNodeView(), getProjectModel().getPath()));
     }
 }

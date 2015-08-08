@@ -1,6 +1,7 @@
 package winter.controllers.projects;
 
 import javafx.scene.control.ContextMenu;
+import winter.factories.ProjectControllerBehaviors;
 import winter.models.projects.ProjectModel;
 import winter.views.project.ProjectNodeView;
 
@@ -16,5 +17,7 @@ public class ProjectProjectController extends ProjectController {
                 return createProjectContextMenu();
             }
         });
+        setOpenBehavior(ProjectControllerBehaviors.doNothing());
+        setDeleteBehavior(ProjectControllerBehaviors.deleteFolder(getProjectNodeView(), getProjectModel().getPath()));
     }
 }

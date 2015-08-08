@@ -98,6 +98,7 @@ public abstract class ProjectNodeView extends TreeItem<String> {
     
     private MenuItem createDeleteItem() {
         MenuItem deleteItem = new MenuItem("Delete", Resources.getIcon("delete.png"));
+        deleteItem.setOnAction(e -> projectController.delete());
         return deleteItem;
     }
     
