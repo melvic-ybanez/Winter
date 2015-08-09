@@ -1,23 +1,15 @@
 package winter.views.project;
 
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import winter.Resources;
-import winter.controllers.projects.FileProjectController;
-import winter.controllers.projects.DirectoryProjectController;
-import winter.controllers.projects.ProjectController;
-import winter.controllers.projects.ProjectProjectController;
-import winter.models.projects.ProjectModel;
-import winter.models.projects.ProjectModelImpl;
 import winter.utils.Either;
 import winter.utils.Errors;
 import winter.utils.FileUtils;
 import winter.views.editor.EditorSetView;
 
 import java.io.IOException;
-import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
@@ -39,7 +31,7 @@ public class ProjectSetView extends TitledPane {
         prefHeightProperty().bind(heightProperty); 
         setCollapsible(false);
         
-        tree.setRoot(ProjectNodeView.createDummy());
+        tree.setRoot(ProjectNodeView.createDummy(editorSetView.getEditorSetController()));
         tree.setShowRoot(false);
         tree.setCellFactory(treeView -> {
             return new TreeCell<String>() {
@@ -101,41 +93,8 @@ public class ProjectSetView extends TitledPane {
             alert.setContentText("A project with the same name is already open.");
             alert.showAndWait();
         } else {
-            ProjectNodeView projectTree = createFolder(projectPath, true); 
-            root.getChildren().add(projectTree);
+            root.addDirectory(projectPath, true);
         }
-    }
-    
-    private ProjectNodeView createFolder(Path folderPath, boolean isProject) {
-        ProjectModel folderProjectModel = new ProjectModelImpl(folderPath);
-        ProjectController folderProjectController = isProject  
-                ? new ProjectProjectController(folderProjectModel, editorSetView.getEditorSetController())
-                : new DirectoryProjectController(folderProjectModel, editorSetView.getEditorSetController());
-        ProjectNodeView folderNode = folderProjectController.getProjectNodeView();
-        
-        folderNode.setGraphic(Resources.getIcon("close_folder.png")); 
-        folderNode.graphicProperty().bind(
-                Bindings.when(folderNode.expandedProperty())
-                        .then(Resources.getIcon("open_folder.png"))
-                        .otherwise(Resources.getIcon("close_folder.png")));
-        
-        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(folderPath)) {
-            for (Path path : directoryStream) {
-                if (Files.isDirectory(path)) {
-                    ProjectNodeView folder = createFolder(path);
-                    folderNode.getChildren().add(folder); 
-                } else {
-                    folderNode.addNewFile(path);
-                }
-            }
-        } catch (IOException ex) {
-            Errors.exceptionDialog("Add Folder Exception", "Unable to add folder: " + folderPath, ex.getMessage(), ex);
-        }
-        return folderNode;
-    }
-    
-    private ProjectNodeView createFolder(Path folderPath) {
-        return createFolder(folderPath, false);
     }
     
     public void removeProject(String name) {

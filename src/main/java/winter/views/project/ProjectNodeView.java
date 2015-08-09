@@ -1,14 +1,22 @@
 package winter.views.project;
 
+import javafx.beans.binding.Bindings;
 import javafx.scene.control.*;
 import winter.Resources;
+import winter.controllers.editors.EditorSetController;
+import winter.controllers.projects.DirectoryProjectController;
 import winter.controllers.projects.FileProjectController;
 import winter.controllers.projects.ProjectController;
+import winter.controllers.projects.ProjectProjectController;
 import winter.models.projects.ProjectModel;
 import winter.models.projects.ProjectModelImpl;
-import winter.views.editor.EditorSetView;
+import winter.utils.Errors;
 
+import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Created by ybamelcash on 6/24/2015.
@@ -22,8 +30,6 @@ public abstract class ProjectNodeView extends TreeItem<String> {
         setProjectController(projectController);
         setProjectModel(projectModel);
     }
-    
-    public ProjectNodeView() { }
 
     public ProjectModel getProjectModel() {
         return projectModel;
@@ -96,6 +102,39 @@ public abstract class ProjectNodeView extends TreeItem<String> {
         getChildren().add(fileNode);
         return fileNode;
     }
+
+    public ProjectNodeView addDirectory(Path dirPath, boolean isProject) {
+        ProjectModel dirProjectModel = new ProjectModelImpl(dirPath);
+        ProjectController dirProjectController = isProject
+                ? new ProjectProjectController(dirProjectModel, projectController.getEditorSetController())
+                : new DirectoryProjectController(dirProjectModel, projectController.getEditorSetController());
+        ProjectNodeView dirNode = dirProjectController.getProjectNodeView();
+
+        dirNode.setGraphic(Resources.getIcon("close_folder.png"));
+        dirNode.graphicProperty().bind(
+                Bindings.when(dirNode.expandedProperty())
+                        .then(Resources.getIcon("open_folder.png"))
+                        .otherwise(Resources.getIcon("close_folder.png")));
+
+        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(dirPath)) {
+            for (Path path : directoryStream) {
+                if (Files.isDirectory(path)) {
+                    dirNode.addDirectory(path);
+                } else {
+                    dirNode.addNewFile(path);
+                }
+            }
+        } catch (IOException ex) {
+            Errors.exceptionDialog("Add Folder Exception", "Unable to add folder: " + dirPath, ex.getMessage(), ex);
+        }
+
+        getChildren().add(dirNode);
+        return dirNode;
+    }
+
+    public ProjectNodeView addDirectory(Path dirPath) {
+        return addDirectory(dirPath, false);
+    }
     
     private MenuItem createAddFileItem() {
         MenuItem newFileItem = new MenuItem("Add new File...", Resources.getIcon("new.png"));
@@ -105,6 +144,7 @@ public abstract class ProjectNodeView extends TreeItem<String> {
     
     private MenuItem createAddDirectoryItem() {
         MenuItem newDirectoryItem = new MenuItem("Add new Directory...", Resources.getIcon("close_folder.png"));
+        newDirectoryItem.setOnAction(e -> projectController.newDirectory());
         return newDirectoryItem;
     }
     
@@ -126,8 +166,10 @@ public abstract class ProjectNodeView extends TreeItem<String> {
     
     public abstract ContextMenu getMenu();
     
-    public static ProjectNodeView createDummy() {
-        return new ProjectNodeView() {
+    public static ProjectNodeView createDummy(EditorSetController editorSetController) {
+        ProjectModel projectModel = new ProjectModelImpl(Paths.get(""));
+        ProjectController projectController = new DirectoryProjectController(projectModel, editorSetController);
+        return new ProjectNodeView(projectModel, projectController) {
             @Override
             public ContextMenu getMenu() {
                 return null;

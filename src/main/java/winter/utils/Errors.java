@@ -62,6 +62,10 @@ public class Errors {
         return fileIOExceptionDialog(ex, titles.ADD_FILE, "adding the file");
     }
 
+    public static Optional<ButtonType> addDirectoryExceptionDialog(IOException ex) {
+        return fileIOExceptionDialog(ex, titles.ADD_DIRECTORY, "adding the directory");
+    }
+
     public static Optional<ButtonType> fileIOExceptionDialog(IOException ex, String title, String action) {
         return Errors.exceptionDialog(title + " Exception",
                 "An exception has occurred while " + action + ".", ex.getMessage(), ex);
@@ -85,6 +89,7 @@ public class Errors {
         public static final String RENAME_FILE = "Rename File Error";
         public static final String DELETE_FILE = "Delete File Error";
         public static final String ADD_FILE = "Add File Error";
+        public static final String ADD_DIRECTORY = "Add Directory Error";
         public static final String SAVE_FILE = "Save File Error";
         public static final String MOVE_FILE = "Move File Error";
         public static final String OPEN_FILE = "Open File Error";

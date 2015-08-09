@@ -14,6 +14,7 @@ import winter.views.project.ProjectNodeView;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -32,8 +33,8 @@ public class ProjectControllerBehaviors {
         };
     }
     
-    private static Function<Supplier<Optional<IOException>>, Runnable> delete(ProjectNodeView projectNodeView, Path path) {
-        return (deleteFunction) -> () -> {
+    private static Consumer<Supplier<Optional<IOException>>> delete(ProjectNodeView projectNodeView, Path path) {
+        return (deleteFunction) -> {
             Alert warningDialog = new Alert(Alert.AlertType.CONFIRMATION);
             warningDialog.setTitle("Delete Warning");
             warningDialog.setHeaderText(null);
@@ -51,16 +52,16 @@ public class ProjectControllerBehaviors {
         };
     }
     
-    public static Runnable deleteFile(ProjectNodeView projectNodeView, Path path) {
-        return delete(projectNodeView, path).apply(() -> FileUtils.deleteFile(path));
+    public static Consumer<ProjectNodeView> deleteFile(Path path) {
+        return projectNodeView -> delete(projectNodeView, path).accept(() -> FileUtils.deleteFile(path));
     }
     
-    public static Runnable deleteDirectory(ProjectNodeView projectNodeView, Path path) {
-        return delete(projectNodeView, path).apply(() -> FileUtils.deleteDirectory(path));
+    public static Consumer<ProjectNodeView> deleteDirectory(Path path) {
+        return projectNodeView -> delete(projectNodeView, path).accept(() -> FileUtils.deleteDirectory(path));
     }
     
-    public static Runnable newFile(ProjectNodeView projectNodeView, Path path) {
-        return () -> {
+    public static Consumer<ProjectNodeView> newFile(Path path) {
+        return projectNodeView -> {
             TextInputDialog dialog = new TextInputDialog();
             dialog.setTitle("New File");
             dialog.setHeaderText(null);
@@ -76,8 +77,27 @@ public class ProjectControllerBehaviors {
             });
         };
     };
+
+    public static Consumer<ProjectNodeView> newDirectory(Path path) {
+        return projectNodeView -> {
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setTitle("New Directory");
+            dialog.setHeaderText(null);
+            dialog.setContentText("Enter Directory Name:");
+            Optional<String> answer = dialog.showAndWait();
+            answer.ifPresent(directoryName -> {
+                Either<IOException, Path> result = FileUtils.createDirectory(path.resolve(directoryName));
+                result.ifLeft(Errors::addDirectoryExceptionDialog);
+                result.ifRight(projectNodeView::addDirectory);
+            });
+        };
+    };
     
     public static Runnable doNothing() {
         return () -> {};
+    }
+    
+    public static <T> Consumer<T> acceptNothing() {
+        return whatever -> {};
     }
 }

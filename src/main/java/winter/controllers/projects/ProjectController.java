@@ -2,23 +2,18 @@ package winter.controllers.projects;
 
 import winter.controllers.editors.EditorSetController;
 import winter.models.projects.ProjectModel;
-import winter.utils.Either;
-import winter.utils.Observable;
-import winter.utils.Pair;
 import winter.views.project.ProjectNodeView;
 
-import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
  * Created by ybamelcash on 7/16/2015.
  */
 public class ProjectController {
-    private Runnable newFileBehavior;
-    private Runnable newFolderBehavior;
-    private Runnable deleteBehavior;
+    private Consumer<ProjectNodeView> newFileBehavior;
+    private Consumer<ProjectNodeView> newDirectoryBehavior;
+    private Consumer<ProjectNodeView> deleteBehavior;
     private Consumer<String> renameBehavior;
     private Consumer<Path> moveBehavior;
     private Runnable openBehavior;
@@ -34,15 +29,15 @@ public class ProjectController {
     }
     
     public void newFile() {
-        newFileBehavior.run();
+        newFileBehavior.accept(getProjectNodeView());
     }
     
-    public void newFolder() {
-        newFolderBehavior.run();
+    public void newDirectory() {
+        newDirectoryBehavior.accept(getProjectNodeView());
     }
     
     public void delete() {
-        deleteBehavior.run();
+        deleteBehavior.accept(getProjectNodeView());
     }
     
     public void rename(String newName) {
@@ -81,27 +76,27 @@ public class ProjectController {
         this.projectNodeView = projectNodeView;
     }
 
-    public Runnable getNewFileBehavior() {
+    public Consumer<ProjectNodeView> getNewFileBehavior() {
         return newFileBehavior;
     }
 
-    public void setNewFileBehavior(Runnable newFileBehavior) {
+    public void setNewFileBehavior(Consumer<ProjectNodeView> newFileBehavior) {
         this.newFileBehavior = newFileBehavior;
     }
 
-    public Runnable getNewFolderBehavior() {
-        return newFolderBehavior;
+    public Consumer<ProjectNodeView> getNewDirectoryBehavior() {
+        return newDirectoryBehavior;
     }
 
-    public void setNewFolderBehavior(Runnable newFolderBehavior) {
-        this.newFolderBehavior = newFolderBehavior;
+    public void setNewDirectoryBehavior(Consumer<ProjectNodeView> newDirectoryBehavior) {
+        this.newDirectoryBehavior = newDirectoryBehavior;
     }
 
-    public Runnable getDeleteBehavior() {
+    public Consumer<ProjectNodeView> getDeleteBehavior() {
         return deleteBehavior;
     }
 
-    public void setDeleteBehavior(Runnable deleteBehavior) {
+    public void setDeleteBehavior(Consumer<ProjectNodeView> deleteBehavior) {
         this.deleteBehavior = deleteBehavior;
     }
 

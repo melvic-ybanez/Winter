@@ -9,18 +9,14 @@ import winter.views.project.ProjectNodeView;
 /**
  * Created by ybamelcash on 8/8/2015.
  */
-public class ProjectProjectController extends ProjectController {
+public class ProjectProjectController extends DirectoryProjectController {
     public ProjectProjectController(ProjectModel projectModel, EditorSetController editorSetController) {
-        super(projectModel);
-        setEditorSetController(editorSetController);
+        super(projectModel, editorSetController);
         setProjectNodeView(new ProjectNodeView(projectModel, this) {
             @Override
             public ContextMenu getMenu() {
                 return createProjectContextMenu();
             }
         });
-        setOpenBehavior(ProjectControllerBehaviors.doNothing());
-        setDeleteBehavior(ProjectControllerBehaviors.deleteDirectory(getProjectNodeView(), getProjectModel().getPath()));
-        setNewFileBehavior(ProjectControllerBehaviors.newFile(getProjectNodeView(), getProjectModel().getPath()));
     }
 }
