@@ -1,20 +1,14 @@
 package winter.views;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import org.controlsfx.control.StatusBar;
 import winter.controllers.editors.EditorSetController;
-import winter.models.editors.EditorModel;
 import winter.models.statuses.StatusModel;
-import winter.utils.Observable;
-import winter.utils.Observer;
 
 /**
  * Created by ybamelcash on 8/1/2015.

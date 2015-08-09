@@ -9,17 +9,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.KeyEvent;
 import org.fxmisc.richtext.CodeArea;
-import org.fxmisc.richtext.LineNumberFactory;
 import winter.Settings;
 import winter.controllers.editors.EditorController;
 import winter.models.editors.EditorModel;
-import winter.utils.Observable;
 import winter.utils.Observer;
 import winter.views.edit.FindView;
 import winter.views.edit.ReplaceView;
 
 import java.util.Optional;
-import java.util.function.IntFunction;
 
 /**
  * Created by ybamelcash on 7/16/2015.

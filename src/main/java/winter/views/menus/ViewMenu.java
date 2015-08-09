@@ -1,7 +1,9 @@
 package winter.views.menus;
 
-import javafx.scene.control.*;
-import org.fxmisc.richtext.LineNumberFactory;
+import javafx.scene.control.CheckMenuItem;
+import javafx.scene.control.Menu;
+import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.control.ToolBar;
 import winter.controllers.editors.EditorController;
 import winter.controllers.editors.EditorSetController;
 import winter.controllers.projects.ProjectSetController;

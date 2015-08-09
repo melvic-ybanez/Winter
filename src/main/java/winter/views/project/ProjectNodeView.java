@@ -1,7 +1,10 @@
 package winter.views.project;
 
 import javafx.beans.binding.Bindings;
-import javafx.scene.control.*;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.control.TreeItem;
 import winter.Resources;
 import winter.controllers.editors.EditorSetController;
 import winter.controllers.projects.DirectoryProjectController;

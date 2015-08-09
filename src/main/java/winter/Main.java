@@ -4,7 +4,6 @@ package winter;
  * Created by ybamelcash on 6/21/2015.
  */
 
-import javafx.geometry.Orientation;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.SplitPane;

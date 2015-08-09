@@ -1,8 +1,9 @@
 package winter.models.edits;
 
-import javafx.beans.property.*;
-import winter.utils.Observable;
-import winter.utils.SimpleObservable;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;

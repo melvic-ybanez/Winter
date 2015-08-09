@@ -1,6 +1,5 @@
 package winter.controllers.edits;
 
-import winter.views.edit.FindView;
 import winter.views.edit.ReplaceView;
 
 /**

@@ -2,7 +2,6 @@ package winter.controllers.projects;
 
 import javafx.scene.control.ContextMenu;
 import winter.controllers.editors.EditorSetController;
-import winter.factories.ProjectControllerBehaviors;
 import winter.models.projects.ProjectModel;
 import winter.views.project.ProjectNodeView;
 

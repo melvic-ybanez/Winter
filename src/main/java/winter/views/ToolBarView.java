@@ -1,7 +1,6 @@
 package winter.views;
 
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
 import winter.factories.Icons;
 import winter.views.menus.EditMenu;
 import winter.views.menus.FileMenu;

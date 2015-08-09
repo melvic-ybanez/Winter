@@ -11,9 +11,7 @@ import winter.controllers.editors.EditorSetController;
 import winter.factories.Icons;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by ybamelcash on 6/21/2015.

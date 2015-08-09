@@ -1,9 +1,7 @@
 package winter.controllers.edits;
 
-import javafx.beans.property.IntegerProperty;
 import winter.models.edits.FindModel;
 import winter.models.edits.ReplaceModel;
-import winter.utils.Observer;
 import winter.views.edit.FindView;
 import winter.views.edit.ReplaceView;
 import winter.views.editor.EditorView;

@@ -1,6 +1,5 @@
 package winter.models.statuses;
 
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import winter.controllers.editors.EditorSetController;
@@ -8,8 +7,6 @@ import winter.models.editors.EditorModel;
 import winter.utils.Observable;
 import winter.utils.Observer;
 import winter.utils.SimpleObservable;
-
-import javax.swing.event.ChangeListener;
 
 /**
  * Created by ybamelcash on 8/2/2015.
