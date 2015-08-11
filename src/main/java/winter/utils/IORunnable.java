@@ -1,6 +1,7 @@
 package winter.utils;
 
 import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.util.Optional;
 
 /**
@@ -13,6 +14,9 @@ public interface IORunnable {
         try {
             runnable.run();
             return Optional.empty();
+        } catch (NoSuchFileException ex) {
+            IOException ex1 = new NoSuchFileException(ex.getFile(), ex.getOtherFile(), "File does not exists.");
+            return Optional.of(ex1);
         } catch (IOException e) {
             return Optional.of(e);
         }

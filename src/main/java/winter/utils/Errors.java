@@ -67,6 +67,7 @@ public class Errors {
     }
 
     public static Optional<ButtonType> fileIOExceptionDialog(IOException ex, String title, String action) {
+        String message = ex.getMessage();
         return Errors.exceptionDialog(title + " Exception",
                 "An exception has occurred while " + action + ".", ex.getMessage(), ex);
     }
