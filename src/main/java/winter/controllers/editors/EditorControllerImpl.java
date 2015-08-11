@@ -43,12 +43,9 @@ public class EditorControllerImpl implements EditorController {
         editorModel.getPath().ifPresent(path -> {
             Optional<String> newFilenameOpt = editorView.showRenameDialog();
             newFilenameOpt.ifPresent(newFilename -> {
-                Either<IOException, Either<String, Path>> result = FileUtils.renameFile(path, newFilename);
-                result.ifLeft(ex -> Errors.exceptionDialog(Errors.titles.RENAME_FILE, null, ex.getMessage(), ex));
-                result.ifRight(right -> {
-                    right.ifLeft(error -> Errors.headerLessDialog(Errors.titles.RENAME_FILE, error));
-                    right.ifRight(editorModel::setPath);
-                });
+                Either<IOException, Path> result = FileUtils.renameFile(path, newFilename);
+                result.ifLeft(Errors::renameFileExceptionDialog);
+                result.ifRight(editorModel::setPath);
             });
         });
     }

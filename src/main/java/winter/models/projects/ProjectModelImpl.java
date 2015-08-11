@@ -19,6 +19,7 @@ public class ProjectModelImpl implements ProjectModel {
 
     @Override
     public String getName() {
-        return path.getFileName().toString();
+        Path filename = path.getFileName();
+        return filename == null ? "" : filename.toString();
     }
 }

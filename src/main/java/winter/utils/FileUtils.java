@@ -53,18 +53,9 @@ public class FileUtils {
         }
     }
 
-    public static Either<IOException, Either<String, Path>> renameFile(Path path, String newName) {
+    public static Either<IOException, Path> renameFile(Path path, String newName) {
         Path newPath = path.resolveSibling(newName);
-        if (Files.exists(newPath)) {
-            return Either.right(Either.left(Errors.messages.fileAlreadyExists(newPath)));
-        } else {
-            try {
-                newPath = Files.move(path, newPath); 
-                return Either.right(Either.<String, Path>right(newPath));
-            } catch (IOException ex) {
-                return Either.left(ex);
-            }
-        }
+        return moveFile(path, newPath);
     }
     
     public static Either<IOException, Path> moveFile(Path source, Path dest) {
