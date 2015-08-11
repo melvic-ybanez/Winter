@@ -91,6 +91,12 @@ public class ProjectControllerBehaviors {
             });
         };
     };
+
+    public static Consumer<ProjectNodeView> removeFromProject() {
+        return projectNodeView -> {
+            projectNodeView.getParent().getChildren().remove(projectNodeView);
+        };
+    }
     
     public static Runnable doNothing() {
         return () -> {};

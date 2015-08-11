@@ -23,5 +23,6 @@ public class DirectoryProjectController extends ProjectController {
         setDeleteBehavior(ProjectControllerBehaviors.deleteDirectory(getProjectModel().getPath()));
         setNewFileBehavior(ProjectControllerBehaviors.newFile(getProjectModel().getPath()));
         setNewDirectoryBehavior(ProjectControllerBehaviors.newDirectory(getProjectModel().getPath()));
+        setCloseBehavior(ProjectControllerBehaviors.acceptNothing());
     }
 }

@@ -18,7 +18,7 @@ public class ProjectController {
     private Consumer<Path> moveBehavior;
     private Runnable openBehavior;
     private Runnable refreshBehavior;
-    private Runnable closeBehavior;
+    private Consumer<ProjectNodeView> closeBehavior;
     
     private ProjectModel projectModel;
     private ProjectNodeView projectNodeView;
@@ -53,7 +53,7 @@ public class ProjectController {
     }
     
     public void close() {
-        closeBehavior.run();
+        closeBehavior.accept(getProjectNodeView());
     }
     
     public void refresh() {
@@ -130,5 +130,13 @@ public class ProjectController {
 
     public void setEditorSetController(EditorSetController editorSetController) {
         this.editorSetController = editorSetController;
+    }
+
+    public Consumer<ProjectNodeView> getCloseBehavior() {
+        return closeBehavior;
+    }
+
+    public void setCloseBehavior(Consumer<ProjectNodeView> closeBehavior) {
+        this.closeBehavior = closeBehavior;
     }
 }

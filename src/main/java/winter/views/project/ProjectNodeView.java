@@ -93,6 +93,9 @@ public abstract class ProjectNodeView extends TreeItem<String> {
                 addFolderItem, new SeparatorMenuItem(),
                 deleteItem, renameItem, moveItem, new SeparatorMenuItem(),
                 refreshItem, closeItem, closeAllItems);
+
+        closeItem.setOnAction(e -> projectController.close());
+
         return projectContextMenu;
     }
     
