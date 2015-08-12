@@ -32,11 +32,6 @@ public class EditorView extends CodeArea implements Observer {
         setEditorController(editorController); 
         editorModel.registerObserver(this);
         
-        editorModel.contentsProperty().bind(textProperty());
-        editorModel.caretPositionProperty().bind(caretPositionProperty());
-        editorModel.lineNumberProperty().bind(currentParagraphProperty()); 
-        editorModel.columnNumberProperty().bind(caretColumnProperty());
-        
         getStyleClass().add("meruem-codearea"); 
         
         /* These are hardcoded values for now */
@@ -91,6 +86,10 @@ public class EditorView extends CodeArea implements Observer {
 
     public void setEditorModel(EditorModel editorModel) {
         this.editorModel = editorModel;
+        this.editorModel.contentsProperty().bind(textProperty());
+        this.editorModel.caretPositionProperty().bind(caretPositionProperty());
+        this.editorModel.lineNumberProperty().bind(currentParagraphProperty());
+        this.editorModel.columnNumberProperty().bind(caretColumnProperty());
     }
 
     public EditorController getEditorController() {

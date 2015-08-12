@@ -18,8 +18,13 @@ public class ProjectSetControllerImpl implements ProjectSetController {
     }
 
     @Override
-    public void displayProject(Path path) {
-        projectSetView.displayProject(path);
+    public void openProject(Path path) {
+        projectSetView.openProject(path);
+    }
+
+    @Override
+    public void refreshProject(Path path) {
+        
     }
 
     public ProjectSetView getProjectSetView() {

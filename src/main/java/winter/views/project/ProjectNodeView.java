@@ -40,6 +40,7 @@ public abstract class ProjectNodeView extends TreeItem<String> {
 
     public void setProjectModel(ProjectModel projectModel) {
         this.projectModel = projectModel;
+        this.projectModel.expandedProperty().bindBidirectional(expandedProperty());
     }
 
     public ProjectController getProjectController() {

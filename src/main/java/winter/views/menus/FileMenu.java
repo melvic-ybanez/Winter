@@ -83,7 +83,7 @@ public class FileMenu extends Menu {
     private void openFolder() {
         directoryChooser.setTitle("Open Folder"); 
         Optional.ofNullable(directoryChooser.showDialog(getStage())).ifPresent(file -> {
-            projectSetController.displayProject(file.toPath());
+            projectSetController.openProject(file.toPath());
             directoryChooser.setInitialDirectory(file.getParentFile());
         });
     }

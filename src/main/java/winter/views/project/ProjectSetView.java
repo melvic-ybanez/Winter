@@ -80,7 +80,7 @@ public class ProjectSetView extends TitledPane {
         });
     }
     
-    public void displayProject(Path projectPath) {
+    public void openProject(Path projectPath) {
         ProjectNodeView root = (ProjectNodeView) tree.getRoot();
         Optional<TreeItem<String>> existingProject = root.getChildren()
                 .stream()

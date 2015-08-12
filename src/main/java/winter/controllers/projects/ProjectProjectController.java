@@ -18,6 +18,5 @@ public class ProjectProjectController extends DirectoryProjectController {
                 return createProjectContextMenu();
             }
         });
-        setCloseBehavior(ProjectControllerBehaviors.removeFromProject());
     }
 }

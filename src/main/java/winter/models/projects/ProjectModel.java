@@ -1,5 +1,7 @@
 package winter.models.projects;
 
+import javafx.beans.property.BooleanProperty;
+
 import java.nio.file.Path;
 
 /**
@@ -9,4 +11,8 @@ public interface ProjectModel {
     public Path getPath();
     
     public String getName();
+
+    public BooleanProperty expandedProperty();
+
+    public boolean isExpanded();
 }

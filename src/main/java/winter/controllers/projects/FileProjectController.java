@@ -23,6 +23,5 @@ public class FileProjectController extends ProjectController {
         setDeleteBehavior(ProjectControllerBehaviors.deleteFile(getProjectModel().getPath()));
         setNewFileBehavior(ProjectControllerBehaviors.acceptNothing());
         setNewDirectoryBehavior(ProjectControllerBehaviors.acceptNothing());
-        setCloseBehavior(ProjectControllerBehaviors.acceptNothing());
     }
 }
