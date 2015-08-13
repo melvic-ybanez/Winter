@@ -71,10 +71,6 @@ public class ProjectControllerBehaviors {
             answer.ifPresent(filename -> {
                 Either<IOException, Path> result = FileUtils.createFile(path.resolve(filename));
                 result.ifLeft(Errors::addFileExceptionDialog);
-                result.ifRight(newFile -> {
-                    ProjectNodeView newNode = projectNodeView.addNewFile(newFile);
-                    newNode.getProjectController().open();
-                });
             });
         };
     };
