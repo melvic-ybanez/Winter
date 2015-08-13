@@ -1,10 +1,17 @@
 package winter.controllers.projects;
 
 import javafx.beans.property.ReadOnlyDoubleProperty;
+import winter.utils.Errors;
 import winter.views.editor.EditorSetView;
 import winter.views.project.ProjectSetView;
 
-import java.nio.file.Path;
+import java.io.IOException;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.HashMap;
+import java.util.Map;
+
+import static java.nio.file.StandardWatchEventKinds.*;
 
 /**
  * Created by ybamelcash on 6/24/2015.
@@ -20,11 +27,6 @@ public class ProjectSetControllerImpl implements ProjectSetController {
     @Override
     public void openProject(Path path) {
         projectSetView.openProject(path);
-    }
-
-    @Override
-    public void refreshProject(Path path) {
-        
     }
 
     public ProjectSetView getProjectSetView() {

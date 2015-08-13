@@ -3,7 +3,9 @@ package winter.factories;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.TreeItem;
 import winter.controllers.editors.EditorSetController;
+import winter.controllers.projects.ProjectController;
 import winter.models.projects.ProjectModel;
 import winter.utils.Either;
 import winter.utils.Errors;
@@ -92,9 +94,27 @@ public class ProjectControllerBehaviors {
         };
     };
 
-    public static Consumer<ProjectNodeView> removeFromProject() {
+    public static Consumer<ProjectNodeView> removeProject() {
         return projectNodeView -> {
             projectNodeView.getParent().getChildren().remove(projectNodeView);
+        };
+    }
+
+    public static Runnable refreshDirectory(ProjectController projectController) {
+        return () -> {
+            ProjectNodeView projectNodeView = projectController.getProjectNodeView();
+            Path path = projectController.getProjectModel().getPath();
+            ProjectNodeView parent = (ProjectNodeView) projectNodeView.getParent() ;
+
+            Optional<TreeItem<String>> existingProject = parent.getChildren()
+                    .stream()
+                    .filter(item -> ((ProjectNodeView) item).getProjectModel().getPath().equals(path))
+                    .findFirst();
+            if (existingProject.isPresent()) {
+                Errors.headerLessDialog("Refreshing Directory", "A directory with the same name already exists");
+            } else {
+
+            }
         };
     }
     

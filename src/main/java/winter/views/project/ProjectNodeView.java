@@ -106,6 +106,7 @@ public abstract class ProjectNodeView extends TreeItem<String> {
                 projectController.getEditorSetController());
         ProjectNodeView fileNode = fileProjectController.getProjectNodeView();
         fileNode.setGraphic(Resources.getIcon("file.png"));
+        fileProjectController.start();
         getChildren().add(fileNode);
         return fileNode;
     }
@@ -136,6 +137,7 @@ public abstract class ProjectNodeView extends TreeItem<String> {
         }
 
         getChildren().add(dirNode);
+        dirProjectController.start();
         return dirNode;
     }
 

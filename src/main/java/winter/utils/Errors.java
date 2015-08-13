@@ -71,9 +71,12 @@ public class Errors {
     }
 
     public static Optional<ButtonType> fileIOExceptionDialog(IOException ex, String title, String action) {
-        String message = ex.getMessage();
         return Errors.exceptionDialog(title + " Exception",
                 "An exception has occurred while " + action + ".", ex.getMessage(), ex);
+    }
+
+    public static Optional<ButtonType> registerWatcherException(IOException ex) {
+        return Errors.fileIOExceptionDialog(ex, titles.REGISTER_WATCHER, "register watcher");
     }
     
     public static Optional<ButtonType> headerLessDialog(String title, String contents) {
@@ -98,5 +101,6 @@ public class Errors {
         public static final String SAVE_FILE = "Save File Error";
         public static final String MOVE_FILE = "Move File Error";
         public static final String OPEN_FILE = "Open File Error";
+        public static final String REGISTER_WATCHER = "Register Watcher Error";
     }
 }

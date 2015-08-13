@@ -1,29 +1,49 @@
 package winter.controllers.projects;
 
+import javafx.concurrent.Task;
 import winter.controllers.editors.EditorSetController;
 import winter.models.projects.ProjectModel;
+import winter.utils.Errors;
+import winter.utils.WatchableDir;
 import winter.views.project.ProjectNodeView;
 
-import java.nio.file.Path;
+import java.io.IOException;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Consumer;
+
+import static java.nio.file.StandardWatchEventKinds.*;
 
 /**
  * Created by ybamelcash on 7/16/2015.
  */
-public class ProjectController {
+public class ProjectController implements WatchableDir {
     private Consumer<ProjectNodeView> newFileBehavior;
     private Consumer<ProjectNodeView> newDirectoryBehavior;
     private Consumer<ProjectNodeView> deleteBehavior;
     private Consumer<String> renameBehavior;
     private Consumer<Path> moveBehavior;
     private Runnable openBehavior;
+    private Consumer<ProjectNodeView> closeBehavior;
+    private Consumer<ProjectNodeView> refreshBehavior;
     
     private ProjectModel projectModel;
     private ProjectNodeView projectNodeView;
     private EditorSetController editorSetController;
-    
+
+    private WatchService watcher;
+    private Map<WatchKey, Path> keyMap;
+
     public ProjectController(ProjectModel projectModel) {
         setProjectModel(projectModel);
+        try {
+            watcher = FileSystems.getDefault().newWatchService();
+            keyMap = new HashMap<>();
+        } catch (IOException e) {
+            showRegisterErrorDialogAndExit(e);
+        }
     }
     
     public void newFile() {
@@ -48,6 +68,14 @@ public class ProjectController {
     
     public void open() {
         openBehavior.run();
+    }
+
+    public void close() {
+        closeBehavior.accept(getProjectNodeView());
+    }
+
+    public void refresh() {
+        refreshBehavior.accept(getProjectNodeView());
     }
 
     public ProjectModel getProjectModel() {
@@ -120,5 +148,98 @@ public class ProjectController {
 
     public void setEditorSetController(EditorSetController editorSetController) {
         this.editorSetController = editorSetController;
+    }
+
+    public Consumer<ProjectNodeView> getCloseBehavior() {
+        return closeBehavior;
+    }
+
+    public void setCloseBehavior(Consumer<ProjectNodeView> closeBehavior) {
+        this.closeBehavior = closeBehavior;
+    }
+
+    public Consumer<ProjectNodeView> getRefreshBehavior() {
+        return refreshBehavior;
+    }
+
+    public void setRefreshBehavior(Consumer<ProjectNodeView> refreshBehavior) {
+        this.refreshBehavior = refreshBehavior;
+    }
+
+    @Override
+    public void register(Path dir) {
+        try {
+            WatchKey key = dir.register(watcher, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
+            keyMap.put(key, dir);
+        } catch (IOException e) {
+            showRegisterErrorDialogAndExit(e);
+        }
+    }
+
+    @Override
+    public void processEvents() {
+        for (;;) {
+            WatchKey key;
+            try {
+                key = watcher.take();
+            } catch (InterruptedException ex) {
+                return;
+            }
+
+            Path dir = keyMap.get(key);
+            if (dir == null) continue;
+            for (WatchEvent<?> event : key.pollEvents()) {
+                WatchEvent.Kind kind = event.kind();
+
+                if (kind == OVERFLOW) continue;
+
+                @SuppressWarnings("unchecked")
+                WatchEvent<Path> ev = (WatchEvent<Path>) event;
+
+                Path name = ev.context();
+                Path child = dir.resolve(name);
+
+                if (kind == ENTRY_CREATE) {
+                    if (Files.isDirectory(child)) {
+                        projectNodeView.addDirectory(child);
+                        register(child);
+                    } else {
+                        projectNodeView.addNewFile(child);
+                    }
+                } else if (kind == ENTRY_DELETE) {
+                    projectNodeView.getChildren().removeIf((treeItem) -> {
+                        ProjectNodeView projectNodeView1 = (ProjectNodeView) treeItem;
+                        return projectNodeView1.getProjectModel().getPath().equals(child);
+                    });
+                }
+            }
+
+            boolean valid = key.reset();
+            if (!valid) {
+                keyMap.remove(key);
+                if (keyMap.isEmpty()) break;
+            }
+        }
+    }
+
+    @Override
+    public void start() {
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                register(getProjectModel().getPath());
+                processEvents();
+                return null;
+            }
+        };
+
+        Thread thread = new Thread(task);
+        thread.setDaemon(true);
+        thread.start();
+    }
+
+    private void showRegisterErrorDialogAndExit(IOException ex) {
+        Errors.registerWatcherException(ex);
+        System.exit(-1);
     }
 }
