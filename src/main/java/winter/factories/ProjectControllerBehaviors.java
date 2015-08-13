@@ -45,9 +45,6 @@ public class ProjectControllerBehaviors {
                 if (button == ButtonType.OK) {
                     Optional<IOException> errorOpt = deleteFunction.get();
                     errorOpt.ifPresent(Errors::deleteFileExceptionDialog);
-                    if (!errorOpt.isPresent()) {
-                        projectNodeView.getParent().getChildren().remove(projectNodeView);
-                    }
                 };
             }); 
         };
