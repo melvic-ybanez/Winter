@@ -93,6 +93,7 @@ public abstract class ProjectNodeView extends TreeItem<String> {
                 refreshItem, closeItem, closeAllItems);
 
         closeItem.setOnAction(e -> projectController.close());
+        refreshItem.setOnAction(e -> projectController.refresh());
 
         return projectContextMenu;
     }
@@ -109,7 +110,7 @@ public abstract class ProjectNodeView extends TreeItem<String> {
         return fileNode;
     }
 
-    public ProjectNodeView addDirectory(Path dirPath, boolean isProject) {
+    public ProjectNodeView addDirectory(Path dirPath, boolean isProject, int index) {
         ProjectModel dirProjectModel = new ProjectModelImpl(dirPath);
         ProjectController dirProjectController = isProject
                 ? new ProjectProjectController(dirProjectModel,
@@ -138,9 +139,17 @@ public abstract class ProjectNodeView extends TreeItem<String> {
             Errors.exceptionDialog("Add Folder Exception", "Unable to add folder: " + dirPath, ex.getMessage(), ex);
         }
 
-        getChildren().add(dirNode);
+        if (index == -1)
+            getChildren().add(dirNode);
+        else
+            getChildren().add(index, dirNode);
+
         dirProjectController.start();
         return dirNode;
+    }
+
+    public ProjectNodeView addDirectory(Path dirPath, boolean isProject) {
+        return addDirectory(dirPath, isProject, -1);
     }
 
     public ProjectNodeView addDirectory(Path dirPath) {

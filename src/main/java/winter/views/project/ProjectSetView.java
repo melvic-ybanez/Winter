@@ -84,7 +84,7 @@ public class ProjectSetView extends TitledPane {
         });
     }
     
-    public void openProject(Path projectPath) {
+    public void openProject(Path projectPath, int index) {
         ProjectNodeView root = (ProjectNodeView) tree.getRoot();
         Optional<TreeItem<String>> existingProject = root.getChildren()
                 .stream()
@@ -97,7 +97,7 @@ public class ProjectSetView extends TitledPane {
             alert.setContentText("A project with the same name is already open.");
             alert.showAndWait();
         } else {
-            root.addDirectory(projectPath, true);
+            root.addDirectory(projectPath, true, index);
         }
     }
     

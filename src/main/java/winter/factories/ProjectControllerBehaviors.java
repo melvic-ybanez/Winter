@@ -95,19 +95,11 @@ public class ProjectControllerBehaviors {
 
     public static Runnable refreshDirectory(ProjectController projectController) {
         return () -> {
-            ProjectNodeView projectNodeView = projectController.getProjectNodeView();
             Path path = projectController.getProjectModel().getPath();
-            ProjectNodeView parent = (ProjectNodeView) projectNodeView.getParent() ;
-
-            Optional<TreeItem<String>> existingProject = parent.getChildren()
-                    .stream()
-                    .filter(item -> ((ProjectNodeView) item).getProjectModel().getPath().equals(path))
-                    .findFirst();
-            if (existingProject.isPresent()) {
-                Errors.headerLessDialog("Refreshing Directory", "A directory with the same name already exists");
-            } else {
-
-            }
+            ProjectNodeView projectNodeView = projectController.getProjectNodeView();
+            int index = projectNodeView.getParent().getChildren().indexOf(projectNodeView);
+            projectController.close();
+            projectController.getProjectSetController().openProject(path, index);
         };
     }
     

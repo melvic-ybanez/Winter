@@ -26,5 +26,6 @@ public class DirectoryProjectController extends ProjectController {
         setNewFileBehavior(ProjectControllerBehaviors.newFile(getProjectModel().getPath()));
         setNewDirectoryBehavior(ProjectControllerBehaviors.newDirectory(getProjectModel().getPath()));
         setCloseBehavior(ProjectControllerBehaviors.acceptNothing());
+        setRefreshBehavior(ProjectControllerBehaviors.doNothing());
     }
 }

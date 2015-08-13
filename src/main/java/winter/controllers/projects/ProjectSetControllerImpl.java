@@ -27,12 +27,12 @@ public class ProjectSetControllerImpl implements ProjectSetController {
 
     @Override
     public void openProject(Path path) {
-        projectSetView.openProject(path);
+        openProject(path, -1);
     }
 
     @Override
-    public void closeProject(Path path) {
-
+    public void openProject(Path path, int index) {
+        projectSetView.openProject(path, index);
     }
 
     public ProjectSetView getProjectSetView() {

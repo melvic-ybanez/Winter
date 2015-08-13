@@ -27,7 +27,7 @@ public class ProjectController implements WatchableDir {
     private Consumer<Path> moveBehavior;
     private Runnable openBehavior;
     private Consumer<ProjectNodeView> closeBehavior;
-    private Consumer<ProjectNodeView> refreshBehavior;
+    private Runnable refreshBehavior;
     
     private ProjectModel projectModel;
     private ProjectNodeView projectNodeView;
@@ -78,7 +78,7 @@ public class ProjectController implements WatchableDir {
     }
 
     public void refresh() {
-        refreshBehavior.accept(getProjectNodeView());
+        refreshBehavior.run();
     }
 
     public ProjectModel getProjectModel() {
@@ -161,14 +161,6 @@ public class ProjectController implements WatchableDir {
         this.closeBehavior = closeBehavior;
     }
 
-    public Consumer<ProjectNodeView> getRefreshBehavior() {
-        return refreshBehavior;
-    }
-
-    public void setRefreshBehavior(Consumer<ProjectNodeView> refreshBehavior) {
-        this.refreshBehavior = refreshBehavior;
-    }
-
     @Override
     public void register(Path dir) {
         try {
@@ -248,5 +240,13 @@ public class ProjectController implements WatchableDir {
 
     public ProjectSetController getProjectSetController() {
         return projectSetController;
+    }
+
+    public Runnable getRefreshBehavior() {
+        return refreshBehavior;
+    }
+
+    public void setRefreshBehavior(Runnable refreshBehavior) {
+        this.refreshBehavior = refreshBehavior;
     }
 }

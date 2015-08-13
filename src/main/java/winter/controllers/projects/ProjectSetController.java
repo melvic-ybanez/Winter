@@ -11,7 +11,7 @@ import java.nio.file.Path;
 public interface ProjectSetController {
     public void openProject(Path path);
 
-    public void closeProject(Path path);
+    public void openProject(Path path, int index);
     
     public ProjectSetView getProjectSetView();
 }

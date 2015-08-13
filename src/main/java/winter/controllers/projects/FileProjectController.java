@@ -25,5 +25,6 @@ public class FileProjectController extends ProjectController {
         setNewFileBehavior(ProjectControllerBehaviors.acceptNothing());
         setNewDirectoryBehavior(ProjectControllerBehaviors.acceptNothing());
         setCloseBehavior(ProjectControllerBehaviors.acceptNothing());
+        setRefreshBehavior(ProjectControllerBehaviors.doNothing());
     }
 }

@@ -21,5 +21,6 @@ public class ProjectProjectController extends DirectoryProjectController {
             }
         });
         setCloseBehavior(ProjectControllerBehaviors.removeProject());
+        setRefreshBehavior(ProjectControllerBehaviors.refreshDirectory(this));
     }
 }
