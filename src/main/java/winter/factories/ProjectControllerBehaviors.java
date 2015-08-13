@@ -85,7 +85,6 @@ public class ProjectControllerBehaviors {
             answer.ifPresent(directoryName -> {
                 Either<IOException, Path> result = FileUtils.createDirectory(path.resolve(directoryName));
                 result.ifLeft(Errors::addDirectoryExceptionDialog);
-                result.ifRight(projectNodeView::addDirectory);
             });
         };
     };
