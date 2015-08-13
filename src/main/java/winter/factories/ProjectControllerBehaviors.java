@@ -6,6 +6,7 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.TreeItem;
 import winter.controllers.editors.EditorSetController;
 import winter.controllers.projects.ProjectController;
+import winter.controllers.projects.ProjectSetController;
 import winter.models.projects.ProjectModel;
 import winter.utils.Either;
 import winter.utils.Errors;

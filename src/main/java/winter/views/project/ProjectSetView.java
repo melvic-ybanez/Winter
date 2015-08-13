@@ -4,6 +4,7 @@ import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import winter.Resources;
+import winter.controllers.projects.ProjectSetController;
 import winter.utils.Either;
 import winter.utils.Errors;
 import winter.utils.FileUtils;
@@ -22,8 +23,11 @@ public class ProjectSetView extends TitledPane {
     private EditorSetView editorSetView;
     private ContextMenu folderContextMenu;
     private ContextMenu fileContextMenu;
+    private ProjectSetController projectSetController;
     
-    public ProjectSetView(EditorSetView editorSetView, ReadOnlyDoubleProperty heightProperty) {
+    public ProjectSetView(ProjectSetController projectSetController,
+                          EditorSetView editorSetView, ReadOnlyDoubleProperty heightProperty) {
+        this.projectSetController = projectSetController;
         this.editorSetView = editorSetView;
         setText("Projects");
         setGraphic(Resources.getIcon("view_projects.png"));
@@ -31,7 +35,7 @@ public class ProjectSetView extends TitledPane {
         prefHeightProperty().bind(heightProperty); 
         setCollapsible(false);
         
-        tree.setRoot(ProjectNodeView.createDummy(editorSetView.getEditorSetController()));
+        tree.setRoot(ProjectNodeView.createDummy(projectSetController, editorSetView.getEditorSetController()));
         tree.setShowRoot(false);
         tree.setCellFactory(treeView -> {
             return new TreeCell<String>() {
@@ -103,5 +107,9 @@ public class ProjectSetView extends TitledPane {
 
     public TreeView<String> getTree() {
         return tree;
+    }
+
+    public ProjectSetController getProjectSetController() {
+        return projectSetController;
     }
 }

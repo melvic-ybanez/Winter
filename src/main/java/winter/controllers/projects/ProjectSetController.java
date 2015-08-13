@@ -10,6 +10,8 @@ import java.nio.file.Path;
  */
 public interface ProjectSetController {
     public void openProject(Path path);
+
+    public void closeProject(Path path);
     
     public ProjectSetView getProjectSetView();
 }

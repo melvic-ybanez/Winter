@@ -3,6 +3,7 @@ package winter.controllers.projects;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import winter.utils.Errors;
 import winter.views.editor.EditorSetView;
+import winter.views.project.ProjectNodeView;
 import winter.views.project.ProjectSetView;
 
 import java.io.IOException;
@@ -21,12 +22,17 @@ public class ProjectSetControllerImpl implements ProjectSetController {
     private EditorSetView editorSetView;
 
     public ProjectSetControllerImpl(EditorSetView editorSetView, ReadOnlyDoubleProperty heightProperty) {
-        setProjectSetView(new ProjectSetView(editorSetView, heightProperty));
+        setProjectSetView(new ProjectSetView(this, editorSetView, heightProperty));
     }
 
     @Override
     public void openProject(Path path) {
         projectSetView.openProject(path);
+    }
+
+    @Override
+    public void closeProject(Path path) {
+
     }
 
     public ProjectSetView getProjectSetView() {

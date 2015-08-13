@@ -32,12 +32,15 @@ public class ProjectController implements WatchableDir {
     private ProjectModel projectModel;
     private ProjectNodeView projectNodeView;
     private EditorSetController editorSetController;
+    private ProjectSetController projectSetController;
 
     private WatchService watcher;
     private Map<WatchKey, Path> keyMap;
 
-    public ProjectController(ProjectModel projectModel) {
+    public ProjectController(ProjectModel projectModel, ProjectSetController projectSetController) {
         setProjectModel(projectModel);
+        this.projectSetController = projectSetController;
+
         try {
             watcher = FileSystems.getDefault().newWatchService();
             keyMap = new HashMap<>();
@@ -241,5 +244,9 @@ public class ProjectController implements WatchableDir {
     private void showRegisterErrorDialogAndExit(IOException ex) {
         Errors.registerWatcherException(ex);
         System.exit(-1);
+    }
+
+    public ProjectSetController getProjectSetController() {
+        return projectSetController;
     }
 }

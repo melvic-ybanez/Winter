@@ -10,8 +10,9 @@ import winter.views.project.ProjectNodeView;
  * Created by ybamelcash on 8/6/2015.
  */
 public class FileProjectController extends ProjectController {
-    public FileProjectController(ProjectModel projectModel, EditorSetController editorSetController) {
-        super(projectModel);
+    public FileProjectController(ProjectModel projectModel,
+                                 ProjectSetController projectSetController, EditorSetController editorSetController) {
+        super(projectModel, projectSetController);
         setEditorSetController(editorSetController);
         setProjectNodeView(new ProjectNodeView(projectModel, this) {
             @Override
@@ -23,5 +24,6 @@ public class FileProjectController extends ProjectController {
         setDeleteBehavior(ProjectControllerBehaviors.deleteFile(getProjectModel().getPath()));
         setNewFileBehavior(ProjectControllerBehaviors.acceptNothing());
         setNewDirectoryBehavior(ProjectControllerBehaviors.acceptNothing());
+        setCloseBehavior(ProjectControllerBehaviors.acceptNothing());
     }
 }

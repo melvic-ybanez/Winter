@@ -7,10 +7,7 @@ import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TreeItem;
 import winter.Resources;
 import winter.controllers.editors.EditorSetController;
-import winter.controllers.projects.DirectoryProjectController;
-import winter.controllers.projects.FileProjectController;
-import winter.controllers.projects.ProjectController;
-import winter.controllers.projects.ProjectProjectController;
+import winter.controllers.projects.*;
 import winter.models.projects.ProjectModel;
 import winter.models.projects.ProjectModelImpl;
 import winter.utils.Errors;
@@ -103,6 +100,7 @@ public abstract class ProjectNodeView extends TreeItem<String> {
     public ProjectNodeView addNewFile(Path path) {
         ProjectModel fileProjectModel = new ProjectModelImpl(path);
         ProjectController fileProjectController = new FileProjectController(fileProjectModel,
+                projectController.getProjectSetController(),
                 projectController.getEditorSetController());
         ProjectNodeView fileNode = fileProjectController.getProjectNodeView();
         fileNode.setGraphic(Resources.getIcon("file.png"));
@@ -114,8 +112,12 @@ public abstract class ProjectNodeView extends TreeItem<String> {
     public ProjectNodeView addDirectory(Path dirPath, boolean isProject) {
         ProjectModel dirProjectModel = new ProjectModelImpl(dirPath);
         ProjectController dirProjectController = isProject
-                ? new ProjectProjectController(dirProjectModel, projectController.getEditorSetController())
-                : new DirectoryProjectController(dirProjectModel, projectController.getEditorSetController());
+                ? new ProjectProjectController(dirProjectModel,
+                    projectController.getProjectSetController(),
+                    projectController.getEditorSetController())
+                : new DirectoryProjectController(dirProjectModel,
+                    projectController.getProjectSetController(),
+                    projectController.getEditorSetController());
         ProjectNodeView dirNode = dirProjectController.getProjectNodeView();
 
         dirNode.setGraphic(Resources.getIcon("close_folder.png"));
@@ -175,9 +177,10 @@ public abstract class ProjectNodeView extends TreeItem<String> {
     
     public abstract ContextMenu getMenu();
     
-    public static ProjectNodeView createDummy(EditorSetController editorSetController) {
+    public static ProjectNodeView createDummy(ProjectSetController projectSetController, EditorSetController editorSetController) {
         ProjectModel projectModel = new ProjectModelImpl(Paths.get(""));
-        ProjectController projectController = new DirectoryProjectController(projectModel, editorSetController);
+        ProjectController projectController = new DirectoryProjectController(projectModel,
+                projectSetController, editorSetController);
         return new ProjectNodeView(projectModel, projectController) {
             @Override
             public ContextMenu getMenu() {
