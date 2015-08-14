@@ -1,7 +1,6 @@
 package winter.views.project;
 
 import javafx.beans.binding.Bindings;
-import javafx.collections.ObservableList;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
@@ -18,8 +17,6 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Comparator;
-import java.util.function.Function;
 
 /**
  * Created by ybamelcash on 6/24/2015.

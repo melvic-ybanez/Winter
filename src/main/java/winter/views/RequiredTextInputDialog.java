@@ -1,6 +1,5 @@
 package winter.views;
 
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextInputDialog;
 
 import java.util.Optional;

@@ -1,7 +1,10 @@
 package winter.factories;
 
 import javafx.collections.ObservableList;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
 import winter.controllers.editors.EditorSetController;
 import winter.controllers.projects.ProjectController;
 import winter.controllers.projects.ProjectSetController;

@@ -2,18 +2,10 @@ package winter.controllers.projects;
 
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import winter.factories.ProjectControllerBehaviors;
-import winter.utils.Errors;
 import winter.views.editor.EditorSetView;
-import winter.views.project.ProjectNodeView;
 import winter.views.project.ProjectSetView;
 
-import java.io.IOException;
-import java.nio.file.*;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.util.HashMap;
-import java.util.Map;
-
-import static java.nio.file.StandardWatchEventKinds.*;
+import java.nio.file.Path;
 
 /**
  * Created by ybamelcash on 6/24/2015.

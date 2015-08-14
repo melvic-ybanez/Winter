@@ -1,7 +1,5 @@
 package winter.models.projects;
 
-import javafx.beans.property.BooleanProperty;
-
 import java.nio.file.Path;
 
 /**
