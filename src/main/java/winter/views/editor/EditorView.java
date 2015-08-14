@@ -13,6 +13,7 @@ import winter.Settings;
 import winter.controllers.editors.EditorController;
 import winter.models.editors.EditorModel;
 import winter.utils.Observer;
+import winter.views.RequiredTextInputDialog;
 import winter.views.edit.FindView;
 import winter.views.edit.ReplaceView;
 
@@ -65,11 +66,11 @@ public class EditorView extends CodeArea implements Observer {
     }
     
     public Optional<String> showRenameDialog() {
-        TextInputDialog renameDialog = new TextInputDialog(editorModel.getTitle());
+        RequiredTextInputDialog renameDialog = new RequiredTextInputDialog(editorModel.getTitle());
         renameDialog.setTitle("Rename File");
         renameDialog.setHeaderText(null);
         renameDialog.setContentText("Enter the new filename");
-        return renameDialog.showAndWait();
+        return renameDialog.getAnswer();
     }
     
     public Optional<ButtonType> showUnsavedDialog() {

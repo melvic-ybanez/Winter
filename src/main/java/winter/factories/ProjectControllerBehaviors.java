@@ -6,9 +6,11 @@ import winter.controllers.editors.EditorSetController;
 import winter.controllers.projects.ProjectController;
 import winter.controllers.projects.ProjectSetController;
 import winter.models.projects.ProjectModel;
+import winter.utils.Constants;
 import winter.utils.Either;
 import winter.utils.Errors;
 import winter.utils.FileUtils;
+import winter.views.RequiredTextInputDialog;
 import winter.views.editor.EditorSetView;
 import winter.views.project.ProjectNodeView;
 
@@ -60,11 +62,11 @@ public class ProjectControllerBehaviors {
     
     public static Runnable newFile(Path path) {
         return () -> {
-            TextInputDialog dialog = new TextInputDialog();
+            RequiredTextInputDialog dialog = new RequiredTextInputDialog(Constants.UNTITLED);
             dialog.setTitle("New File");
             dialog.setHeaderText(null);
             dialog.setContentText("Enter Filename:");
-            Optional<String> answer = dialog.showAndWait();
+            Optional<String> answer = dialog.getAnswer();
             answer.ifPresent(filename -> {
                 Either<IOException, Path> result = FileUtils.createFile(path.resolve(filename));
                 result.ifLeft(Errors::addFileExceptionDialog);
@@ -74,11 +76,11 @@ public class ProjectControllerBehaviors {
 
     public static Runnable newDirectory(Path path) {
         return () -> {
-            TextInputDialog dialog = new TextInputDialog();
+            RequiredTextInputDialog dialog = new RequiredTextInputDialog(Constants.UNTITLED);
             dialog.setTitle("New Directory");
             dialog.setHeaderText(null);
             dialog.setContentText("Enter Directory Name:");
-            Optional<String> answer = dialog.showAndWait();
+            Optional<String> answer = dialog.getAnswer();
             answer.ifPresent(directoryName -> {
                 Either<IOException, Path> result = FileUtils.createDirectory(path.resolve(directoryName));
                 result.ifLeft(Errors::addDirectoryExceptionDialog);
@@ -88,11 +90,11 @@ public class ProjectControllerBehaviors {
 
     public static Runnable renameFile(Path path) {
         return () -> {
-            TextInputDialog dialog = new TextInputDialog();
+            RequiredTextInputDialog dialog = new RequiredTextInputDialog(path.getFileName().toString());
             dialog.setTitle("Rename File");
             dialog.setHeaderText(null);
             dialog.setContentText("Enter new Filename:");
-            Optional<String> answer = dialog.showAndWait();
+            Optional<String> answer = dialog.getAnswer();
             answer.ifPresent(filename -> {
                 Either<IOException, Path> result = FileUtils.renameFile(path, filename);
                 result.ifLeft(Errors::addFileExceptionDialog);
@@ -102,11 +104,11 @@ public class ProjectControllerBehaviors {
 
     public static Runnable renameDirectory(Path path) {
         return () -> {
-            TextInputDialog dialog = new TextInputDialog();
+            RequiredTextInputDialog dialog = new RequiredTextInputDialog(path.getFileName().toString());
             dialog.setTitle("Rename Directory");
             dialog.setHeaderText(null);
             dialog.setContentText("Enter new Directory Name:");
-            Optional<String> answer = dialog.showAndWait();
+            Optional<String> answer = dialog.getAnswer();
             answer.ifPresent(directoryName -> {
                 Either<IOException, Path> result = FileUtils.renameFile(path, directoryName);
                 result.ifLeft(Errors::addDirectoryExceptionDialog);
