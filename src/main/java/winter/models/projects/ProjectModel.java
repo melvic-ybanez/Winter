@@ -11,8 +11,4 @@ public interface ProjectModel {
     public Path getPath();
     
     public String getName();
-
-    public BooleanProperty expandedProperty();
-
-    public boolean isExpanded();
 }

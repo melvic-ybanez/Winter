@@ -1,6 +1,8 @@
 package winter.controllers.projects;
 
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.scene.control.TreeItem;
 import winter.controllers.editors.EditorSetController;
 import winter.models.projects.ProjectModel;
 import winter.utils.Errors;
@@ -10,9 +12,11 @@ import winter.views.project.ProjectNodeView;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import static java.nio.file.StandardWatchEventKinds.*;
 
@@ -47,6 +51,48 @@ public class ProjectController implements WatchableDir {
         } catch (IOException e) {
             showRegisterErrorDialogAndExit(e);
         }
+    }
+
+    public void insertNode(ProjectNodeView newNode) {
+        Function<ProjectController, Boolean> isFile = controller -> controller instanceof FileProjectController;
+        Function<ProjectController, Boolean> isDir = controller -> controller instanceof DirectoryProjectController;
+
+        ProjectController controller1 = newNode.getProjectController();
+        ObservableList<TreeItem<String>> children = projectNodeView.getChildren();
+        int index = children.size();
+
+        for (int i = 0; i < children.size(); i++) {
+            ProjectNodeView childView = (ProjectNodeView) children.get(i);
+            ProjectController controller2 = childView.getProjectController();
+
+            // If the new node is a file and is matched against a directory, then we
+            // should continue the loop instead of inserting the node here, since directories have
+            // higher priorities than files.
+            if (isFile.apply(controller1) && isDir.apply(controller2)) continue;
+
+            // If the new node is a directory and is matched against a file, then insert it immediately
+            // and break out of the loop.
+            if (isDir.apply(controller1) && isFile.apply(controller2)) {
+                index = i;
+                break;
+            }
+
+            // If the two types are equal, compare their names alphabetically.
+            String name1 = controller1.getProjectModel().getName();
+            String name2 = controller2.getProjectModel().getName();
+            int comparison = name1.compareTo(name2);
+            if (comparison <= 0) {
+                index = i;
+                break;
+            }
+        }
+
+        children.add(index, newNode);
+        children.forEach(child -> {
+            ProjectNodeView view = (ProjectNodeView) child;
+            System.out.print(view.getProjectModel().getName() + " ");
+        });
+        System.out.println();
     }
     
     public void newFile() {

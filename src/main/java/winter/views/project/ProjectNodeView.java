@@ -17,6 +17,8 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Comparator;
+import java.util.function.Function;
 
 /**
  * Created by ybamelcash on 6/24/2015.
@@ -37,7 +39,6 @@ public abstract class ProjectNodeView extends TreeItem<String> {
 
     public void setProjectModel(ProjectModel projectModel) {
         this.projectModel = projectModel;
-        this.projectModel.expandedProperty().bindBidirectional(expandedProperty());
     }
 
     public ProjectController getProjectController() {
@@ -106,7 +107,7 @@ public abstract class ProjectNodeView extends TreeItem<String> {
         ProjectNodeView fileNode = fileProjectController.getProjectNodeView();
         fileNode.setGraphic(Resources.getIcon("file.png"));
         fileProjectController.start();
-        getChildren().add(fileNode);
+        projectController.insertNode(fileNode);
         return fileNode;
     }
 
@@ -139,10 +140,11 @@ public abstract class ProjectNodeView extends TreeItem<String> {
             Errors.exceptionDialog("Add Folder Exception", "Unable to add folder: " + dirPath, ex.getMessage(), ex);
         }
 
-        if (index == -1)
-            getChildren().add(dirNode);
-        else
+        if (index == -1) {
+            projectController.insertNode(dirNode);
+        } else {
             getChildren().add(index, dirNode);
+        }
 
         dirProjectController.start();
         return dirNode;

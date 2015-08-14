@@ -10,7 +10,6 @@ import java.nio.file.Path;
  */
 public class ProjectModelImpl implements ProjectModel {
     private Path path;
-    private BooleanProperty expandedProperty = new SimpleBooleanProperty();
     
     public ProjectModelImpl(Path path) {
         this.path = path;
@@ -25,15 +24,5 @@ public class ProjectModelImpl implements ProjectModel {
     public String getName() {
         Path filename = path.getFileName();
         return filename == null ? "" : filename.toString();
-    }
-
-    @Override
-    public BooleanProperty expandedProperty() {
-        return expandedProperty;
-    }
-
-    @Override
-    public boolean isExpanded() {
-        return expandedProperty.get();
     }
 }
