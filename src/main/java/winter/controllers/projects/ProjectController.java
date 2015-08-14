@@ -24,9 +24,9 @@ import static java.nio.file.StandardWatchEventKinds.*;
  * Created by ybamelcash on 7/16/2015.
  */
 public class ProjectController implements WatchableDir {
-    private Consumer<ProjectNodeView> newFileBehavior;
-    private Consumer<ProjectNodeView> newDirectoryBehavior;
-    private Consumer<ProjectNodeView> deleteBehavior;
+    private Runnable newFileBehavior;
+    private Runnable newDirectoryBehavior;
+    private Runnable deleteBehavior;
     private Consumer<String> renameBehavior;
     private Consumer<Path> moveBehavior;
     private Runnable openBehavior;
@@ -91,15 +91,15 @@ public class ProjectController implements WatchableDir {
     }
     
     public void newFile() {
-        newFileBehavior.accept(getProjectNodeView());
+        newFileBehavior.run();
     }
     
     public void newDirectory() {
-        newDirectoryBehavior.accept(getProjectNodeView());
+        newDirectoryBehavior.run();
     }
     
     public void delete() {
-        deleteBehavior.accept(getProjectNodeView());
+        deleteBehavior.run();
     }
     
     public void rename(String newName) {
@@ -136,30 +136,6 @@ public class ProjectController implements WatchableDir {
 
     public void setProjectNodeView(ProjectNodeView projectNodeView) {
         this.projectNodeView = projectNodeView;
-    }
-
-    public Consumer<ProjectNodeView> getNewFileBehavior() {
-        return newFileBehavior;
-    }
-
-    public void setNewFileBehavior(Consumer<ProjectNodeView> newFileBehavior) {
-        this.newFileBehavior = newFileBehavior;
-    }
-
-    public Consumer<ProjectNodeView> getNewDirectoryBehavior() {
-        return newDirectoryBehavior;
-    }
-
-    public void setNewDirectoryBehavior(Consumer<ProjectNodeView> newDirectoryBehavior) {
-        this.newDirectoryBehavior = newDirectoryBehavior;
-    }
-
-    public Consumer<ProjectNodeView> getDeleteBehavior() {
-        return deleteBehavior;
-    }
-
-    public void setDeleteBehavior(Consumer<ProjectNodeView> deleteBehavior) {
-        this.deleteBehavior = deleteBehavior;
     }
 
     public Consumer<String> getRenameBehavior() {
@@ -289,5 +265,29 @@ public class ProjectController implements WatchableDir {
 
     public void setRefreshBehavior(Runnable refreshBehavior) {
         this.refreshBehavior = refreshBehavior;
+    }
+
+    public Runnable getNewFileBehavior() {
+        return newFileBehavior;
+    }
+
+    public void setNewFileBehavior(Runnable newFileBehavior) {
+        this.newFileBehavior = newFileBehavior;
+    }
+
+    public Runnable getNewDirectoryBehavior() {
+        return newDirectoryBehavior;
+    }
+
+    public void setNewDirectoryBehavior(Runnable newDirectoryBehavior) {
+        this.newDirectoryBehavior = newDirectoryBehavior;
+    }
+
+    public Runnable getDeleteBehavior() {
+        return deleteBehavior;
+    }
+
+    public void setDeleteBehavior(Runnable deleteBehavior) {
+        this.deleteBehavior = deleteBehavior;
     }
 }

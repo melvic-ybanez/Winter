@@ -22,8 +22,8 @@ public class FileProjectController extends ProjectController {
         });
         setOpenBehavior(ProjectControllerBehaviors.openTextFile(projectModel, editorSetController));
         setDeleteBehavior(ProjectControllerBehaviors.deleteFile(getProjectModel().getPath()));
-        setNewFileBehavior(ProjectControllerBehaviors.acceptNothing());
-        setNewDirectoryBehavior(ProjectControllerBehaviors.acceptNothing());
+        setNewFileBehavior(ProjectControllerBehaviors.doNothing());
+        setNewDirectoryBehavior(ProjectControllerBehaviors.doNothing());
         setCloseBehavior(ProjectControllerBehaviors.acceptNothing());
         setRefreshBehavior(ProjectControllerBehaviors.doNothing());
     }

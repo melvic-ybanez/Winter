@@ -35,7 +35,7 @@ public class ProjectControllerBehaviors {
         };
     }
     
-    private static Consumer<Supplier<Optional<IOException>>> delete(ProjectNodeView projectNodeView, Path path) {
+    private static Consumer<Supplier<Optional<IOException>>> delete(Path path) {
         return (deleteFunction) -> {
             Alert warningDialog = new Alert(Alert.AlertType.CONFIRMATION);
             warningDialog.setTitle("Delete Warning");
@@ -51,16 +51,16 @@ public class ProjectControllerBehaviors {
         };
     }
     
-    public static Consumer<ProjectNodeView> deleteFile(Path path) {
-        return projectNodeView -> delete(projectNodeView, path).accept(() -> FileUtils.deleteFile(path));
+    public static Runnable deleteFile(Path path) {
+        return () -> delete(path).accept(() -> FileUtils.deleteFile(path));
     }
     
-    public static Consumer<ProjectNodeView> deleteDirectory(Path path) {
-        return projectNodeView -> delete(projectNodeView, path).accept(() -> FileUtils.deleteDirectory(path));
+    public static Runnable deleteDirectory(Path path) {
+        return () -> delete(path).accept(() -> FileUtils.deleteDirectory(path));
     }
     
-    public static Consumer<ProjectNodeView> newFile(Path path) {
-        return projectNodeView -> {
+    public static Runnable newFile(Path path) {
+        return () -> {
             TextInputDialog dialog = new TextInputDialog();
             dialog.setTitle("New File");
             dialog.setHeaderText(null);
@@ -73,8 +73,8 @@ public class ProjectControllerBehaviors {
         };
     };
 
-    public static Consumer<ProjectNodeView> newDirectory(Path path) {
-        return projectNodeView -> {
+    public static Runnable newDirectory(Path path) {
+        return () -> {
             TextInputDialog dialog = new TextInputDialog();
             dialog.setTitle("New Directory");
             dialog.setHeaderText(null);
