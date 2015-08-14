@@ -1,6 +1,7 @@
 package winter.views.project;
 
 import javafx.beans.binding.Bindings;
+import javafx.collections.ObservableList;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
@@ -107,7 +108,7 @@ public abstract class ProjectNodeView extends TreeItem<String> {
         ProjectNodeView fileNode = fileProjectController.getProjectNodeView();
         fileNode.setGraphic(Resources.getIcon("file.png"));
         fileProjectController.start();
-        projectController.insertNode(fileNode);
+        insertNode(fileNode);
         return fileNode;
     }
 
@@ -141,13 +142,50 @@ public abstract class ProjectNodeView extends TreeItem<String> {
         }
 
         if (index == -1) {
-            projectController.insertNode(dirNode);
+            insertNode(dirNode);
         } else {
             getChildren().add(index, dirNode);
         }
 
         dirProjectController.start();
         return dirNode;
+    }
+
+    public void insertNode(ProjectNodeView newNode) {
+        Function<ProjectController, Boolean> isFile = controller -> controller instanceof FileProjectController;
+        Function<ProjectController, Boolean> isDir = controller -> controller instanceof DirectoryProjectController;
+
+        ProjectController controller1 = newNode.getProjectController();
+        ObservableList<TreeItem<String>> children = getChildren();
+        int index = children.size();
+
+        for (int i = 0; i < children.size(); i++) {
+            ProjectNodeView childView = (ProjectNodeView) children.get(i);
+            ProjectController controller2 = childView.getProjectController();
+
+            // If the new node is a file and is matched against a directory, then we
+            // should continue the loop instead of inserting the node here, since directories have
+            // higher priorities than files.
+            if (isFile.apply(controller1) && isDir.apply(controller2)) continue;
+
+            // If the new node is a directory and is matched against a file, then insert it immediately
+            // and break out of the loop.
+            if (isDir.apply(controller1) && isFile.apply(controller2)) {
+                index = i;
+                break;
+            }
+
+            // If the two types are equal, compare their names alphabetically.
+            String name1 = controller1.getProjectModel().getName();
+            String name2 = controller2.getProjectModel().getName();
+            int comparison = name1.compareTo(name2);
+            if (comparison <= 0) {
+                index = i;
+                break;
+            }
+        }
+
+        children.add(index, newNode);
     }
 
     public ProjectNodeView addDirectory(Path dirPath, boolean isProject) {
