@@ -67,7 +67,6 @@ public class EditorView extends CodeArea implements Observer {
     public Optional<String> showRenameDialog() {
         RequiredTextInputDialog renameDialog = new RequiredTextInputDialog(editorModel.getTitle());
         renameDialog.setTitle("Rename File");
-        renameDialog.setHeaderText(null);
         renameDialog.setContentText("Enter the new filename");
         return renameDialog.getAnswer();
     }

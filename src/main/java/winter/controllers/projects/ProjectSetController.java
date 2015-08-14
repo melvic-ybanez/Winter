@@ -12,9 +12,9 @@ public interface ProjectSetController {
 
     public void openProject(Path path, int index);
 
-    public void closeProject(ProjectController projectController);
-
     public void closeAll();
+
+    public void refreshAll();
     
     public ProjectSetView getProjectSetView();
 }

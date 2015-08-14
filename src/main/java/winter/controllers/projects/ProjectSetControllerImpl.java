@@ -14,10 +14,12 @@ public class ProjectSetControllerImpl implements ProjectSetController {
     private ProjectSetView projectSetView;
     private EditorSetView editorSetView;
     private Runnable closeAllBehavior;
+    private Runnable refreshAllBehavior;
 
     public ProjectSetControllerImpl(EditorSetView editorSetView, ReadOnlyDoubleProperty heightProperty) {
         setProjectSetView(new ProjectSetView(this, editorSetView, heightProperty));
         closeAllBehavior = ProjectControllerBehaviors.removeAllProjects(this);
+        refreshAllBehavior = ProjectControllerBehaviors.refreshAllProjects(this);
     }
 
     @Override
@@ -31,13 +33,13 @@ public class ProjectSetControllerImpl implements ProjectSetController {
     }
 
     @Override
-    public void closeProject(ProjectController projectController) {
-        projectController.close();
+    public void closeAll() {
+        closeAllBehavior.run();
     }
 
     @Override
-    public void closeAll() {
-        closeAllBehavior.run();
+    public void refreshAll() {
+        refreshAllBehavior.run();
     }
 
     public ProjectSetView getProjectSetView() {

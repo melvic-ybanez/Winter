@@ -10,6 +10,7 @@ import java.util.Optional;
 public class RequiredTextInputDialog extends TextInputDialog {
     public RequiredTextInputDialog(String defaultAnswer) {
         super(defaultAnswer);
+        setHeaderText(null);
     }
 
     public Optional<String> getAnswer() {

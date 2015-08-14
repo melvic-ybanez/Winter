@@ -83,17 +83,19 @@ public abstract class ProjectNodeView extends TreeItem<String> {
         MenuItem renameItem = createRenameItem();
         MenuItem moveItem = createMoveItem();
         MenuItem refreshItem = new MenuItem("Refresh", Resources.getIcon("refresh.png"));
+        MenuItem refreshAllItem = new MenuItem("Refresh All");
         MenuItem closeItem = new MenuItem("Close", Resources.getIcon("close.png"));
         MenuItem closeAllItems = new MenuItem("Close All");
                 
         projectContextMenu.getItems().addAll(addFileItem,
                 addFolderItem, new SeparatorMenuItem(),
                 deleteItem, renameItem, moveItem, new SeparatorMenuItem(),
-                refreshItem, closeItem, closeAllItems);
+                refreshItem, refreshAllItem, closeItem, closeAllItems);
 
+        refreshItem.setOnAction(e -> projectController.refresh());
+        refreshAllItem.setOnAction(e -> projectController.getProjectSetController().refreshAll());
         closeItem.setOnAction(e -> projectController.close());
         closeAllItems.setOnAction(e -> projectController.getProjectSetController().closeAll());
-        refreshItem.setOnAction(e -> projectController.refresh());
 
         return projectContextMenu;
     }

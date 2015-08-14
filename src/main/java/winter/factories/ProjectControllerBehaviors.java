@@ -19,9 +19,11 @@ import winter.views.project.ProjectNodeView;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * Created by ybamelcash on 8/7/2015.
@@ -67,7 +69,6 @@ public class ProjectControllerBehaviors {
         return () -> {
             RequiredTextInputDialog dialog = new RequiredTextInputDialog(Constants.UNTITLED);
             dialog.setTitle("New File");
-            dialog.setHeaderText(null);
             dialog.setContentText("Enter Filename:");
             Optional<String> answer = dialog.getAnswer();
             answer.ifPresent(filename -> {
@@ -81,7 +82,6 @@ public class ProjectControllerBehaviors {
         return () -> {
             RequiredTextInputDialog dialog = new RequiredTextInputDialog(Constants.UNTITLED);
             dialog.setTitle("New Directory");
-            dialog.setHeaderText(null);
             dialog.setContentText("Enter Directory Name:");
             Optional<String> answer = dialog.getAnswer();
             answer.ifPresent(directoryName -> {
@@ -95,7 +95,6 @@ public class ProjectControllerBehaviors {
         return () -> {
             RequiredTextInputDialog dialog = new RequiredTextInputDialog(path.getFileName().toString());
             dialog.setTitle("Rename File");
-            dialog.setHeaderText(null);
             dialog.setContentText("Enter new Filename:");
             Optional<String> answer = dialog.getAnswer();
             answer.ifPresent(filename -> {
@@ -109,7 +108,6 @@ public class ProjectControllerBehaviors {
         return () -> {
             RequiredTextInputDialog dialog = new RequiredTextInputDialog(path.getFileName().toString());
             dialog.setTitle("Rename Directory");
-            dialog.setHeaderText(null);
             dialog.setContentText("Enter new Directory Name:");
             Optional<String> answer = dialog.getAnswer();
             answer.ifPresent(directoryName -> {
@@ -140,6 +138,21 @@ public class ProjectControllerBehaviors {
             int index = projectNodeView.getParent().getChildren().indexOf(projectNodeView);
             projectController.close();
             projectController.getProjectSetController().openProject(path, index);
+        };
+    }
+
+    public static Runnable refreshAllProjects(ProjectSetController projectSetController) {
+        return () -> {
+            TreeView<String> tree = projectSetController.getProjectSetView().getTree();
+            ObservableList<TreeItem<String>> children = tree.getRoot().getChildren();
+
+            List<Path> projects = children.stream().map(child -> {
+                ProjectNodeView childView = (ProjectNodeView) child;
+                return childView.getProjectModel().getPath();
+            }).collect(Collectors.toList());
+
+            children.clear();
+            projects.forEach(projectSetController::openProject);
         };
     }
     
