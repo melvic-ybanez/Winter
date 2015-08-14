@@ -1,9 +1,7 @@
 package winter.factories;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TextInputDialog;
-import javafx.scene.control.TreeItem;
+import javafx.collections.ObservableList;
+import javafx.scene.control.*;
 import winter.controllers.editors.EditorSetController;
 import winter.controllers.projects.ProjectController;
 import winter.controllers.projects.ProjectSetController;
@@ -46,7 +44,8 @@ public class ProjectControllerBehaviors {
                 if (button == ButtonType.OK) {
                     Optional<IOException> errorOpt = deleteFunction.get();
                     errorOpt.ifPresent(Errors::deleteFileExceptionDialog);
-                };
+                }
+                ;
             }); 
         };
     }
@@ -90,6 +89,14 @@ public class ProjectControllerBehaviors {
     public static Consumer<ProjectNodeView> removeProject() {
         return projectNodeView -> {
             projectNodeView.getParent().getChildren().remove(projectNodeView);
+        };
+    }
+
+    public static Runnable removeAllProjects(ProjectSetController projectSetController) {
+        return () -> {
+            TreeView<String> tree = projectSetController.getProjectSetView().getTree();
+            ObservableList<TreeItem<String>> children = tree.getRoot().getChildren();
+            children.clear();
         };
     }
 

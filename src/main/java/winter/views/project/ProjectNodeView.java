@@ -95,6 +95,7 @@ public abstract class ProjectNodeView extends TreeItem<String> {
                 refreshItem, closeItem, closeAllItems);
 
         closeItem.setOnAction(e -> projectController.close());
+        closeAllItems.setOnAction(e -> projectController.getProjectSetController().closeAll());
         refreshItem.setOnAction(e -> projectController.refresh());
 
         return projectContextMenu;

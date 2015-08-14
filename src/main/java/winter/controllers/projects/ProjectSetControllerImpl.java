@@ -1,6 +1,7 @@
 package winter.controllers.projects;
 
 import javafx.beans.property.ReadOnlyDoubleProperty;
+import winter.factories.ProjectControllerBehaviors;
 import winter.utils.Errors;
 import winter.views.editor.EditorSetView;
 import winter.views.project.ProjectNodeView;
@@ -20,9 +21,11 @@ import static java.nio.file.StandardWatchEventKinds.*;
 public class ProjectSetControllerImpl implements ProjectSetController {
     private ProjectSetView projectSetView;
     private EditorSetView editorSetView;
+    private Runnable closeAllBehavior;
 
     public ProjectSetControllerImpl(EditorSetView editorSetView, ReadOnlyDoubleProperty heightProperty) {
         setProjectSetView(new ProjectSetView(this, editorSetView, heightProperty));
+        closeAllBehavior = ProjectControllerBehaviors.removeAllProjects(this);
     }
 
     @Override
@@ -33,6 +36,16 @@ public class ProjectSetControllerImpl implements ProjectSetController {
     @Override
     public void openProject(Path path, int index) {
         projectSetView.openProject(path, index);
+    }
+
+    @Override
+    public void closeProject(ProjectController projectController) {
+        projectController.close();
+    }
+
+    @Override
+    public void closeAll() {
+        closeAllBehavior.run();
     }
 
     public ProjectSetView getProjectSetView() {
