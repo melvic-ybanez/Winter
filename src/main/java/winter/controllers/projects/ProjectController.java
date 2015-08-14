@@ -27,7 +27,7 @@ public class ProjectController implements WatchableDir {
     private Runnable newFileBehavior;
     private Runnable newDirectoryBehavior;
     private Runnable deleteBehavior;
-    private Consumer<String> renameBehavior;
+    private Runnable renameBehavior;
     private Consumer<Path> moveBehavior;
     private Runnable openBehavior;
     private Consumer<ProjectNodeView> closeBehavior;
@@ -102,8 +102,8 @@ public class ProjectController implements WatchableDir {
         deleteBehavior.run();
     }
     
-    public void rename(String newName) {
-        renameBehavior.accept(newName);
+    public void rename() {
+        renameBehavior.run();
     }
     
     public void move(Path dest) {
@@ -136,14 +136,6 @@ public class ProjectController implements WatchableDir {
 
     public void setProjectNodeView(ProjectNodeView projectNodeView) {
         this.projectNodeView = projectNodeView;
-    }
-
-    public Consumer<String> getRenameBehavior() {
-        return renameBehavior;
-    }
-
-    public void setRenameBehavior(Consumer<String> renameBehavior) {
-        this.renameBehavior = renameBehavior;
     }
 
     public Consumer<Path> getMoveBehavior() {
@@ -289,5 +281,13 @@ public class ProjectController implements WatchableDir {
 
     public void setDeleteBehavior(Runnable deleteBehavior) {
         this.deleteBehavior = deleteBehavior;
+    }
+
+    public Runnable getRenameBehavior() {
+        return renameBehavior;
+    }
+
+    public void setRenameBehavior(Runnable renameBehavior) {
+        this.renameBehavior = renameBehavior;
     }
 }

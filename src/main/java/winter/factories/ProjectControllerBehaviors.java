@@ -63,7 +63,7 @@ public class ProjectControllerBehaviors {
             TextInputDialog dialog = new TextInputDialog();
             dialog.setTitle("New File");
             dialog.setHeaderText(null);
-            dialog.setContentText("Enter filename:");
+            dialog.setContentText("Enter Filename:");
             Optional<String> answer = dialog.showAndWait();
             answer.ifPresent(filename -> {
                 Either<IOException, Path> result = FileUtils.createFile(path.resolve(filename));
@@ -81,6 +81,34 @@ public class ProjectControllerBehaviors {
             Optional<String> answer = dialog.showAndWait();
             answer.ifPresent(directoryName -> {
                 Either<IOException, Path> result = FileUtils.createDirectory(path.resolve(directoryName));
+                result.ifLeft(Errors::addDirectoryExceptionDialog);
+            });
+        };
+    };
+
+    public static Runnable renameFile(Path path) {
+        return () -> {
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setTitle("Rename File");
+            dialog.setHeaderText(null);
+            dialog.setContentText("Enter new Filename:");
+            Optional<String> answer = dialog.showAndWait();
+            answer.ifPresent(filename -> {
+                Either<IOException, Path> result = FileUtils.renameFile(path, filename);
+                result.ifLeft(Errors::addFileExceptionDialog);
+            });
+        };
+    };
+
+    public static Runnable renameDirectory(Path path) {
+        return () -> {
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setTitle("Rename Directory");
+            dialog.setHeaderText(null);
+            dialog.setContentText("Enter new Directory Name:");
+            Optional<String> answer = dialog.showAndWait();
+            answer.ifPresent(directoryName -> {
+                Either<IOException, Path> result = FileUtils.renameFile(path, directoryName);
                 result.ifLeft(Errors::addDirectoryExceptionDialog);
             });
         };

@@ -180,6 +180,7 @@ public abstract class ProjectNodeView extends TreeItem<String> {
     
     private MenuItem createRenameItem() {
         MenuItem renameItem = new MenuItem("Rename...", Resources.getIcon("rename.png"));
+        renameItem.setOnAction(e -> projectController.rename());
         return renameItem;
     }
     
