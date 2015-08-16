@@ -10,6 +10,7 @@ import javafx.scene.input.KeyCombination;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import winter.Main;
 import winter.Settings;
 import winter.controllers.editors.EditorSetController;
 import winter.controllers.files.FileController;
@@ -37,6 +38,7 @@ public class FileMenu extends Menu {
     private MenuItem saveFileItem;
     private MenuItem saveAsFileItem;
     private MenuItem exitFileItem;
+    private MenuItem restartItem;
     
     public FileMenu(FileController fileController, EditorSetController editorSetController, ProjectSetController projectSetController) {
         super("File");
@@ -52,6 +54,7 @@ public class FileMenu extends Menu {
         openFolderItem = new MenuItem("Open Directory...", Icons.createClosedDirectoryIcon());
         saveFileItem = new MenuItem("Save", Icons.createSaveIcon());
         saveAsFileItem = new MenuItem("Save As...", Icons.createSaveAsIcon());
+        restartItem = new MenuItem("Restart", Icons.createRestartIcon());
         exitFileItem = new MenuItem("Exit"); 
 
         openFileItem.setOnAction(e -> fileController.openFile());
@@ -59,6 +62,7 @@ public class FileMenu extends Menu {
         newFileItem.setOnAction(e -> newFile());
         saveFileItem.setOnAction(e -> fileController.saveFile());
         saveAsFileItem.setOnAction(e -> fileController.saveAsFile());
+        restartItem.setOnAction(e -> Main.initApp(getStage()));
         exitFileItem.setOnAction(e -> {
             if (editorSetController.closeAllTabs()) {
                 Platform.exit();
@@ -77,7 +81,7 @@ public class FileMenu extends Menu {
         getItems().addAll(newFileItem, 
                 openFileItem, openFolderItem, new SeparatorMenuItem(),
                 saveFileItem, saveAsFileItem, new SeparatorMenuItem(),
-                exitFileItem);
+                restartItem, exitFileItem);
     }
     
     private void openFolder() {
@@ -170,5 +174,9 @@ public class FileMenu extends Menu {
 
     public MenuItem getOpenFolderItem() {
         return openFolderItem;
+    }
+
+    public MenuItem getRestartItem() {
+        return restartItem;
     }
 }

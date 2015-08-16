@@ -46,6 +46,7 @@ public class ToolBarView extends ToolBar {
         openFolderButton.setTooltip(createTooltip(fileMenu.getOpenFolderItem()));
         saveButton.setTooltip(createTooltip(fileMenu.getSaveFileItem()));
         saveAsButton.setTooltip(createTooltip(fileMenu.getSaveAsFileItem()));
+        restartButton.setTooltip(createTooltip(fileMenu.getRestartItem()));
         
         undoButton.setTooltip(createTooltip(editMenu.getUndoItem()));
         redoButton.setTooltip(createTooltip(editMenu.getRedoItem()));
@@ -69,7 +70,8 @@ public class ToolBarView extends ToolBar {
     }
     
     private Tooltip createTooltip(MenuItem menuItem) {
-        return new Tooltip(menuItem.getText() + " (" + menuItem.getAccelerator().getDisplayText() + ")");
+        String displayText = menuItem.getAccelerator() == null ? "": "(" + menuItem.getAccelerator().getDisplayText() + ")";
+        return new Tooltip(menuItem.getText() + " " + displayText);
     }
     
     private void registerEvents() {
@@ -78,6 +80,7 @@ public class ToolBarView extends ToolBar {
         openFolderButton.setOnAction(fileMenu.getOpenFolderItem().getOnAction());
         saveButton.setOnAction(fileMenu.getSaveFileItem().getOnAction());
         saveAsButton.setOnAction(fileMenu.getSaveAsFileItem().getOnAction());
+        restartButton.setOnAction(fileMenu.getRestartItem().getOnAction());
         
         undoButton.setOnAction(editMenu.getUndoItem().getOnAction());
         redoButton.setOnAction(editMenu.getRedoItem().getOnAction());

@@ -27,6 +27,10 @@ public class Main extends javafx.application.Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        initApp(primaryStage);
+    }
+
+    public static void initApp(Stage primaryStage) {
         SplitPane mainSplitPane = new SplitPane();
 
         EditorSetController editorSetController = new EditorSetControllerImpl();
@@ -36,10 +40,10 @@ public class Main extends javafx.application.Application {
         FileController fileController = new FileControllerImpl(editorSetController, projectSetController);
         StatusModel statusModel = new StatusModelImpl(editorSetController);
         StatusView statusView = new StatusView(statusModel);
-        
+
         editorSetController.setFileController(fileController);
         editorSetView.newUntitledTab();
-        
+
         mainSplitPane.getItems().addAll(projectSetView, editorSetView);
         projectSetView.visibleProperty().addListener((obs, wasVisible, isVisible) -> {
             if (isVisible) {
@@ -51,20 +55,20 @@ public class Main extends javafx.application.Application {
         mainSplitPane.getStyleClass().add("winter-divider");
 
         SplitPane.setResizableWithParent(projectSetView, false);
-        
+
         MenuBar menuBar = new MenuBar();
         FileMenu fileMenu = fileController.getFileMenu();
         EditMenu editMenu = new EditMenu(editorSetController);
-        
+
         ToolBarView toolBarView = new ToolBarView(fileMenu, editMenu);
         ViewMenu viewMenu = new ViewMenu(editorSetController, projectSetController, toolBarView);
         toolBarView.setViewMenu(viewMenu);
         toolBarView.createUI();
-        
-        menuBar.getMenus().addAll(fileMenu, 
-                editMenu, viewMenu, 
+
+        menuBar.getMenus().addAll(fileMenu,
+                editMenu, viewMenu,
                 new PreferencesMenu(), new HelpMenu());
-        
+
         BorderPane mainPane = new BorderPane();
         mainPane.setTop(toolBarView);
         mainPane.setCenter(mainSplitPane);
@@ -73,10 +77,10 @@ public class Main extends javafx.application.Application {
         BorderPane root = new BorderPane();
         root.setTop(menuBar);
         root.setCenter(mainPane);
-        
+
         Scene scene = new Scene(root, 900, 600);
         scene.getStylesheets().add(Main.class.getResource("/syntax/meruem.css").toExternalForm());
-        
+
         primaryStage.setTitle("Winter");
         primaryStage.setScene(scene);
         primaryStage.setMaximized(true);

@@ -32,7 +32,7 @@ public class ProjectSetView extends TitledPane {
         setText("Projects");
         setGraphic(Icons.createProjectsIcon());
         setContent(tree);
-        prefHeightProperty().bind(heightProperty); 
+        prefHeightProperty().bind(heightProperty);
         setCollapsible(false);
         
         tree.setRoot(ProjectNodeView.createDummy(projectSetController, editorSetView.getEditorSetController()));
