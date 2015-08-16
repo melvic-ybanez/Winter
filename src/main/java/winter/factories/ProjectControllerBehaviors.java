@@ -91,30 +91,25 @@ public class ProjectControllerBehaviors {
         };
     };
 
-    public static Runnable renameFile(Path path) {
+    private static Runnable rename(Path path, String title, String content) {
         return () -> {
             RequiredTextInputDialog dialog = new RequiredTextInputDialog(path.getFileName().toString());
-            dialog.setTitle("Rename File");
-            dialog.setContentText("Enter new Filename:");
+            dialog.setTitle("Rename " + title);
+            dialog.setContentText("Enter new " + content + ":");
             Optional<String> answer = dialog.getAnswer();
             answer.ifPresent(filename -> {
                 Either<IOException, Path> result = FileUtils.renameFile(path, filename);
-                result.ifLeft(Errors::addFileExceptionDialog);
+                result.ifLeft(Errors::renameFileExceptionDialog);
             });
         };
     };
 
+    public static Runnable renameFile(Path path) {
+        return rename(path, "File", "Filename");
+    };
+
     public static Runnable renameDirectory(Path path) {
-        return () -> {
-            RequiredTextInputDialog dialog = new RequiredTextInputDialog(path.getFileName().toString());
-            dialog.setTitle("Rename Directory");
-            dialog.setContentText("Enter new Directory Name:");
-            Optional<String> answer = dialog.getAnswer();
-            answer.ifPresent(directoryName -> {
-                Either<IOException, Path> result = FileUtils.renameFile(path, directoryName);
-                result.ifLeft(Errors::addDirectoryExceptionDialog);
-            });
-        };
+        return rename(path, "Directory", "Directory Name");
     };
 
     public static Consumer<ProjectNodeView> removeProject() {
