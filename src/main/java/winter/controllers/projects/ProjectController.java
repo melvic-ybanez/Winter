@@ -3,6 +3,7 @@ package winter.controllers.projects;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
 import winter.controllers.editors.EditorSetController;
 import winter.models.projects.ProjectModel;
 import winter.utils.Errors;
@@ -12,6 +13,7 @@ import winter.views.project.ProjectNodeView;
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -26,7 +28,7 @@ public class ProjectController implements WatchableDir {
     private Runnable newDirectoryBehavior;
     private Runnable deleteBehavior;
     private Runnable renameBehavior;
-    private Consumer<Path> moveBehavior;
+    private Runnable moveBehavior;
     private Runnable openBehavior;
     private Consumer<ProjectNodeView> closeBehavior;
     private Runnable refreshBehavior;
@@ -104,8 +106,8 @@ public class ProjectController implements WatchableDir {
         renameBehavior.run();
     }
     
-    public void move(Path dest) {
-        moveBehavior.accept(dest);
+    public void move() {
+        moveBehavior.run();
     }
     
     public void open() {
@@ -134,14 +136,6 @@ public class ProjectController implements WatchableDir {
 
     public void setProjectNodeView(ProjectNodeView projectNodeView) {
         this.projectNodeView = projectNodeView;
-    }
-
-    public Consumer<Path> getMoveBehavior() {
-        return moveBehavior;
-    }
-
-    public void setMoveBehavior(Consumer<Path> moveBehavior) {
-        this.moveBehavior = moveBehavior;
     }
 
     public Runnable getOpenBehavior() {
@@ -287,5 +281,13 @@ public class ProjectController implements WatchableDir {
 
     public void setRenameBehavior(Runnable renameBehavior) {
         this.renameBehavior = renameBehavior;
+    }
+
+    public Runnable getMoveBehavior() {
+        return moveBehavior;
+    }
+
+    public void setMoveBehavior(Runnable moveBehavior) {
+        this.moveBehavior = moveBehavior;
     }
 }

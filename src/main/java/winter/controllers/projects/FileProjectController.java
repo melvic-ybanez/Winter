@@ -27,5 +27,6 @@ public class FileProjectController extends ProjectController {
         setCloseBehavior(ProjectControllerBehaviors.acceptNothing());
         setRefreshBehavior(ProjectControllerBehaviors.doNothing());
         setRenameBehavior(ProjectControllerBehaviors.renameFile(getProjectModel().getPath()));
+        setMoveBehavior(ProjectControllerBehaviors.moveFile(getProjectModel().getPath()));
     }
 }

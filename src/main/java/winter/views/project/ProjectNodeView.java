@@ -185,6 +185,7 @@ public abstract class ProjectNodeView extends TreeItem<String> {
     
     private MenuItem createMoveItem() {
         MenuItem moveItem = new MenuItem("Move...", Resources.getIcon("move.png"));
+        moveItem.setOnAction(e -> projectController.move());
         return moveItem;
     }
     

@@ -28,5 +28,6 @@ public class DirectoryProjectController extends ProjectController {
         setCloseBehavior(ProjectControllerBehaviors.acceptNothing());
         setRefreshBehavior(ProjectControllerBehaviors.doNothing());
         setRenameBehavior(ProjectControllerBehaviors.renameDirectory(getProjectModel().getPath()));
+        setMoveBehavior(ProjectControllerBehaviors.moveDirectory(getProjectModel().getPath()));
     }
 }

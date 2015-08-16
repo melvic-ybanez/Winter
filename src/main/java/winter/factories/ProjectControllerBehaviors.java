@@ -19,6 +19,7 @@ import winter.views.project.ProjectNodeView;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -76,7 +77,7 @@ public class ProjectControllerBehaviors {
                 result.ifLeft(Errors::addFileExceptionDialog);
             });
         };
-    };
+    }
 
     public static Runnable newDirectory(Path path) {
         return () -> {
@@ -89,7 +90,7 @@ public class ProjectControllerBehaviors {
                 result.ifLeft(Errors::addDirectoryExceptionDialog);
             });
         };
-    };
+    }
 
     private static Runnable rename(Path path, String title, String content) {
         return () -> {
@@ -102,15 +103,50 @@ public class ProjectControllerBehaviors {
                 result.ifLeft(Errors::renameFileExceptionDialog);
             });
         };
-    };
+    }
 
     public static Runnable renameFile(Path path) {
         return rename(path, "File", "Filename");
-    };
+    }
 
     public static Runnable renameDirectory(Path path) {
         return rename(path, "Directory", "Directory Name");
-    };
+    }
+
+    private static Supplier<Optional<Path>> move(Path source, String title) {
+        return () -> {
+            RequiredTextInputDialog dialog = new RequiredTextInputDialog(source.getParent().toString());
+            dialog.setTitle("Move " + title);
+            dialog.setContentText("Move to:");
+            Optional<String> answer = dialog.getAnswer();
+            return answer.flatMap(destParentValue -> {
+                Path destParent = Paths.get(destParentValue);
+                Path destination = destParent.resolve(source.getFileName());
+                Either<IOException, Path> result = FileUtils.moveFile(source, destination);
+                result.ifLeft(Errors::renameFileExceptionDialog);
+                return result.getRight();
+            });
+        };
+    }
+
+    public static Runnable moveFile(Path source) {
+        return () -> move(source, "File").get();
+    }
+
+    public static Runnable moveDirectory(Path source) {
+        return () -> move(source, "Directory").get();
+    }
+
+    public static Runnable moveProject(ProjectController projectController) {
+        return () -> {
+            Path source = projectController.getProjectModel().getPath();
+            Optional<Path> newPathOpt = move(source, "Project").get();
+            newPathOpt.ifPresent(newPath -> {
+                projectController.close();
+                projectController.getProjectSetController().openProject(newPath);
+            });
+        };
+    }
 
     public static Consumer<ProjectNodeView> removeProject() {
         return projectNodeView -> {
