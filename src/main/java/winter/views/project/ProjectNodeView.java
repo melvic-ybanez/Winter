@@ -5,9 +5,9 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TreeItem;
-import winter.Resources;
 import winter.controllers.editors.EditorSetController;
 import winter.controllers.projects.*;
+import winter.factories.Icons;
 import winter.models.projects.ProjectModel;
 import winter.models.projects.ProjectModelImpl;
 import winter.utils.Errors;
@@ -49,7 +49,7 @@ public abstract class ProjectNodeView extends TreeItem<String> {
 
     public ContextMenu createFileContextMenu() {
         ContextMenu fileContextMenu = new ContextMenu();
-        MenuItem editItem = new MenuItem("Edit", Resources.getIcon("open_file.png"));
+        MenuItem editItem = new MenuItem("Edit", Icons.createOpenFileIcon());
         MenuItem deleteItem = createDeleteItem();
         MenuItem renameItem = createRenameItem();
         MenuItem moveItem = createMoveItem();
@@ -82,9 +82,9 @@ public abstract class ProjectNodeView extends TreeItem<String> {
         MenuItem deleteItem = createDeleteItem();
         MenuItem renameItem = createRenameItem();
         MenuItem moveItem = createMoveItem();
-        MenuItem refreshItem = new MenuItem("Refresh", Resources.getIcon("refresh.png"));
+        MenuItem refreshItem = new MenuItem("Refresh", Icons.createRefreshIcon());
         MenuItem refreshAllItem = new MenuItem("Refresh All");
-        MenuItem closeItem = new MenuItem("Close", Resources.getIcon("close.png"));
+        MenuItem closeItem = new MenuItem("Close", Icons.createCloseIcon());
         MenuItem closeAllItems = new MenuItem("Close All");
                 
         projectContextMenu.getItems().addAll(addFileItem,
@@ -106,7 +106,7 @@ public abstract class ProjectNodeView extends TreeItem<String> {
                 projectController.getProjectSetController(),
                 projectController.getEditorSetController());
         ProjectNodeView fileNode = fileProjectController.getProjectNodeView();
-        fileNode.setGraphic(Resources.getIcon("file.png"));
+        fileNode.setGraphic(Icons.createFileIcon());
         fileProjectController.start();
         projectController.insertNode(fileNode);
         return fileNode;
@@ -123,11 +123,10 @@ public abstract class ProjectNodeView extends TreeItem<String> {
                     projectController.getEditorSetController());
         ProjectNodeView dirNode = dirProjectController.getProjectNodeView();
 
-        dirNode.setGraphic(Resources.getIcon("close_folder.png"));
         dirNode.graphicProperty().bind(
                 Bindings.when(dirNode.expandedProperty())
-                        .then(Resources.getIcon("open_folder.png"))
-                        .otherwise(Resources.getIcon("close_folder.png")));
+                        .then(Icons.createOpenDirectoryIcon())
+                        .otherwise(Icons.createClosedDirectoryIcon()));
 
         try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(dirPath)) {
             for (Path path : directoryStream) {
@@ -160,31 +159,31 @@ public abstract class ProjectNodeView extends TreeItem<String> {
     }
     
     private MenuItem createAddFileItem() {
-        MenuItem newFileItem = new MenuItem("Add new File...", Resources.getIcon("new.png"));
+        MenuItem newFileItem = new MenuItem("Add new File...", Icons.createNewFileIcon());
         newFileItem.setOnAction(e -> projectController.newFile());
         return newFileItem;
     }
     
     private MenuItem createAddDirectoryItem() {
-        MenuItem newDirectoryItem = new MenuItem("Add new Directory...", Resources.getIcon("close_folder.png"));
+        MenuItem newDirectoryItem = new MenuItem("Add new Directory...", Icons.createClosedDirectoryIcon());
         newDirectoryItem.setOnAction(e -> projectController.newDirectory());
         return newDirectoryItem;
     }
     
     private MenuItem createDeleteItem() {
-        MenuItem deleteItem = new MenuItem("Delete", Resources.getIcon("delete.png"));
+        MenuItem deleteItem = new MenuItem("Delete", Icons.createDeleteIcon());
         deleteItem.setOnAction(e -> projectController.delete());
         return deleteItem;
     }
     
     private MenuItem createRenameItem() {
-        MenuItem renameItem = new MenuItem("Rename...", Resources.getIcon("rename.png"));
+        MenuItem renameItem = new MenuItem("Rename...", Icons.createRenameIcon());
         renameItem.setOnAction(e -> projectController.rename());
         return renameItem;
     }
     
     private MenuItem createMoveItem() {
-        MenuItem moveItem = new MenuItem("Move...", Resources.getIcon("move.png"));
+        MenuItem moveItem = new MenuItem("Move...", Icons.createMoveIcon());
         moveItem.setOnAction(e -> projectController.move());
         return moveItem;
     }

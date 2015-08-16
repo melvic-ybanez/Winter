@@ -10,26 +10,23 @@ import winter.views.menus.ViewMenu;
  * Created by ybamelcash on 7/8/2015.
  */
 public class ToolBarView extends ToolBar {
-    private Button newButton = Icons.createButtonIcon("new.png");
-    private Button openFileButton = Icons.createButtonIcon("open_file.png");
-    private Button openFolderButton = Icons.createButtonIcon("close_folder.png");
-    private Button saveButton = Icons.createButtonIcon("save.png");
-    private Button saveAsButton = Icons.createButtonIcon("save_as.png");
-    private Button restartButton = Icons.createButtonIcon("restart.png");
-    private Button undoButton = Icons.createButtonIcon("undo.png");
-    private Button redoButton = Icons.createButtonIcon("redo.png");
-    private Button copyButton = Icons.createButtonIcon("copy.png");
-    private Button cutButton = Icons.createButtonIcon("cut.png");
-    private Button pasteButton = Icons.createButtonIcon("paste.png");
-    private Button findButton = Icons.createButtonIcon("find.png");
-    private Button findFileButton = Icons.createButtonIcon("find_file.png");
-    private Button replaceButton = Icons.createButtonIcon("replace.png");
-    private Button runButton = Icons.createButtonIcon("run.png");
-    private Button replButton = Icons.createButtonIcon("repl.png");
-    private Button stopButton = Icons.createButtonIcon("stop.png");
-    private Button viewProjectsButton = Icons.createButtonIcon("view_projects.png");
-    private Button preferencesButton = Icons.createButtonIcon("preferences.png");
-    private Button helpButton = Icons.createButtonIcon("help.png");
+    private Button newButton = Icons.createIconedButton(Icons.createNewFileIcon());
+    private Button openFileButton = Icons.createIconedButton(Icons.createOpenFileIcon());
+    private Button openFolderButton = Icons.createIconedButton(Icons.createClosedDirectoryIcon());
+    private Button saveButton = Icons.createIconedButton(Icons.createSaveIcon());
+    private Button saveAsButton = Icons.createIconedButton(Icons.createSaveAsIcon());
+    private Button restartButton = Icons.createIconedButton(Icons.createRestartIcon());
+    private Button undoButton = Icons.createIconedButton(Icons.createUndoIcon());
+    private Button redoButton = Icons.createIconedButton(Icons.createRedoIcon());
+    private Button copyButton = Icons.createIconedButton(Icons.createCopyIcon());
+    private Button cutButton = Icons.createIconedButton(Icons.createCutIcon());
+    private Button pasteButton = Icons.createIconedButton(Icons.createPasteIcon());
+    private Button findButton = Icons.createIconedButton(Icons.createFindIcon());
+    private Button findFileButton = Icons.createIconedButton(Icons.createFindFileIcon());
+    private Button replaceButton = Icons.createIconedButton(Icons.createReplaceIcon());
+    private Button viewProjectsButton = Icons.createIconedButton(Icons.createProjectsIcon());
+    private Button preferencesButton = Icons.createIconedButton(Icons.createPreferencesIcon());
+    private Button helpButton = Icons.createIconedButton(Icons.createHelpIcon());
     
     private FileMenu fileMenu;
     private EditMenu editMenu;

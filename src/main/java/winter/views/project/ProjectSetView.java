@@ -3,8 +3,8 @@ package winter.views.project;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
-import winter.Resources;
 import winter.controllers.projects.ProjectSetController;
+import winter.factories.Icons;
 import winter.utils.Either;
 import winter.utils.Errors;
 import winter.utils.FileUtils;
@@ -30,7 +30,7 @@ public class ProjectSetView extends TitledPane {
         this.projectSetController = projectSetController;
         this.editorSetView = editorSetView;
         setText("Projects");
-        setGraphic(Resources.getIcon("view_projects.png"));
+        setGraphic(Icons.createProjectsIcon());
         setContent(tree);
         prefHeightProperty().bind(heightProperty); 
         setCollapsible(false);

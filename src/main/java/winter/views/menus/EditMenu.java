@@ -6,7 +6,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
-import winter.Resources;
 import winter.controllers.editors.EditorSetController;
 import winter.factories.Icons;
 
@@ -18,13 +17,13 @@ import java.util.List;
  */
 public class EditMenu extends Menu {
     private EditorSetController editorSetController;
-    private MenuItem undoItem = new MenuItem("Undo", Resources.getIcon("undo.png"));
-    private MenuItem redoItem = new MenuItem("Redo", Icons.getRedoImageView());
-    private MenuItem findItem = new MenuItem("Find...", Resources.getIcon("find.png"));
-    private MenuItem replaceItem = new MenuItem("Replace...", Resources.getIcon("replace.png"));
-    private MenuItem copyItem = new MenuItem("Copy", Resources.getIcon("copy.png"));
-    private MenuItem cutItem = new MenuItem("Cut", Resources.getIcon("cut.png"));
-    private MenuItem pasteItem = new MenuItem("Paste", Resources.getIcon("paste.png"));
+    private MenuItem undoItem;
+    private MenuItem redoItem;
+    private MenuItem findItem;
+    private MenuItem replaceItem;
+    private MenuItem copyItem;
+    private MenuItem cutItem;
+    private MenuItem pasteItem;
     
     public EditMenu(EditorSetController editorSetController) {
         super("Edit"); 
@@ -35,13 +34,13 @@ public class EditMenu extends Menu {
     }
     
     private List<MenuItem> createMenuItems() {
-        undoItem = new MenuItem("Undo", Resources.getIcon("undo.png"));
-        redoItem = new MenuItem("Redo", Resources.getIcon("redo.png"));
-        findItem = new MenuItem("Find...", Resources.getIcon("find.png"));
-        replaceItem = new MenuItem("Replace...", Resources.getIcon("replace.png"));
-        copyItem = new MenuItem("Copy", Resources.getIcon("copy.png"));
-        cutItem = new MenuItem("Cut", Resources.getIcon("cut.png"));
-        pasteItem = new MenuItem("Paste", Resources.getIcon("paste.png"));
+        undoItem = new MenuItem("Undo", Icons.createUndoIcon());
+        redoItem = new MenuItem("Redo", Icons.createRedoIcon());
+        findItem = new MenuItem("Find...", Icons.createFindIcon());
+        replaceItem = new MenuItem("Replace...", Icons.createReplaceIcon());
+        copyItem = new MenuItem("Copy", Icons.createCopyIcon());
+        cutItem = new MenuItem("Cut", Icons.createCutIcon());
+        pasteItem = new MenuItem("Paste", Icons.createPasteIcon());
         
         undoItem.disableProperty().bind(
                 ((BooleanBinding) editorSetController.getActiveEditorView().undoAvailableProperty()).not());

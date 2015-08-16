@@ -10,11 +10,11 @@ import javafx.scene.input.KeyCombination;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import winter.Resources;
 import winter.Settings;
 import winter.controllers.editors.EditorSetController;
 import winter.controllers.files.FileController;
 import winter.controllers.projects.ProjectSetController;
+import winter.factories.Icons;
 
 import java.io.File;
 import java.util.Optional;
@@ -47,11 +47,11 @@ public class FileMenu extends Menu {
     }
     
     private void init() {
-        newFileItem = new MenuItem("New File", Resources.getIcon("new.png"));
-        openFileItem = new MenuItem("Open File...", Resources.getIcon("open_file.png"));
-        openFolderItem = new MenuItem("Open Folder...", Resources.getIcon("close_folder.png"));
-        saveFileItem = new MenuItem("Save", Resources.getIcon("save.png"));
-        saveAsFileItem = new MenuItem("Save As...", Resources.getIcon("save_as.png"));
+        newFileItem = new MenuItem("New File", Icons.createNewFileIcon());
+        openFileItem = new MenuItem("Open File...", Icons.createOpenFileIcon());
+        openFolderItem = new MenuItem("Open Directory...", Icons.createClosedDirectoryIcon());
+        saveFileItem = new MenuItem("Save", Icons.createSaveIcon());
+        saveAsFileItem = new MenuItem("Save As...", Icons.createSaveAsIcon());
         exitFileItem = new MenuItem("Exit"); 
 
         openFileItem.setOnAction(e -> fileController.openFile());

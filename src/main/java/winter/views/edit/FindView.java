@@ -52,13 +52,13 @@ public class FindView extends BorderPane {
             wordsCheck.selectedProperty().bindBidirectional(findModel.wordsProperty());
 
             HBox buttonsPane = new HBox();
-            nextButton = Icons.createButtonIcon("down.png", "Find next occurrence");
-            previousButton = Icons.createButtonIcon("up.png", "Find previous occurrence");
+            nextButton = Icons.createIconedButton(Icons.createDownIcon(), "Find next occurrence");
+            previousButton = Icons.createIconedButton(Icons.createUpIcon(), "Find previous occurrence");
             buttonsPane.getChildren().addAll(nextButton, previousButton);
             buttonsPane.setAlignment(Pos.CENTER);
             buttonsPane.setSpacing(7);
 
-            hideButton = Icons.createButtonIcon("hide_below.png", "Hide this panel");
+            hideButton = Icons.createIconedButton(Icons.createHideIcon(), "Hide this panel");
             hideButton.setAlignment(Pos.CENTER_RIGHT);
 
             HBox leftPane = new HBox();
