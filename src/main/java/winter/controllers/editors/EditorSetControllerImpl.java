@@ -1,12 +1,15 @@
 package winter.controllers.editors;
 
 import javafx.collections.ObservableList;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Tab;
 import winter.controllers.files.FileController;
 import winter.models.editors.EditorModel;
 import winter.utils.Observable;
 import winter.utils.SimpleObservable;
 import winter.utils.StreamUtils;
+import winter.views.RequiredTextInputDialog;
 import winter.views.editor.EditorSetView;
 import winter.views.editor.EditorView;
 
@@ -108,7 +111,15 @@ public class EditorSetControllerImpl implements EditorSetController {
         }
         return unclosedEditors.isEmpty();
     }
-    
+
+    @Override
+    public void goToEditor() {
+        EditorModel selectedModel = getActiveEditorModel();
+        String defaultName = selectedModel.getTitle();
+        Dialog<String> dialog = new Dialog<>();
+        dialog.showAndWait();
+    }
+
     public Optional<EditorController> find(Path path) {
         return StreamUtils.find(editorSetView.getEditorControllers().stream(), 
                 controller -> controller.getEditorModel().equalsPath(path));

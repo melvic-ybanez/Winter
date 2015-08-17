@@ -29,6 +29,8 @@ public interface EditorSetController {
     
     public boolean closeAllTabs();
 
+    public void goToEditor();
+
     public Optional<EditorController> find(Path path);
 
     public boolean exists(Path path);
