@@ -2,14 +2,12 @@ package winter.controllers.navigations;
 
 import com.sun.javafx.event.RedirectedEvent;
 import javafx.scene.Scene;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.ListView;
-import javafx.scene.control.PopupControl;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -36,6 +34,7 @@ import java.util.stream.IntStream;
 public class NavigationControllerImpl implements NavigationController {
     private EditorSetController editorSetController;
     private Stage goToFilePopup;
+    private Optional<Path> prevPathOpt = Optional.empty();
 
     public NavigationControllerImpl(EditorSetController editorSetController) {
         setEditorSetController(editorSetController);
@@ -44,16 +43,44 @@ public class NavigationControllerImpl implements NavigationController {
     @Override
     public void goToFile() {
         EditorView editorView = editorSetController.getActiveEditorView();
+
         goToFilePopup = new Stage();
         goToFilePopup.initStyle(StageStyle.UNDECORATED);
+
         TextField fileField = new TextField();
-        ListView<String> filesView = new ListView<>();
+        ListView<VBox> filesView = new ListView<>();
         List<EditorController> editorControllers = editorSetController.getEditorSetView().getEditorControllers();
-        editorControllers.stream().forEach(editorController -> {
-            EditorModel editorModel = editorController.getEditorModel();
+
+        prevPathOpt.ifPresent(prevPath -> fileField.setText(prevPath.toString()));
+
+        IntStream.range(0, editorControllers.size()).forEach(i -> {
+            EditorModel editorModel = editorControllers.get(i).getEditorModel();
             String title = editorModel.getTitle();
-            Either<Integer, Path> pathEither = editorModel.getPathEither();
-            filesView.getItems().add(title);
+            VBox pane = new VBox();
+
+            Label titleLabel = new Label(title);
+            Label pathLabel = new Label();
+
+            int titleSize = 13;
+            String titleDefaultStyle = "-fx-font-size: " + titleSize + ";";
+
+            titleLabel.setStyle(titleDefaultStyle);
+            if (i == 0) {
+                titleLabel.setStyle(titleDefaultStyle + "-fx-font-weight: bold");
+            }
+            pathLabel.setStyle("-fx-font-style: italic; " +
+                    "-fx-font-size: " + (titleSize - 1) + "; " +
+                    "-fx-text-fill: gray");
+
+            if (editorModel.isUntitled()) {
+                pathLabel.setText("Path not available");
+            } else {
+                Path path = editorModel.getPath().get();
+                pathLabel.setText(path.toString());
+            }
+
+            pane.getChildren().addAll(titleLabel, pathLabel);
+            filesView.getItems().add(pane);
         });
 
         BorderPane mainPane = new BorderPane();
