@@ -28,6 +28,7 @@ public class NavigateMenu extends Menu {
 
         goToFile.setAccelerator(new KeyCodeCombination(KeyCode.E, KeyCodeCombination.CONTROL_DOWN));
 
+        goToFile.setOnAction(e -> navigationController.goToFile());
         goToLine.setOnAction(e -> navigationController.goToLine());
 
         getItems().addAll(goToFile, goToLine);

@@ -7,6 +7,8 @@ package winter;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.SplitPane;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import winter.controllers.editors.EditorSetController;
@@ -82,7 +84,7 @@ public class Main extends javafx.application.Application {
         root.setCenter(mainPane);
 
         Scene scene = new Scene(root, 900, 600);
-        scene.getStylesheets().add(Main.class.getResource("/syntax/meruem.css").toExternalForm());
+        scene.getStylesheets().add(Main.class.getResource("/styles/meruem.css").toExternalForm());
 
         primaryStage.setTitle("Winter");
         primaryStage.setScene(scene);
@@ -90,6 +92,13 @@ public class Main extends javafx.application.Application {
         primaryStage.setOnCloseRequest(event -> {
             if (!editorSetController.closeAllTabs()) {
                 event.consume();
+            }
+        });
+        primaryStage.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.ESCAPE) {
+                if (navigationController.getGoToFilePopup() != null) {
+                    navigationController.getGoToFilePopup().fireEvent(event);
+                }
             }
         });
         primaryStage.show();
