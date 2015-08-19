@@ -23,4 +23,6 @@ public interface NavigationController {
     public void filenameAutoCompleteOnType();
 
     public void selectFilename();
+
+    public void selectFilename(EditorModel editorModel);
 }

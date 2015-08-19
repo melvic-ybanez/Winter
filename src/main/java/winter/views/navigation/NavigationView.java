@@ -60,6 +60,7 @@ public class NavigationView extends Stage {
 
                 if (editorModel == null) {
                     setGraphic(null);
+                    setOnMouseClicked(null);
                     return;
                 }
 
@@ -89,6 +90,7 @@ public class NavigationView extends Stage {
 
                 pane.getChildren().addAll(titleLabel, pathLabel);
                 setGraphic(pane);
+                setOnMouseClicked(event -> navigationController.selectFilename(editorModel));
             }
         });
     }

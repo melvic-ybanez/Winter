@@ -160,7 +160,11 @@ public class NavigationControllerImpl implements NavigationController {
         if (items.isEmpty()) {
             return;
         }
-        EditorModel editorModel = items.get(0);
+        selectFilename(items.get(0));
+    }
+
+    @Override
+    public void selectFilename(EditorModel editorModel) {
         editorSetController.selectTab(editorModel);
         navigationView.close();
     }
