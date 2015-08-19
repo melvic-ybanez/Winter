@@ -71,7 +71,7 @@ public class Main extends javafx.application.Application {
         toolBarView.createUI();
 
         menuBar.getMenus().addAll(fileMenu,
-                editMenu, viewMenu, new NavigateMenu(navigationController),
+                editMenu, viewMenu, new NavigationMenu(navigationController),
                 new PreferencesMenu(), new HelpMenu());
 
         BorderPane mainPane = new BorderPane();
@@ -96,8 +96,8 @@ public class Main extends javafx.application.Application {
         });
         primaryStage.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.ESCAPE) {
-                if (navigationController.getGoToFilePopup() != null) {
-                    navigationController.getGoToFilePopup().fireEvent(event);
+                if (navigationController.getNavigationView() != null) {
+                    navigationController.getNavigationView().fireEvent(event);
                 }
             }
         });

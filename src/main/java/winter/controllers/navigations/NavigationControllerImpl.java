@@ -19,6 +19,7 @@ import winter.utils.StreamUtils;
 import winter.utils.StringUtils;
 import winter.views.RequiredTextInputDialog;
 import winter.views.editor.EditorView;
+import winter.views.navigation.NavigationView;
 
 import java.nio.file.Path;
 import java.util.Collections;
@@ -34,7 +35,7 @@ import static winter.utils.StreamUtils.mapToList;
  */
 public class NavigationControllerImpl implements NavigationController {
     private EditorSetController editorSetController;
-    private Stage goToFilePopup;
+    private NavigationView navigationView;
     private Optional<Path> prevPathOpt = Optional.empty();
 
     public NavigationControllerImpl(EditorSetController editorSetController) {
@@ -43,110 +44,10 @@ public class NavigationControllerImpl implements NavigationController {
 
     @Override
     public void goToFile() {
-        EditorView editorView = editorSetController.getActiveEditorView();
-
-        goToFilePopup = new Stage();
-        goToFilePopup.initStyle(StageStyle.UNDECORATED);
-
-        TextField filenameField = new TextField();
-        ListView<VBox> filesView = new ListView<>();
+        String defaultText = prevPathOpt.map(Path::toString).orElseGet(() -> "");
+        navigationView = new NavigationView(defaultText, this, editorSetController);
         List<EditorController> editorControllers = editorSetController.getEditorSetView().getEditorControllers();
-
-        prevPathOpt.ifPresent(prevPath -> filenameField.setText(prevPath.toString()));
-        populateFilesView(filesView, mapToList(editorControllers.stream(), EditorController::getEditorModel));
-
-        BorderPane mainPane = new BorderPane();
-        mainPane.setTop(filenameField);
-        mainPane.setBottom(filesView);
-
-        Scene scene = new Scene(mainPane);
-
-        goToFilePopup.setScene(scene);
-        goToFilePopup.initOwner(editorView.getScene().getWindow());
-        goToFilePopup.show();
-
-        goToFilePopup.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
-            if (event.getCode() == KeyCode.ESCAPE) {
-                goToFilePopup.close();
-            }
-        });
-
-        filenameField.setOnKeyReleased(event -> {
-            String filename = filenameField.getText().trim();
-            List<Pair<EditorModel, Integer>> editorItems = StreamUtils.mapToList(editorControllers.stream(), editorController -> {
-                EditorModel model = editorController.getEditorModel();
-                String name = model.getTitle();
-
-                int value = 0;
-                int j = 0;
-                for (int i = 0; i < name.length(); i++) {
-                    if (j == filename.length()) break;
-
-                    char c1 = filename.charAt(j);
-                    char c2 = name.charAt(i);
-
-                    if (Character.toLowerCase(c1) == Character.toLowerCase(c2)) {
-                        value++;
-                        if (i == j) value++;
-                        if (c1 == c2) value++;
-                        j++;
-                    }
-                }
-
-                return Pair.of(model, value);
-            });
-
-            Collections.sort(editorItems, (x, y) -> {
-                Integer xValue = x.getSecond();
-                Integer yValue = y.getSecond();
-                return yValue.compareTo(xValue);
-            });
-
-            populateFilesView(filesView, mapToList(editorItems.stream(), Pair::getFirst));
-        });
-
-        filenameField.setOnAction(e -> {
-            String filename = filenameField.getText().trim();
-            if (StreamUtils.exists(editorControllers.stream(), editorController -> {
-                EditorModel editorModel = editorController.getEditorModel();
-                return editorModel.getTitle().equals(filename);
-            })) {
-
-            }
-        });
-    }
-
-    private void populateFilesView(ListView<VBox> filesView, List<EditorModel> editorModels) {
-        filesView.getItems().clear();
-        IntStream.range(0, editorModels.size()).forEach(i -> {
-            EditorModel editorModel = editorModels.get(i);
-            String title = editorModel.getTitle();
-            VBox pane = new VBox();
-
-            Label titleLabel = new Label(title);
-            Label pathLabel = new Label();
-
-            int titleSize = 13;
-            String titleDefaultStyle = "-fx-font-size: " + titleSize + ";";
-
-            titleLabel.setStyle(titleDefaultStyle);
-            if (i == 0) {
-                titleLabel.setStyle(titleDefaultStyle + "-fx-font-weight: bold");
-            }
-            pathLabel.setStyle("-fx-font-style: italic; " +
-                    "-fx-font-size: " + (titleSize - 1) + "; " +
-                    "-fx-text-fill: gray");
-
-            if (editorModel.isUntitled()) {
-                pathLabel.setText("Path not available");
-            } else {
-                Path path = editorModel.getPath().get();
-                pathLabel.setText(path.toString());
-            }
-
-            pane.getChildren().addAll(titleLabel, pathLabel);
-            filesView.getItems().add(pane);
-        });
+        populateFilesView(mapToList(editorControllers.stream(), EditorController::getEditorModel));
     }
 
     @Override
@@ -195,7 +96,93 @@ public class NavigationControllerImpl implements NavigationController {
     }
 
     @Override
-    public Stage getGoToFilePopup() {
-        return goToFilePopup;
+    public NavigationView getNavigationView() {
+        return navigationView;
+    }
+
+    @Override
+    public void populateFilesView(List<EditorModel> editorModels) {
+        navigationView.getFilesView().getItems().clear();
+        IntStream.range(0, editorModels.size()).forEach(i -> {
+            EditorModel editorModel = editorModels.get(i);
+            String title = editorModel.getTitle();
+            VBox pane = new VBox();
+
+            Label titleLabel = new Label(title);
+            Label pathLabel = new Label();
+
+            int titleSize = 13;
+            String titleDefaultStyle = "-fx-font-size: " + titleSize + ";";
+
+            titleLabel.setStyle(titleDefaultStyle);
+            if (i == 0) {
+                titleLabel.setStyle(titleDefaultStyle + "-fx-font-weight: bold");
+            }
+            pathLabel.setStyle("-fx-font-style: italic; " +
+                    "-fx-font-size: " + (titleSize - 1) + "; " +
+                    "-fx-text-fill: gray");
+
+            if (editorModel.isUntitled()) {
+                pathLabel.setText("Path not available");
+            } else {
+                Path path = editorModel.getPath().get();
+                pathLabel.setText(path.toString());
+            }
+
+            pane.getChildren().addAll(titleLabel, pathLabel);
+            navigationView.getFilesView().getItems().add(pane);
+        });
+    }
+
+    @Override
+    public void filenameAutoCompleteOnType() {
+        TextField filenameField = navigationView.getFilenameField();
+        List<EditorController> editorControllers = editorSetController.getEditorSetView().getEditorControllers();
+
+        String filename = filenameField.getText().trim();
+        List<Pair<EditorModel, Integer>> editorItems = StreamUtils.mapToList(editorControllers.stream(), editorController -> {
+            EditorModel model = editorController.getEditorModel();
+            String name = model.getTitle();
+
+            int value = 0;
+            int j = 0;
+            for (int i = 0; i < name.length(); i++) {
+                if (j == filename.length()) break;
+
+                char c1 = filename.charAt(j);
+                char c2 = name.charAt(i);
+
+                if (Character.toLowerCase(c1) == Character.toLowerCase(c2)) {
+                    value++;
+                    if (i == j) value++;
+                    if (c1 == c2) value++;
+                    j++;
+                }
+            }
+
+            return Pair.of(model, value);
+        });
+
+        Collections.sort(editorItems, (x, y) -> {
+            Integer xValue = x.getSecond();
+            Integer yValue = y.getSecond();
+            return yValue.compareTo(xValue);
+        });
+
+        populateFilesView(mapToList(editorItems.stream(), Pair::getFirst));
+    }
+
+    @Override
+    public void selectFilename() {
+        TextField filenameField = navigationView.getFilenameField();
+        List<EditorController> editorControllers = editorSetController.getEditorSetView().getEditorControllers();
+
+        String filename = filenameField.getText().trim();
+        if (StreamUtils.exists(editorControllers.stream(), editorController -> {
+            EditorModel editorModel = editorController.getEditorModel();
+            return editorModel.getTitle().equals(filename);
+        })) {
+
+        }
     }
 }

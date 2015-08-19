@@ -10,14 +10,14 @@ import winter.factories.Icons;
 /**
  * Created by ybamelcash on 8/17/2015.
  */
-public class NavigateMenu extends Menu {
+public class NavigationMenu extends Menu {
     private MenuItem goToFile;
     private MenuItem goToLine;
 
     private NavigationController navigationController;
 
-    public NavigateMenu(NavigationController navigationController) {
-        super("Navigate");
+    public NavigationMenu(NavigationController navigationController) {
+        super("Navigation");
         this.navigationController = navigationController;
         init();
     }
