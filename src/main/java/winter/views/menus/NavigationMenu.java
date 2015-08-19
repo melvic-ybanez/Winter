@@ -33,4 +33,8 @@ public class NavigationMenu extends Menu {
 
         getItems().addAll(goToFile, goToLine);
     }
+
+    public MenuItem getGoToFile() {
+        return goToFile;
+    }
 }

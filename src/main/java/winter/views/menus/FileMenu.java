@@ -34,7 +34,7 @@ public class FileMenu extends Menu {
     
     private MenuItem newFileItem;
     private MenuItem openFileItem;
-    private MenuItem openFolderItem;
+    private MenuItem openDirectoryItem;
     private MenuItem saveFileItem;
     private MenuItem saveAsFileItem;
     private MenuItem exitFileItem;
@@ -51,14 +51,14 @@ public class FileMenu extends Menu {
     private void init() {
         newFileItem = new MenuItem("New File", Icons.createNewFileIcon());
         openFileItem = new MenuItem("Open File...", Icons.createOpenFileIcon());
-        openFolderItem = new MenuItem("Open Directory...", Icons.createClosedDirectoryIcon());
+        openDirectoryItem = new MenuItem("Open Directory...", Icons.createClosedDirectoryIcon());
         saveFileItem = new MenuItem("Save", Icons.createSaveIcon());
         saveAsFileItem = new MenuItem("Save As...", Icons.createSaveAsIcon());
         restartItem = new MenuItem("Restart", Icons.createRestartIcon());
         exitFileItem = new MenuItem("Exit"); 
 
         openFileItem.setOnAction(e -> fileController.openFile());
-        openFolderItem.setOnAction(e -> openFolder());
+        openDirectoryItem.setOnAction(e -> openFolder());
         newFileItem.setOnAction(e -> newFile());
         saveFileItem.setOnAction(e -> fileController.saveFile());
         saveAsFileItem.setOnAction(e -> fileController.saveAsFile());
@@ -71,7 +71,7 @@ public class FileMenu extends Menu {
         
         newFileItem.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCodeCombination.CONTROL_DOWN));
         openFileItem.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN));
-        openFolderItem.setAccelerator(new KeyCodeCombination(KeyCode.O, 
+        openDirectoryItem.setAccelerator(new KeyCodeCombination(KeyCode.O,
                 KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN));
         saveFileItem.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN));
         saveAsFileItem.setAccelerator(new KeyCodeCombination(KeyCode.S, 
@@ -79,7 +79,7 @@ public class FileMenu extends Menu {
         exitFileItem.setAccelerator(new KeyCodeCombination(KeyCode.Q, KeyCombination.CONTROL_DOWN));
         
         getItems().addAll(newFileItem, 
-                openFileItem, openFolderItem, new SeparatorMenuItem(),
+                openFileItem, openDirectoryItem, new SeparatorMenuItem(),
                 saveFileItem, saveAsFileItem, new SeparatorMenuItem(),
                 restartItem, exitFileItem);
     }
@@ -172,8 +172,8 @@ public class FileMenu extends Menu {
         return saveAsFileItem;
     }
 
-    public MenuItem getOpenFolderItem() {
-        return openFolderItem;
+    public MenuItem getOpenDirectoryItem() {
+        return openDirectoryItem;
     }
 
     public MenuItem getRestartItem() {

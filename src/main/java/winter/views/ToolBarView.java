@@ -4,6 +4,7 @@ import javafx.scene.control.*;
 import winter.factories.Icons;
 import winter.views.menus.EditMenu;
 import winter.views.menus.FileMenu;
+import winter.views.menus.NavigationMenu;
 import winter.views.menus.ViewMenu;
 
 /**
@@ -31,11 +32,13 @@ public class ToolBarView extends ToolBar {
     private FileMenu fileMenu;
     private EditMenu editMenu;
     private ViewMenu viewMenu;
+    private NavigationMenu navigationMenu;
     
-    public ToolBarView(FileMenu fileMenu, EditMenu editMenu) {
+    public ToolBarView(FileMenu fileMenu, EditMenu editMenu, NavigationMenu navigationMenu) {
         super();
         this.fileMenu = fileMenu;
         this.editMenu = editMenu;
+        this.navigationMenu = navigationMenu;
     }
     
     public void createUI() {
@@ -43,7 +46,7 @@ public class ToolBarView extends ToolBar {
         
         newButton.setTooltip(createTooltip(fileMenu.getNewFileItem()));
         openFileButton.setTooltip(createTooltip(fileMenu.getOpenFileItem()));
-        openFolderButton.setTooltip(createTooltip(fileMenu.getOpenFolderItem()));
+        openFolderButton.setTooltip(createTooltip(fileMenu.getOpenDirectoryItem()));
         saveButton.setTooltip(createTooltip(fileMenu.getSaveFileItem()));
         saveAsButton.setTooltip(createTooltip(fileMenu.getSaveAsFileItem()));
         restartButton.setTooltip(createTooltip(fileMenu.getRestartItem()));
@@ -54,6 +57,7 @@ public class ToolBarView extends ToolBar {
         cutButton.setTooltip(createTooltip(editMenu.getCutItem()));
         pasteButton.setTooltip(createTooltip(editMenu.getPasteItem()));
         findButton.setTooltip(createTooltip(editMenu.getFindItem()));
+        findFileButton.setTooltip(createTooltip(navigationMenu.getGoToFile()));
         replaceButton.setTooltip(createTooltip(editMenu.getReplaceItem()));
         viewProjectsButton.setTooltip(new Tooltip(viewMenu.getProjectsItem().getText()));
 
@@ -77,7 +81,7 @@ public class ToolBarView extends ToolBar {
     private void registerEvents() {
         newButton.setOnAction(fileMenu.getNewFileItem().getOnAction());
         openFileButton.setOnAction(fileMenu.getOpenFileItem().getOnAction());
-        openFolderButton.setOnAction(fileMenu.getOpenFolderItem().getOnAction());
+        openFolderButton.setOnAction(fileMenu.getOpenDirectoryItem().getOnAction());
         saveButton.setOnAction(fileMenu.getSaveFileItem().getOnAction());
         saveAsButton.setOnAction(fileMenu.getSaveAsFileItem().getOnAction());
         restartButton.setOnAction(fileMenu.getRestartItem().getOnAction());
@@ -88,6 +92,7 @@ public class ToolBarView extends ToolBar {
         cutButton.setOnAction(editMenu.getCutItem().getOnAction());
         pasteButton.setOnAction(editMenu.getPasteItem().getOnAction());
         findButton.setOnAction(editMenu.getFindItem().getOnAction());
+        findFileButton.setOnAction(navigationMenu.getGoToFile().getOnAction());
         replaceButton.setOnAction(editMenu.getReplaceItem().getOnAction());
         
         viewProjectsButton.setOnAction(event -> 
