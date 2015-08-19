@@ -52,6 +52,7 @@ public class NavigationView extends Stage {
         filenameField.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.DOWN) {
                 filesView.requestFocus();
+                filesView.getSelectionModel().select(0);
             }
         });
         filenameField.setOnKeyReleased(event -> navigationController.filenameAutoCompleteOnType());
@@ -101,6 +102,8 @@ public class NavigationView extends Stage {
             if (event.getCode() == KeyCode.ENTER) {
                 EditorModel editorModel = filesView.getSelectionModel().getSelectedItem();
                 editorModelConsumer.accept(editorModel);
+            } else if (event.getCode() == KeyCode.ESCAPE) {
+                close();
             }
         });
     }

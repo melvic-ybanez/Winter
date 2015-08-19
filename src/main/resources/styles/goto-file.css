@@ -20,3 +20,12 @@
     -fx-text-fill: #4D4C4C;
     -fx-font-style: italic;
 }
+
+.text-field:focused, .list-view:focused {
+    -fx-focus-color: #7A7A7A;
+    -fx-faint-focus-color: transparent;
+}
+
+.text-field, .list-view {
+    -fx-border-color: #7A7A7A;
+}
