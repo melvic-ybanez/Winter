@@ -1,10 +1,7 @@
 package winter.views.navigation;
 
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
@@ -37,6 +34,7 @@ public class NavigationView extends Stage {
         mainPane.setBottom(filesView);
 
         Scene scene = new Scene(mainPane);
+        scene.getStylesheets().add(NavigationView.class.getResource("/styles/goto-file.css").toExternalForm());
         EditorView editorView = editorSetController.getActiveEditorView();
 
         setScene(scene);
@@ -50,6 +48,11 @@ public class NavigationView extends Stage {
             }
         });
 
+        filenameField.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.DOWN) {
+                filesView.requestFocus();
+            }
+        });
         filenameField.setOnKeyReleased(event -> navigationController.filenameAutoCompleteOnType());
         filenameField.setOnAction(e -> navigationController.selectFilename());
 
@@ -70,16 +73,13 @@ public class NavigationView extends Stage {
                 Label titleLabel = new Label(title);
                 Label pathLabel = new Label();
 
-                int titleSize = 13;
-                String titleDefaultStyle = "-fx-font-size: " + titleSize + ";";
-
-                titleLabel.setStyle(titleDefaultStyle);
+                String titleClass = "list-title";
                 if (getIndex() == 0) {
-                    titleLabel.setStyle(titleDefaultStyle + "-fx-font-weight: bold");
+                    titleClass = "list-selected-title";
                 }
-                pathLabel.setStyle("-fx-font-style: italic; " +
-                        "-fx-font-size: " + (titleSize - 1) + "; " +
-                        "-fx-text-fill: gray");
+                titleLabel.getStyleClass().add(titleClass);
+
+                pathLabel.getStyleClass().add("list-path-label");
 
                 if (editorModel.isUntitled()) {
                     pathLabel.setText("Path not available");

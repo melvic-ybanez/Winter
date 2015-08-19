@@ -48,7 +48,9 @@ public class NavigationControllerImpl implements NavigationController {
 
     @Override
     public void showGoToFileUI() {
-        if (navigationView != null && navigationView.isShowing()) return;
+        if (navigationView != null && navigationView.isShowing()) {
+            navigationView.close();
+        }
 
         String defaultText = prevPathOpt.map(Path::toString).orElseGet(() -> "");
         navigationView = new NavigationView(defaultText, this, editorSetController);
