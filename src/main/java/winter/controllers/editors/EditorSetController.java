@@ -46,4 +46,6 @@ public interface EditorSetController {
     public FileController getFileController();
     
     public Observable getObservable();
+
+    public void selectTab(EditorModel editorModel);
 }

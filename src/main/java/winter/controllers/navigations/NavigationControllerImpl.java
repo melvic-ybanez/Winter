@@ -1,5 +1,7 @@
 package winter.controllers.navigations;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -30,8 +32,7 @@ import java.util.function.Function;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static winter.utils.StreamUtils.filterToList;
-import static winter.utils.StreamUtils.mapToList;
+import static winter.utils.StreamUtils.*;
 
 /**
  * Created by ybamelcash on 8/18/2015.
@@ -107,36 +108,7 @@ public class NavigationControllerImpl implements NavigationController {
 
     @Override
     public void populateFilesView(List<EditorModel> editorModels) {
-        navigationView.getFilesView().getItems().clear();
-        IntStream.range(0, editorModels.size()).forEach(i -> {
-            EditorModel editorModel = editorModels.get(i);
-            String title = editorModel.getTitle();
-            VBox pane = new VBox();
-
-            Label titleLabel = new Label(title);
-            Label pathLabel = new Label();
-
-            int titleSize = 13;
-            String titleDefaultStyle = "-fx-font-size: " + titleSize + ";";
-
-            titleLabel.setStyle(titleDefaultStyle);
-            if (i == 0) {
-                titleLabel.setStyle(titleDefaultStyle + "-fx-font-weight: bold");
-            }
-            pathLabel.setStyle("-fx-font-style: italic; " +
-                    "-fx-font-size: " + (titleSize - 1) + "; " +
-                    "-fx-text-fill: gray");
-
-            if (editorModel.isUntitled()) {
-                pathLabel.setText("Path not available");
-            } else {
-                Path path = editorModel.getPath().get();
-                pathLabel.setText(path.toString());
-            }
-
-            pane.getChildren().addAll(titleLabel, pathLabel);
-            navigationView.getFilesView().getItems().add(pane);
-        });
+        navigationView.getFilesView().setItems(FXCollections.observableArrayList(editorModels));
     }
 
     @Override
@@ -184,15 +156,12 @@ public class NavigationControllerImpl implements NavigationController {
 
     @Override
     public void selectFilename() {
-        TextField filenameField = navigationView.getFilenameField();
-        List<EditorController> editorControllers = editorSetController.getEditorSetView().getEditorControllers();
-
-        String filename = filenameField.getText().trim();
-        if (StreamUtils.exists(editorControllers.stream(), editorController -> {
-            EditorModel editorModel = editorController.getEditorModel();
-            return editorModel.getTitle().equals(filename);
-        })) {
-
+        ObservableList<EditorModel> items = navigationView.getFilesView().getItems();
+        if (items.isEmpty()) {
+            return;
         }
+        EditorModel editorModel = items.get(0);
+        editorSetController.selectTab(editorModel);
+        navigationView.close();
     }
 }

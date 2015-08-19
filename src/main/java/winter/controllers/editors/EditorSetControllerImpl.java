@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Created by ybamelcash on 6/26/2015.
@@ -156,6 +157,18 @@ public class EditorSetControllerImpl implements EditorSetController {
     @Override
     public Observable getObservable() {
         return observable;
+    }
+
+    @Override
+    public void selectTab(EditorModel editorModel) {
+        List<EditorController> editorControllers = editorSetView.getEditorControllers();
+        StreamUtils.find(IntStream.range(0, editorControllers.size()).boxed(), i -> {
+            EditorModel editorModel1 = editorControllers.get(i).getEditorModel();
+            return editorModel == editorModel1;
+        }).ifPresent(i -> {
+            editorSetView.getTabPane().getSelectionModel().select(i);
+            getActiveEditorView().requestFocus();
+        });
     }
 
     @Override
