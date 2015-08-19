@@ -26,8 +26,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
+import static winter.utils.StreamUtils.filterToList;
 import static winter.utils.StreamUtils.mapToList;
 
 /**
@@ -43,7 +46,9 @@ public class NavigationControllerImpl implements NavigationController {
     }
 
     @Override
-    public void goToFile() {
+    public void showGoToFileUI() {
+        if (navigationView != null && navigationView.isShowing()) return;
+
         String defaultText = prevPathOpt.map(Path::toString).orElseGet(() -> "");
         navigationView = new NavigationView(defaultText, this, editorSetController);
         List<EditorController> editorControllers = editorSetController.getEditorSetView().getEditorControllers();
@@ -140,7 +145,7 @@ public class NavigationControllerImpl implements NavigationController {
         List<EditorController> editorControllers = editorSetController.getEditorSetView().getEditorControllers();
 
         String filename = filenameField.getText().trim();
-        List<Pair<EditorModel, Integer>> editorItems = StreamUtils.mapToList(editorControllers.stream(), editorController -> {
+        Stream<Pair<EditorModel, Integer>> valuedModels = editorControllers.stream().map(editorController -> {
             EditorModel model = editorController.getEditorModel();
             String name = model.getTitle();
 
@@ -160,8 +165,13 @@ public class NavigationControllerImpl implements NavigationController {
                 }
             }
 
+            if (j < filename.length()) value = 0;
+
             return Pair.of(model, value);
         });
+
+        List<Pair<EditorModel, Integer>> editorItems = filterToList(valuedModels,
+                filename.isEmpty() ? x -> true : x -> x.getSecond() > 0);
 
         Collections.sort(editorItems, (x, y) -> {
             Integer xValue = x.getSecond();

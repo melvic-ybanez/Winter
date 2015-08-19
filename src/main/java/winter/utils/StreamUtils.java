@@ -15,6 +15,10 @@ public class StreamUtils {
         return stream.map(mapFunc).collect(Collectors.toList());
     }
 
+    public static <A> List<A> filterToList(Stream<A> stream, Predicate<A> predicate) {
+        return stream.filter(predicate).collect(Collectors.toList());
+    }
+
     public static <A> Optional<A> find(Stream<A> stream, Predicate<A> predicate) {
         return stream.filter(predicate).findFirst();
     }
