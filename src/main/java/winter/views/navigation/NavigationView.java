@@ -15,6 +15,7 @@ import winter.utils.StreamUtils;
 import winter.views.editor.EditorView;
 
 import java.nio.file.Path;
+import java.util.function.Consumer;
 
 /**
  * Created by ybamelcash on 8/19/2015.
@@ -56,6 +57,9 @@ public class NavigationView extends Stage {
         filenameField.setOnKeyReleased(event -> navigationController.filenameAutoCompleteOnType());
         filenameField.setOnAction(e -> navigationController.selectFilename());
 
+        filesView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
+        Consumer<EditorModel> editorModelConsumer = navigationController::selectFilename;
         filesView.setCellFactory(listView -> new ListCell<EditorModel>() {
             @Override
             public void updateItem(EditorModel editorModel, boolean empty) {
@@ -90,7 +94,13 @@ public class NavigationView extends Stage {
 
                 pane.getChildren().addAll(titleLabel, pathLabel);
                 setGraphic(pane);
-                setOnMouseClicked(event -> navigationController.selectFilename(editorModel));
+                setOnMouseClicked(event -> editorModelConsumer.accept(editorModel));
+            }
+        });
+        filesView.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                EditorModel editorModel = filesView.getSelectionModel().getSelectedItem();
+                editorModelConsumer.accept(editorModel);
             }
         });
     }
