@@ -17,6 +17,8 @@ import winter.controllers.files.FileController;
 import winter.controllers.files.FileControllerImpl;
 import winter.controllers.navigations.NavigationController;
 import winter.controllers.navigations.NavigationControllerImpl;
+import winter.controllers.preferences.GeneralPrefController;
+import winter.controllers.preferences.GeneralPrefControllerImpl;
 import winter.controllers.projects.ProjectSetController;
 import winter.controllers.projects.ProjectSetControllerImpl;
 import winter.models.statuses.StatusModel;
@@ -45,6 +47,7 @@ public class Main extends javafx.application.Application {
         StatusModel statusModel = new StatusModelImpl(editorSetController);
         StatusView statusView = new StatusView(statusModel);
         NavigationController navigationController = new NavigationControllerImpl(editorSetController);
+        GeneralPrefController generalPrefController = new GeneralPrefControllerImpl();
 
         editorSetController.setFileController(fileController);
         editorSetView.newUntitledTab();
@@ -73,7 +76,7 @@ public class Main extends javafx.application.Application {
 
         menuBar.getMenus().addAll(fileMenu,
                 editMenu, viewMenu, navigationMenu,
-                new PreferencesMenu(), new HelpMenu());
+                new PreferencesMenu(generalPrefController), new HelpMenu());
 
         BorderPane mainPane = new BorderPane();
         mainPane.setTop(toolBarView);
