@@ -22,10 +22,14 @@
 }
 
 .text-field:focused, .list-view:focused {
-    -fx-focus-color: #7A7A7A;
+    -fx-focus-color: #929191;
     -fx-faint-focus-color: transparent;
 }
 
 .text-field, .list-view {
-    -fx-border-color: #7A7A7A;
+    -fx-border-color: #929191;
+}
+
+.list-cell {
+    -fx-background-color: #f0f0f0;
 }
