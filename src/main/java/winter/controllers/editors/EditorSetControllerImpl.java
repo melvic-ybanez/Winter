@@ -5,6 +5,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Tab;
 import winter.controllers.files.FileController;
+import winter.controllers.preferences.GeneralPrefController;
 import winter.models.editors.EditorModel;
 import winter.utils.Observable;
 import winter.utils.SimpleObservable;
@@ -28,10 +29,12 @@ public class EditorSetControllerImpl implements EditorSetController {
     private FileController fileController;
     private Observable observable;
     private EditorController previousEditorController;
+    private GeneralPrefController generalPrefController;
     
-    public EditorSetControllerImpl() {
+    public EditorSetControllerImpl(GeneralPrefController generalPrefController) {
         setEditorSetView(new EditorSetView(this));
         this.observable = new SimpleObservable();
+        this.generalPrefController = generalPrefController;
         editorSetView.getTabPane()
                 .getSelectionModel()
                 .selectedIndexProperty()
@@ -169,6 +172,11 @@ public class EditorSetControllerImpl implements EditorSetController {
             editorSetView.getTabPane().getSelectionModel().select(i);
             getActiveEditorView().requestFocus();
         });
+    }
+
+    @Override
+    public GeneralPrefController getGeneralPrefController() {
+        return generalPrefController;
     }
 
     @Override

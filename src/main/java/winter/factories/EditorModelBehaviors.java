@@ -82,7 +82,7 @@ public class EditorModelBehaviors {
                     startCharCount++;
                 }
 
-                return "\n" + Settings.TAB_STRING + StringUtils.repeat(startCharCount, " ");
+                return "\n" + editorModel.getGeneralPrefModel().getTabString() + StringUtils.repeat(startCharCount, " ");
             }).orElseGet(() -> "\n");
         };
     }

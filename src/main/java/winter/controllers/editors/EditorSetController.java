@@ -2,6 +2,7 @@ package winter.controllers.editors;
 
 import javafx.scene.control.Tab;
 import winter.controllers.files.FileController;
+import winter.controllers.preferences.GeneralPrefController;
 import winter.models.editors.EditorModel;
 import winter.utils.Observable;
 import winter.views.editor.EditorSetView;
@@ -48,4 +49,6 @@ public interface EditorSetController {
     public Observable getObservable();
 
     public void selectTab(EditorModel editorModel);
+
+    public GeneralPrefController getGeneralPrefController();
 }

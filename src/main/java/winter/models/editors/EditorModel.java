@@ -7,6 +7,7 @@ import javafx.beans.property.StringProperty;
 import org.fxmisc.richtext.StyleSpans;
 import org.fxmisc.richtext.StyleSpansBuilder;
 import winter.models.behaviors.*;
+import winter.models.preferences.GeneralPrefModel;
 import winter.utils.Constants;
 import winter.utils.Either;
 import winter.utils.Pair;
@@ -223,4 +224,6 @@ public abstract class EditorModel extends SimpleObservable {
     public abstract Optional<Pair<Integer, Integer>> getActiveParenIndexes();
     
     public abstract String getStyleClass(Matcher matcher, int parenIndex1, int parenIndex2);
+
+    public abstract GeneralPrefModel getGeneralPrefModel();
 }

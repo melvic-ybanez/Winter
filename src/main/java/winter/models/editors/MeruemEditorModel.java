@@ -1,7 +1,9 @@
 package winter.models.editors;
 
 import winter.Settings;
+import winter.controllers.preferences.GeneralPrefController;
 import winter.factories.EditorModelBehaviors;
+import winter.models.preferences.GeneralPrefModel;
 import winter.utils.Either;
 import winter.utils.Pair;
 
@@ -49,9 +51,12 @@ public class MeruemEditorModel extends EditorModel {
                     + "|(?<CHAR>" + CHAR_PATTERN + ")"
                     + "|(?<COMMENT>" + COMMENT_PATTERN + ")"
                     + "|(?<QUOTE>" + QUOTE_PATTERN + ")");
+
+    private GeneralPrefModel generalPrefModel;
     
-    public MeruemEditorModel(Either<Integer, Path> pathEither) {
+    public MeruemEditorModel(Either<Integer, Path> pathEither, GeneralPrefModel generalPrefModel) {
         super();
+        this.generalPrefModel = generalPrefModel;
         setPathEither(pathEither);
         setActiveParenIndexesBehavior(EditorModelBehaviors.createDefaultActiveParenIndexes());
         setAutoIndentedLineStringBehavior(EditorModelBehaviors.createLispAutoIndentedLineString());
@@ -81,5 +86,10 @@ public class MeruemEditorModel extends EditorModel {
     @Override
     public String getStyleClass(Matcher matcher, int parenIndex1, int parenIndex2) {
         return getStyleClassBehavior().apply(matcher, parenIndex1, parenIndex2);
+    }
+
+    @Override
+    public GeneralPrefModel getGeneralPrefModel() {
+        return generalPrefModel;
     }
 }

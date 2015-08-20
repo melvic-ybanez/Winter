@@ -164,6 +164,11 @@ public class EditorControllerImpl implements EditorController {
         return fileController;
     }
 
+    @Override
+    public EditorSetController getEditorSetController() {
+        return editorSetController;
+    }
+
     public void setFileController(FileController fileController) {
         this.fileController = fileController;
     }

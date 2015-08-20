@@ -38,4 +38,6 @@ public interface EditorController {
     public void setFileController(FileController fileController);
 
     public FileController getFileController();
+
+    public EditorSetController getEditorSetController();
 }

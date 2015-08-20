@@ -21,6 +21,8 @@ import winter.controllers.preferences.GeneralPrefController;
 import winter.controllers.preferences.GeneralPrefControllerImpl;
 import winter.controllers.projects.ProjectSetController;
 import winter.controllers.projects.ProjectSetControllerImpl;
+import winter.models.preferences.GeneralPrefModel;
+import winter.models.preferences.GeneralPrefModelImpl;
 import winter.models.statuses.StatusModel;
 import winter.models.statuses.StatusModelImpl;
 import winter.views.StatusView;
@@ -39,7 +41,9 @@ public class Main extends javafx.application.Application {
     public static void initApp(Stage primaryStage) {
         SplitPane mainSplitPane = new SplitPane();
 
-        EditorSetController editorSetController = new EditorSetControllerImpl();
+        GeneralPrefModel generalPrefModel = new GeneralPrefModelImpl();
+        GeneralPrefController generalPrefController = new GeneralPrefControllerImpl(generalPrefModel);
+        EditorSetController editorSetController = new EditorSetControllerImpl(generalPrefController);
         EditorSetView editorSetView = editorSetController.getEditorSetView();
         ProjectSetController projectSetController = new ProjectSetControllerImpl(editorSetView, mainSplitPane.heightProperty());
         ProjectSetView projectSetView = projectSetController.getProjectSetView();
@@ -47,7 +51,6 @@ public class Main extends javafx.application.Application {
         StatusModel statusModel = new StatusModelImpl(editorSetController);
         StatusView statusView = new StatusView(statusModel);
         NavigationController navigationController = new NavigationControllerImpl(editorSetController);
-        GeneralPrefController generalPrefController = new GeneralPrefControllerImpl();
 
         editorSetController.setFileController(fileController);
         editorSetView.newUntitledTab();

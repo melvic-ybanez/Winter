@@ -1,5 +1,6 @@
 package winter.controllers.preferences;
 
+import winter.models.preferences.GeneralPrefModel;
 import winter.views.preferences.GeneralPrefView;
 
 /**
@@ -15,4 +16,6 @@ public interface GeneralPrefController {
     public void setGeneralPrefView(GeneralPrefView generalPrefView);
 
     public GeneralPrefView getGeneralPrefView();
+
+    public GeneralPrefModel getGeneralPrefModel();
 }

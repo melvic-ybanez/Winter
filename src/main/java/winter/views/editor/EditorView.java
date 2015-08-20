@@ -53,7 +53,8 @@ public class EditorView extends CodeArea implements Observer {
 
             switch (event.getCode()) {
                 case TAB:
-                    insertText(getCaretPosition(), Settings.TAB_STRING);
+                    insertText(getCaretPosition(), editorController
+                            .getEditorModel().getGeneralPrefModel().getTabString());
                     event.consume();
                     break;
                 case ENTER:

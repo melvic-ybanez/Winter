@@ -61,7 +61,8 @@ public class EditorSetView extends BorderPane {
     }
     
     public void newEditorAreaTab(Either<Integer, Path> pathEither, String contents) {
-        EditorModel editorModel = new MeruemEditorModel(pathEither);
+        EditorModel editorModel = new MeruemEditorModel(pathEither,
+                editorSetController.getGeneralPrefController().getGeneralPrefModel());
         EditorController editorController = new EditorControllerImpl(editorModel, editorSetController);
         editorController.setFileController(editorSetController.getFileController());
         Optional<Path> pathOpt = editorModel.getPath();

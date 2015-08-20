@@ -6,20 +6,26 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import winter.controllers.preferences.GeneralPrefController;
+import winter.models.preferences.GeneralPrefModel;
+import winter.utils.Observer;
 
 /**
  * Created by ybamelcash on 8/20/2015.
  */
-public class GeneralPrefView extends Dialog<ButtonType> {
+public class GeneralPrefView extends Dialog<ButtonType> implements Observer {
     private TextField spaceCountField;
     private CheckBox saveFilesBeforeExitBox;
     private Button resetButton;
 
     private GeneralPrefController generalPrefController;
+    private GeneralPrefModel generalPrefModel;
 
-    public GeneralPrefView(GeneralPrefController generalPrefController) {
+    public GeneralPrefView(GeneralPrefController generalPrefController, GeneralPrefModel generalPrefModel) {
         super();
         setGeneralPrefController(generalPrefController);
+        setGeneralPrefModel(generalPrefModel);
+
+        generalPrefModel.registerObserver(this);
         setTitle("General Settings");
         init();
         registerEvents();
@@ -57,6 +63,11 @@ public class GeneralPrefView extends Dialog<ButtonType> {
         resetButton.setOnAction(e -> generalPrefController.resetToDefaults());
     }
 
+    public void initData() {
+        spaceCountField.setText(generalPrefModel.getTabSpaceCount() + "");
+        saveFilesBeforeExitBox.setSelected(generalPrefModel.saveFilesBeforeExit());
+    }
+
     public TextField getSpaceCountField() {
         return spaceCountField;
     }
@@ -71,5 +82,18 @@ public class GeneralPrefView extends Dialog<ButtonType> {
 
     public void setGeneralPrefController(GeneralPrefController generalPrefController) {
         this.generalPrefController = generalPrefController;
+    }
+
+    public GeneralPrefModel getGeneralPrefModel() {
+        return generalPrefModel;
+    }
+
+    public void setGeneralPrefModel(GeneralPrefModel generalPrefModel) {
+        this.generalPrefModel = generalPrefModel;
+    }
+
+    @Override
+    public void update() {
+        initData();
     }
 }

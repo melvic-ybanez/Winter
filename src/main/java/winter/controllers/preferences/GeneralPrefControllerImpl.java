@@ -18,7 +18,8 @@ public class GeneralPrefControllerImpl implements GeneralPrefController {
 
     public GeneralPrefControllerImpl(GeneralPrefModel generalPrefModel) {
         setGeneralPrefModel(generalPrefModel);
-        setGeneralPrefView(new GeneralPrefView());
+        setGeneralPrefView(new GeneralPrefView(this, generalPrefModel));
+        generalPrefView.initData();
     }
 
     @Override
@@ -27,6 +28,8 @@ public class GeneralPrefControllerImpl implements GeneralPrefController {
         result.ifPresent(buttonType -> {
             if (buttonType == ButtonType.APPLY) {
                 applySettings();
+            } else if (buttonType == ButtonType.CANCEL) {
+                generalPrefModel.reset();
             }
         });
     }
@@ -44,8 +47,7 @@ public class GeneralPrefControllerImpl implements GeneralPrefController {
 
     @Override
     public void resetToDefaults() {
-        generalPrefModel.setTabSpaceCount(generalPrefModel.getDefaultTabSpaceCount());
-        generalPrefModel.setSaveFilesBeforeExit(generalPrefModel.getDefaultSaveFilesBeforeExit());
+        generalPrefModel.reset();
     }
 
     @Override
@@ -58,6 +60,7 @@ public class GeneralPrefControllerImpl implements GeneralPrefController {
         return generalPrefView;
     }
 
+    @Override
     public GeneralPrefModel getGeneralPrefModel() {
         return generalPrefModel;
     }
