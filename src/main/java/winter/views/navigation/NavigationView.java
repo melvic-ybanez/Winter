@@ -23,16 +23,12 @@ import java.util.function.Consumer;
 public class NavigationView extends Stage {
     private NavigationController navigationController;
 
-    private TextField filenameField = new TextField();
-    private ListView<EditorModel> filesView = new ListView<>();
+    private BorderPane mainPane = new BorderPane();
+    private TextField filenameField;
+    private ListView<EditorModel> filesView;
 
-    public NavigationView(String defaultText, NavigationController navigationController, EditorSetController editorSetController) {
+    public NavigationView(NavigationController navigationController, EditorSetController editorSetController) {
         setNavigationController(navigationController);
-        filenameField.setText(defaultText);
-
-        BorderPane mainPane = new BorderPane();
-        mainPane.setTop(filenameField);
-        mainPane.setBottom(filesView);
 
         Scene scene = new Scene(mainPane);
         scene.getStylesheets().add(NavigationView.class.getResource("/styles/goto-file.css").toExternalForm());
@@ -47,6 +43,14 @@ public class NavigationView extends Stage {
                 close();
             }
         });
+    }
+
+    public void recreateUI() {
+        filenameField = new TextField();
+        filesView = new ListView<>();
+
+        mainPane.setTop(filenameField);
+        mainPane.setBottom(filesView);
 
         filenameField.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.DOWN) {

@@ -28,6 +28,7 @@ import static winter.utils.StreamUtils.*;
 public class NavigationControllerImpl implements NavigationController {
     private EditorSetController editorSetController;
     private NavigationView navigationView;
+    private Optional<EditorModel> prevSelectionOpt = Optional.empty();
 
     public NavigationControllerImpl(EditorSetController editorSetController) {
         setEditorSetController(editorSetController);
@@ -36,10 +37,16 @@ public class NavigationControllerImpl implements NavigationController {
     @Override
     public void showGoToFileUI() {
         if (navigationView == null) {
-            navigationView = new NavigationView("", this, editorSetController);
+            navigationView = new NavigationView(this, editorSetController);
         }
+        navigationView.recreateUI();
         List<EditorController> editorControllers = editorSetController.getEditorSetView().getEditorControllers();
         List<EditorModel> editorModels = mapToList(editorControllers.stream(), EditorController::getEditorModel);
+        prevSelectionOpt.ifPresent(editorModel -> {
+            if (editorModels.remove(editorModel)) {
+                editorModels.add(0, editorModel);
+            }
+        });
         navigationView.getFilenameField().clear();
         populateFilesView(editorModels);
         navigationView.show();
@@ -154,6 +161,7 @@ public class NavigationControllerImpl implements NavigationController {
 
     @Override
     public void selectFilename(EditorModel editorModel) {
+        prevSelectionOpt = Optional.of(editorSetController.getActiveEditorModel());
         editorSetController.selectTab(editorModel);
         navigationView.close();
     }
