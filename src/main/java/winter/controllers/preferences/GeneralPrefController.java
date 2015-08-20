@@ -1,6 +1,6 @@
 package winter.controllers.preferences;
 
-import winter.views.preferences.GeneralView;
+import winter.views.preferences.GeneralPrefView;
 
 /**
  * Created by ybamelcash on 8/20/2015.
@@ -10,9 +10,9 @@ public interface GeneralPrefController {
 
     public void applySettings();
 
-    public void resetDefault();
+    public void resetToDefaults();
 
-    public void setGeneralView(GeneralView generalView);
+    public void setGeneralPrefView(GeneralPrefView generalPrefView);
 
-    public GeneralView getGeneralView();
+    public GeneralPrefView getGeneralPrefView();
 }

@@ -5,19 +5,24 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import winter.controllers.preferences.GeneralPrefController;
 
 /**
  * Created by ybamelcash on 8/20/2015.
  */
-public class GeneralView extends Dialog<Boolean> {
+public class GeneralPrefView extends Dialog<ButtonType> {
     private TextField spaceCountField;
     private CheckBox saveFilesBeforeExitBox;
     private Button resetButton;
 
-    public GeneralView() {
+    private GeneralPrefController generalPrefController;
+
+    public GeneralPrefView(GeneralPrefController generalPrefController) {
         super();
+        setGeneralPrefController(generalPrefController);
         setTitle("General Settings");
         init();
+        registerEvents();
     }
 
     private void init() {
@@ -46,5 +51,25 @@ public class GeneralView extends Dialog<Boolean> {
 
         getDialogPane().setContent(mainPane);
         getDialogPane().getButtonTypes().addAll(ButtonType.APPLY, ButtonType.CANCEL);
+    }
+
+    private void registerEvents() {
+        resetButton.setOnAction(e -> generalPrefController.resetToDefaults());
+    }
+
+    public TextField getSpaceCountField() {
+        return spaceCountField;
+    }
+
+    public CheckBox getSaveFilesBeforeExitBox() {
+        return saveFilesBeforeExitBox;
+    }
+
+    public GeneralPrefController getGeneralPrefController() {
+        return generalPrefController;
+    }
+
+    public void setGeneralPrefController(GeneralPrefController generalPrefController) {
+        this.generalPrefController = generalPrefController;
     }
 }
