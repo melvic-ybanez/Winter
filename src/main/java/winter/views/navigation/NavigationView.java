@@ -41,7 +41,6 @@ public class NavigationView extends Stage {
         setScene(scene);
         initStyle(StageStyle.UNDECORATED);
         initOwner(editorView.getScene().getWindow());
-        show();
 
         addEventHandler(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.ESCAPE) {
@@ -55,7 +54,7 @@ public class NavigationView extends Stage {
                 filesView.getSelectionModel().select(0);
             }
         });
-        filenameField.setOnKeyReleased(event -> navigationController.filenameAutoCompleteOnType());
+        filenameField.textProperty().addListener(event -> navigationController.filenameAutoCompleteOnType());
         filenameField.setOnAction(e -> navigationController.selectFilename());
 
         filesView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);

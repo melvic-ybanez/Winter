@@ -2,22 +2,12 @@ package winter.controllers.navigations;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import winter.controllers.editors.EditorController;
 import winter.controllers.editors.EditorSetController;
 import winter.models.editors.EditorModel;
 import winter.utils.Errors;
 import winter.utils.Pair;
-import winter.utils.StreamUtils;
 import winter.utils.StringUtils;
 import winter.views.RequiredTextInputDialog;
 import winter.views.editor.EditorView;
@@ -28,8 +18,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static winter.utils.StreamUtils.*;
@@ -40,7 +28,6 @@ import static winter.utils.StreamUtils.*;
 public class NavigationControllerImpl implements NavigationController {
     private EditorSetController editorSetController;
     private NavigationView navigationView;
-    private Optional<Path> prevPathOpt = Optional.empty();
 
     public NavigationControllerImpl(EditorSetController editorSetController) {
         setEditorSetController(editorSetController);
@@ -48,14 +35,14 @@ public class NavigationControllerImpl implements NavigationController {
 
     @Override
     public void showGoToFileUI() {
-        if (navigationView != null && navigationView.isShowing()) {
-            navigationView.close();
+        if (navigationView == null) {
+            navigationView = new NavigationView("", this, editorSetController);
         }
-
-        String defaultText = prevPathOpt.map(Path::toString).orElseGet(() -> "");
-        navigationView = new NavigationView(defaultText, this, editorSetController);
         List<EditorController> editorControllers = editorSetController.getEditorSetView().getEditorControllers();
-        populateFilesView(mapToList(editorControllers.stream(), EditorController::getEditorModel));
+        List<EditorModel> editorModels = mapToList(editorControllers.stream(), EditorController::getEditorModel);
+        navigationView.getFilenameField().clear();
+        populateFilesView(editorModels);
+        navigationView.show();
     }
 
     @Override

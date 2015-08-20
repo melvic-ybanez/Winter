@@ -26,7 +26,7 @@
     -fx-faint-focus-color: transparent;
 }
 
-.text-field, .list-view {
+.text-field, .list-view, .list-view:left {
     -fx-border-color: #929191;
 }
 
