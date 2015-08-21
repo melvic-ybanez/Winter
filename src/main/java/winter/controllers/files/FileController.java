@@ -1,5 +1,6 @@
 package winter.controllers.files;
 
+import winter.models.editors.EditorModel;
 import winter.views.menus.FileMenu;
 
 /**
@@ -7,10 +8,14 @@ import winter.views.menus.FileMenu;
  */
 public interface FileController {
     public void openFile();
-    
-    public void saveFile();
-    
-    public void saveAsFile();
+
+    public boolean saveFile();
+
+    public boolean saveFileAs();
+
+    public boolean saveFile(EditorModel editorModel);
+
+    public boolean saveFileAs(EditorModel editorModel);
     
     public FileMenu getFileMenu();
 }

@@ -61,7 +61,7 @@ public class FileMenu extends Menu {
         openDirectoryItem.setOnAction(e -> openFolder());
         newFileItem.setOnAction(e -> newFile());
         saveFileItem.setOnAction(e -> fileController.saveFile());
-        saveAsFileItem.setOnAction(e -> fileController.saveAsFile());
+        saveAsFileItem.setOnAction(e -> fileController.saveFileAs());
         restartItem.setOnAction(e -> Main.initApp(getStage()));
         exitFileItem.setOnAction(e -> {
             if (editorSetController.closeAllTabs()) {

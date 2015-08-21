@@ -10,6 +10,7 @@ import winter.utils.FileUtils;
 import winter.views.editor.EditorSetView;
 import winter.views.menus.FileMenu;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Optional;
@@ -40,25 +41,39 @@ public class FileControllerImpl implements FileController {
     }
 
     @Override
-    public void saveFile() {
-        EditorModel editorModel = getEditorSetController().getActiveEditorController().getEditorModel();
-        Either<IOException, Boolean> result = FileUtils.saveFile(editorModel.getPath(), editorModel.getContents());
-        result.ifLeft(Errors::saveFileExceptionDialog);
-        result.ifRight(saved -> {
-            if (saved) {
-                editorModel.save();
-            } else {
-                saveAsFile();
-            }
-        });
+    public boolean saveFile() {
+        return saveFile(getEditorSetController().getActiveEditorModel());
     }
 
     @Override
-    public void saveAsFile() {
+    public boolean saveFileAs() {
+        return saveFileAs(getEditorSetController().getActiveEditorModel());
+    }
+
+    @Override
+    public boolean saveFile(EditorModel editorModel) {
+        Either<IOException, Boolean> result = FileUtils.saveFile(editorModel.getPath(), editorModel.getContents());
+        if (result.hasLeft()) {
+            IOException error = result.getLeft().get();
+            Errors.saveFileExceptionDialog(error);
+            return false;
+        }
+        return result.getRight().map(saved -> {
+            if (saved) {
+                editorModel.save();
+                return true;
+            } else {
+                return saveFileAs(editorModel);
+            }
+        }).get();
+    }
+
+    @Override
+    public boolean saveFileAs(EditorModel editorModel) {
         FileChooser saveFileChooser = fileMenu.getSaveFileChooser();
-        fileMenu.showSaveDialog().ifPresent(file -> {
+        Optional<File> result = fileMenu.showSaveDialog();
+        return result.map(file -> {
             Path path = file.toPath();
-            EditorModel editorModel = getEditorSetController().getActiveEditorController().getEditorModel();
             Optional<IOException> errorOpt = FileUtils.saveAsFile(path, editorModel.getContents());
 
             errorOpt.ifPresent(Errors::saveFileExceptionDialog);
@@ -67,7 +82,8 @@ public class FileControllerImpl implements FileController {
                 editorModel.setPath(path);
                 editorModel.save();
             }
-        });
+            return !errorOpt.isPresent();
+        }).orElseGet(() -> false);
     }
 
     public FileMenu getFileMenu() {

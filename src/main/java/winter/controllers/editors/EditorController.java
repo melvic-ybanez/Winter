@@ -27,7 +27,7 @@ public interface EditorController {
     
     public boolean runAccelerators(KeyEvent event);
     
-    public boolean whenHasChanges(Runnable function);
+    public boolean saveAndThen(EditorModel editorModel, Runnable function);
     
     public void autoIndent();
     

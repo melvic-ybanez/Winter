@@ -1,7 +1,6 @@
 package winter.controllers.editors;
 
 import javafx.collections.ObservableList;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Tab;
 import winter.controllers.files.FileController;
@@ -10,7 +9,6 @@ import winter.models.editors.EditorModel;
 import winter.utils.Observable;
 import winter.utils.SimpleObservable;
 import winter.utils.StreamUtils;
-import winter.views.RequiredTextInputDialog;
 import winter.views.editor.EditorSetView;
 import winter.views.editor.EditorView;
 
@@ -69,14 +67,14 @@ public class EditorSetControllerImpl implements EditorSetController {
         int index = editorSetView.getTabPane().getTabs().indexOf(tab);
         EditorController editorController = editorSetView.getEditorControllers().get(index);
         
-        boolean toClose = editorController.whenHasChanges(() -> {
+        boolean toClose = editorController.saveAndThen(editorController.getEditorModel(), () -> {
             editorSetView.getTabPane().getTabs().remove(tab);
             final List<EditorController> editors = editorSetView.getEditorControllers();
             editorController.getEditorModel().getPath().ifPresent(path -> {
                 editorSetView.setEditorControllers(remove(path));
             });
             if (!editorController.getEditorModel().getPath().isPresent())
-                editorSetView.setEditorControllers(editors.stream().filter(controller -> 
+                editorSetView.setEditorControllers(editors.stream().filter(controller ->
                         !controller.getEditorModel().getTitle().equals(editorController.getEditorModel().getTitle()))
                         .collect(Collectors.toList()));
         });
@@ -101,18 +99,25 @@ public class EditorSetControllerImpl implements EditorSetController {
     
     public boolean closeAllTabs() {
         List<EditorModel> unclosedEditors = new ArrayList<>();
-        ObservableList<Tab> tabs = editorSetView.getTabPane().getTabs();
-        for (int i = 0; i < tabs.size(); i++) {
-            EditorController editorController = editorSetView.getEditorControllers().get(i);
-            if (!editorController.whenHasChanges(() -> {})) {
-                unclosedEditors.add(editorController.getEditorModel());
+        List<EditorController> editorControllers = editorSetView.getEditorControllers();
+
+        // Try to save all the unsaved documents.
+        for (EditorController editorController : editorControllers) {
+            EditorModel editorModel = editorController.getEditorModel();
+
+            // Save the contents. Don't close the tab. Keep track of the model if the saving fails.
+            if (!editorController.saveAndThen(editorModel, () -> {})) {
+                unclosedEditors.add(editorModel);
             }
         }
-        if (unclosedEditors.size() != tabs.size()) {
+
+        // If some editors have been closed...
+        if (unclosedEditors.size() != editorControllers.size()) {
             editorSetView.getTabPane().getTabs().clear();
-            editorSetView.getEditorControllers().clear();
+            editorControllers.clear();
             unclosedEditors.forEach(editorSetView::newEditorAreaTab);
         }
+
         return unclosedEditors.isEmpty();
     }
 

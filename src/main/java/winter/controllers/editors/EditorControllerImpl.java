@@ -102,12 +102,12 @@ public class EditorControllerImpl implements EditorController {
     }
 
     @Override
-    public boolean whenHasChanges(Runnable function) {
+    public boolean saveAndThen(EditorModel editorModel, Runnable function) {
         if (editorModel.unsaved()) {
             Optional<ButtonType> buttonType = editorView.showUnsavedDialog();
             return buttonType.map(button -> {
                 if (button == ButtonType.YES) {
-                    fileController.saveFile();
+                    return fileController.saveFile(editorModel);
                 } else if (button == ButtonType.CANCEL) {
                     return false;
                 }
