@@ -104,6 +104,12 @@ public class EditorControllerImpl implements EditorController {
     @Override
     public boolean saveAndThen(EditorModel editorModel, Runnable function) {
         if (editorModel.unsaved()) {
+            boolean saveFileBeforeExit = editorSetController
+                    .getGeneralPrefController()
+                    .getGeneralPrefModel()
+                    .saveFilesBeforeExit();
+            if (!saveFileBeforeExit) return true;
+
             Optional<ButtonType> buttonType = editorView.showUnsavedDialog();
             return buttonType.map(button -> {
                 if (button == ButtonType.YES) {

@@ -6,7 +6,7 @@ import winter.utils.StringUtils;
 /**
  * Created by ybamelcash on 8/20/2015.
  */
-public class GeneralPrefModelImpl extends SimpleObservable implements GeneralPrefModel {
+public class GeneralPrefModelImpl implements GeneralPrefModel {
     private int tabSpaceCount;
     private boolean saveFilesBeforeExit;
 
@@ -22,7 +22,6 @@ public class GeneralPrefModelImpl extends SimpleObservable implements GeneralPre
     @Override
     public void setTabSpaceCount(int tabSpaceCount) {
         this.tabSpaceCount = tabSpaceCount;
-        notifyObservers();
     }
 
     @Override
@@ -38,7 +37,6 @@ public class GeneralPrefModelImpl extends SimpleObservable implements GeneralPre
     @Override
     public void setSaveFilesBeforeExit(boolean saveFilesBeforeExit) {
         this.saveFilesBeforeExit = saveFilesBeforeExit;
-        notifyObservers();
     }
 
     @Override

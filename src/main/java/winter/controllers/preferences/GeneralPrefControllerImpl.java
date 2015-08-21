@@ -29,7 +29,7 @@ public class GeneralPrefControllerImpl implements GeneralPrefController {
             if (buttonType == ButtonType.APPLY) {
                 applySettings();
             } else if (buttonType == ButtonType.CANCEL) {
-                generalPrefModel.reset();
+                generalPrefView.initData();
             }
         });
     }
@@ -48,6 +48,7 @@ public class GeneralPrefControllerImpl implements GeneralPrefController {
     @Override
     public void resetToDefaults() {
         generalPrefModel.reset();
+        generalPrefView.initData();
     }
 
     @Override

@@ -12,7 +12,7 @@ import winter.utils.Observer;
 /**
  * Created by ybamelcash on 8/20/2015.
  */
-public class GeneralPrefView extends Dialog<ButtonType> implements Observer {
+public class GeneralPrefView extends Dialog<ButtonType> {
     private TextField spaceCountField;
     private CheckBox saveFilesBeforeExitBox;
     private Button resetButton;
@@ -25,7 +25,6 @@ public class GeneralPrefView extends Dialog<ButtonType> implements Observer {
         setGeneralPrefController(generalPrefController);
         setGeneralPrefModel(generalPrefModel);
 
-        generalPrefModel.registerObserver(this);
         setTitle("General Settings");
         init();
         registerEvents();
@@ -90,10 +89,5 @@ public class GeneralPrefView extends Dialog<ButtonType> implements Observer {
 
     public void setGeneralPrefModel(GeneralPrefModel generalPrefModel) {
         this.generalPrefModel = generalPrefModel;
-    }
-
-    @Override
-    public void update() {
-        initData();
     }
 }

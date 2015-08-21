@@ -5,7 +5,7 @@ import winter.utils.Observable;
 /**
  * Created by ybamelcash on 8/20/2015.
  */
-public interface GeneralPrefModel extends Observable {
+public interface GeneralPrefModel {
     public int getDefaultTabSpaceCount();
 
     public void setTabSpaceCount(int tabSpaceCount);
