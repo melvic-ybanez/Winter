@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by ybamelcash on 8/22/2015.
  */
-public interface FontPrefModel {
+public interface FontPrefModel extends PreferencesModel {
     public static final String PLAIN = "Plain";
     public static final String BOLD = "Bold";
     public static final String ITALIC = "Italic";
@@ -32,6 +32,4 @@ public interface FontPrefModel {
     public void setSampleString(String sampleString);
 
     public String getSampleString();
-
-    public void reset();
 }

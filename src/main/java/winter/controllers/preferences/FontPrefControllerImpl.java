@@ -2,6 +2,8 @@ package winter.controllers.preferences;
 
 import javafx.scene.control.ButtonType;
 import winter.models.preferences.FontPrefModel;
+import winter.models.preferences.PreferencesModel;
+import winter.models.preferences.PreferencesView;
 import winter.views.preferences.FontPrefView;
 
 import java.awt.*;
@@ -14,7 +16,7 @@ import java.util.stream.IntStream;
 /**
  * Created by ybamelcash on 8/22/2015.
  */
-public class FontPrefControllerImpl implements FontPrefController {
+public class FontPrefControllerImpl extends BasePrefController implements FontPrefController {
     private FontPrefModel fontPrefModel;
     private FontPrefView fontPrefView;
 
@@ -40,27 +42,27 @@ public class FontPrefControllerImpl implements FontPrefController {
     }
 
     @Override
-    public void showUI() {
-        if (fontPrefView == null) {
-            setFontPrefView(new FontPrefView(this, fontPrefModel));
-            fontPrefView.getFontFamilyCombo().getItems().addAll(getSystemFonts());
-            fontPrefView.getFontStyleCombo().getItems().addAll(getFontStyles());
-            fontPrefView.getFontSizeCombo().getItems().addAll(getFontSizes());
-            fontPrefView.populateWithData();
-        }
-        Optional<ButtonType> result = fontPrefView.showAndWait();
-        result.ifPresent(buttonType -> {
-            if (buttonType == ButtonType.APPLY) {
-                applySettings();
-            } else if (buttonType == ButtonType.CANCEL) {
-                fontPrefView.populateWithData();
-            }
-        });
+    public void resetToDefaults() {
+        fontPrefModel.reset();
+        fontPrefView.populateWithData();
     }
 
     @Override
-    public void resetToDefaults() {
-        fontPrefModel.reset();
+    public PreferencesView getView() {
+        return getFontPrefView();
+    }
+
+    @Override
+    public PreferencesModel getModel() {
+        return getFontPrefModel();
+    }
+
+    @Override
+    public void initPreferencesView() {
+        setFontPrefView(new FontPrefView(this, fontPrefModel));
+        fontPrefView.getFontFamilyCombo().getItems().addAll(getSystemFonts());
+        fontPrefView.getFontStyleCombo().getItems().addAll(getFontStyles());
+        fontPrefView.getFontSizeCombo().getItems().addAll(getFontSizes());
         fontPrefView.populateWithData();
     }
 

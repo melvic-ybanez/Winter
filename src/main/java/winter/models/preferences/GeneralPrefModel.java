@@ -5,7 +5,7 @@ import winter.utils.Observable;
 /**
  * Created by ybamelcash on 8/20/2015.
  */
-public interface GeneralPrefModel {
+public interface GeneralPrefModel extends PreferencesModel {
     public int getDefaultTabSpaceCount();
 
     public void setTabSpaceCount(int tabSpaceCount);
@@ -19,6 +19,4 @@ public interface GeneralPrefModel {
     public boolean saveFilesBeforeExit();
 
     public String getTabString();
-
-    public void reset();
 }

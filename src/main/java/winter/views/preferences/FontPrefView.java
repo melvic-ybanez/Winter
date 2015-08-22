@@ -7,11 +7,12 @@ import javafx.scene.layout.HBox;
 import org.fxmisc.richtext.CodeArea;
 import winter.controllers.preferences.FontPrefController;
 import winter.models.preferences.FontPrefModel;
+import winter.models.preferences.PreferencesView;
 
 /**
  * Created by ybamelcash on 8/22/2015.
  */
-public class FontPrefView extends Dialog<ButtonType> {
+public class FontPrefView extends Dialog<ButtonType> implements PreferencesView {
     private ComboBox<String> fontFamilyCombo;
     private ComboBox<String> fontStyleCombo;
     private ComboBox<Integer> fontSizeCombo;
@@ -79,6 +80,7 @@ public class FontPrefView extends Dialog<ButtonType> {
         resetButton.setOnAction(e -> fontPrefController.resetToDefaults());
     }
 
+    @Override
     public void populateWithData() {
         sampleEditor.replaceText(fontPrefModel.getSampleString());
         fontFamilyCombo.getSelectionModel().select(fontPrefModel.getFontFamily());

@@ -6,12 +6,8 @@ import winter.views.preferences.GeneralPrefView;
 /**
  * Created by ybamelcash on 8/20/2015.
  */
-public interface GeneralPrefController {
-    public void showUI();
-
-    public void applySettings();
-
-    public void resetToDefaults();
+public interface GeneralPrefController extends PreferencesController {
+    public void setGeneralPrefModel(GeneralPrefModel generalPrefModel);
 
     public void setGeneralPrefView(GeneralPrefView generalPrefView);
 
