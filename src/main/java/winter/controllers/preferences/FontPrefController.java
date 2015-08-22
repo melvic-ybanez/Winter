@@ -1,5 +1,6 @@
 package winter.controllers.preferences;
 
+import winter.models.preferences.FontPrefModel;
 import winter.views.preferences.FontPrefView;
 
 import java.util.List;
@@ -16,7 +17,15 @@ public interface FontPrefController {
 
     public void restoreToDefaults();
 
+    public void setFontPrefModel(FontPrefModel fontPrefModel);
+
+    public FontPrefModel getFontPrefModel();
+
     public void setFontPrefView(FontPrefView fontPrefView);
 
     public FontPrefView getFontPrefView();
+
+    public List<String> getFontStyles();
+
+    public List<Integer> getFontSizes();
 }

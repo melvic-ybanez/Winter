@@ -3,7 +3,6 @@ package winter.controllers.preferences;
 import javafx.scene.control.ButtonType;
 import winter.models.preferences.GeneralPrefModel;
 import winter.utils.Errors;
-import winter.utils.StreamUtils;
 import winter.utils.StringUtils;
 import winter.views.preferences.GeneralPrefView;
 
@@ -24,14 +23,14 @@ public class GeneralPrefControllerImpl implements GeneralPrefController {
     public void showUI() {
         if (generalPrefView == null) {
             setGeneralPrefView(new GeneralPrefView(this, generalPrefModel));
-            generalPrefView.initData();
+            generalPrefView.populateWithData();
         }
         Optional<ButtonType> result = generalPrefView.showAndWait();
         result.ifPresent(buttonType -> {
             if (buttonType == ButtonType.APPLY) {
                 applySettings();
             } else if (buttonType == ButtonType.CANCEL) {
-                generalPrefView.initData();
+                generalPrefView.populateWithData();
             }
         });
     }
@@ -50,7 +49,7 @@ public class GeneralPrefControllerImpl implements GeneralPrefController {
     @Override
     public void resetToDefaults() {
         generalPrefModel.reset();
-        generalPrefView.initData();
+        generalPrefView.populateWithData();
     }
 
     @Override

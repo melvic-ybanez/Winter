@@ -23,6 +23,8 @@ import winter.controllers.preferences.GeneralPrefController;
 import winter.controllers.preferences.GeneralPrefControllerImpl;
 import winter.controllers.projects.ProjectSetController;
 import winter.controllers.projects.ProjectSetControllerImpl;
+import winter.models.preferences.FontPrefModel;
+import winter.models.preferences.FontPrefModelImpl;
 import winter.models.preferences.GeneralPrefModel;
 import winter.models.preferences.GeneralPrefModelImpl;
 import winter.models.statuses.StatusModel;
@@ -45,7 +47,8 @@ public class Main extends javafx.application.Application {
 
         GeneralPrefModel generalPrefModel = new GeneralPrefModelImpl();
         GeneralPrefController generalPrefController = new GeneralPrefControllerImpl(generalPrefModel);
-        FontPrefController fontPrefController = new FontPrefControllerImpl();
+        FontPrefModel fontPrefModel = new FontPrefModelImpl();
+        FontPrefController fontPrefController = new FontPrefControllerImpl(fontPrefModel);
 
         EditorSetController editorSetController = new EditorSetControllerImpl(generalPrefController);
         EditorSetView editorSetView = editorSetController.getEditorSetView();

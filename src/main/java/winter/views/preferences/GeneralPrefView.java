@@ -62,7 +62,7 @@ public class GeneralPrefView extends Dialog<ButtonType> {
         resetButton.setOnAction(e -> generalPrefController.resetToDefaults());
     }
 
-    public void initData() {
+    public void populateWithData() {
         spaceCountField.setText(generalPrefModel.getTabSpaceCount() + "");
         saveFilesBeforeExitBox.setSelected(generalPrefModel.saveFilesBeforeExit());
     }

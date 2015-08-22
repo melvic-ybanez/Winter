@@ -6,6 +6,17 @@ import java.util.List;
  * Created by ybamelcash on 8/22/2015.
  */
 public interface FontPrefModel {
+    public static final String PLAIN = "Plain";
+    public static final String BOLD = "Bold";
+    public static final String ITALIC = "Italic";
+
+
+    public String getDefaultFontFamily();
+
+    public String getDefaultFontStyle();
+
+    public int getDefaultFontSize();
+
     public void setFontFamily(String fontFamily);
 
     public String getFontFamily();
@@ -17,6 +28,10 @@ public interface FontPrefModel {
     public void setFontStyle(String fontStyle);
 
     public String getFontStyle();
+
+    public void setSampleString(String sampleString);
+
+    public String getSampleString();
 
     public void reset();
 }

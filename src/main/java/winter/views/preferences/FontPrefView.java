@@ -1,26 +1,31 @@
 package winter.views.preferences;
 
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 import org.fxmisc.richtext.CodeArea;
-import winter.views.editor.EditorView;
+import winter.controllers.preferences.FontPrefController;
+import winter.models.preferences.FontPrefModel;
 
 /**
  * Created by ybamelcash on 8/22/2015.
  */
 public class FontPrefView extends Dialog<ButtonType> {
     private ComboBox<String> fontFamilyCombo;
-    private ComboBox<String> styleCombo;
-    private ComboBox<Integer> sizeCombo;
+    private ComboBox<String> fontStyleCombo;
+    private ComboBox<Integer> fontSizeCombo;
     private CodeArea sampleEditor;
     private Button resetButton;
 
-    public FontPrefView() {
+    private FontPrefController fontPrefController;
+    private FontPrefModel fontPrefModel;
+
+    public FontPrefView(FontPrefController fontPrefController, FontPrefModel fontPrefModel) {
         super();
+        setFontPrefController(fontPrefController);
+        setFontPrefModel(fontPrefModel);
+
         setTitle("Font Settings");
         init();
         registerEvents();
@@ -28,8 +33,8 @@ public class FontPrefView extends Dialog<ButtonType> {
 
     private void init() {
         fontFamilyCombo = new ComboBox<>();
-        styleCombo = new ComboBox<>();
-        sizeCombo = new ComboBox<>();
+        fontStyleCombo = new ComboBox<>();
+        fontSizeCombo = new ComboBox<>();
         sampleEditor = new CodeArea();
         resetButton = new Button("Reset to Defaults");
 
@@ -41,11 +46,11 @@ public class FontPrefView extends Dialog<ButtonType> {
         fontFamilyPane.setSpacing(space);
 
         HBox fontStylePane = new HBox();
-        fontStylePane.getChildren().addAll(new Label("Font Style:"), styleCombo);
+        fontStylePane.getChildren().addAll(new Label("Font Style:"), fontStyleCombo);
         fontStylePane.setSpacing(space);
 
         HBox fontSizePane = new HBox();
-        fontSizePane.getChildren().addAll(new Label("Font Size:"), sizeCombo);
+        fontSizePane.getChildren().addAll(new Label("Font Size:"), fontSizeCombo);
         fontSizePane.setSpacing(space);
 
         HBox fontPane = new HBox();
@@ -72,5 +77,48 @@ public class FontPrefView extends Dialog<ButtonType> {
 
     private void registerEvents() {
 
+    }
+
+    public void populateWithData() {
+        sampleEditor.replaceText(fontPrefModel.getSampleString());
+        fontFamilyCombo.getSelectionModel().select(fontPrefModel.getFontFamily());
+        fontStyleCombo.getSelectionModel().select(fontPrefModel.getFontStyle());
+        fontSizeCombo.getSelectionModel().select(fontPrefModel.getFontSize());
+    }
+
+    public FontPrefController getFontPrefController() {
+        return fontPrefController;
+    }
+
+    public void setFontPrefController(FontPrefController fontPrefController) {
+        this.fontPrefController = fontPrefController;
+    }
+
+    public FontPrefModel getFontPrefModel() {
+        return fontPrefModel;
+    }
+
+    public void setFontPrefModel(FontPrefModel fontPrefModel) {
+        this.fontPrefModel = fontPrefModel;
+    }
+
+    public ComboBox<String> getFontFamilyCombo() {
+        return fontFamilyCombo;
+    }
+
+    public ComboBox<String> getFontStyleCombo() {
+        return fontStyleCombo;
+    }
+
+    public ComboBox<Integer> getFontSizeCombo() {
+        return fontSizeCombo;
+    }
+
+    public CodeArea getSampleEditor() {
+        return sampleEditor;
+    }
+
+    public Button getResetButton() {
+        return resetButton;
     }
 }
