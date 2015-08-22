@@ -17,6 +17,8 @@ import winter.controllers.files.FileController;
 import winter.controllers.files.FileControllerImpl;
 import winter.controllers.navigations.NavigationController;
 import winter.controllers.navigations.NavigationControllerImpl;
+import winter.controllers.preferences.FontPrefController;
+import winter.controllers.preferences.FontPrefControllerImpl;
 import winter.controllers.preferences.GeneralPrefController;
 import winter.controllers.preferences.GeneralPrefControllerImpl;
 import winter.controllers.projects.ProjectSetController;
@@ -43,6 +45,8 @@ public class Main extends javafx.application.Application {
 
         GeneralPrefModel generalPrefModel = new GeneralPrefModelImpl();
         GeneralPrefController generalPrefController = new GeneralPrefControllerImpl(generalPrefModel);
+        FontPrefController fontPrefController = new FontPrefControllerImpl();
+
         EditorSetController editorSetController = new EditorSetControllerImpl(generalPrefController);
         EditorSetView editorSetView = editorSetController.getEditorSetView();
         ProjectSetController projectSetController = new ProjectSetControllerImpl(editorSetView, mainSplitPane.heightProperty());
@@ -79,7 +83,7 @@ public class Main extends javafx.application.Application {
 
         menuBar.getMenus().addAll(fileMenu,
                 editMenu, viewMenu, navigationMenu,
-                new PreferencesMenu(generalPrefController), new HelpMenu());
+                new PreferencesMenu(generalPrefController, fontPrefController), new HelpMenu());
 
         BorderPane mainPane = new BorderPane();
         mainPane.setTop(toolBarView);

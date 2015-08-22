@@ -18,12 +18,14 @@ public class GeneralPrefControllerImpl implements GeneralPrefController {
 
     public GeneralPrefControllerImpl(GeneralPrefModel generalPrefModel) {
         setGeneralPrefModel(generalPrefModel);
-        setGeneralPrefView(new GeneralPrefView(this, generalPrefModel));
-        generalPrefView.initData();
     }
 
     @Override
     public void showUI() {
+        if (generalPrefView == null) {
+            setGeneralPrefView(new GeneralPrefView(this, generalPrefModel));
+            generalPrefView.initData();
+        }
         Optional<ButtonType> result = generalPrefView.showAndWait();
         result.ifPresent(buttonType -> {
             if (buttonType == ButtonType.APPLY) {
