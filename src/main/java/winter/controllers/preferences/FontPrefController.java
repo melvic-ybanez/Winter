@@ -15,7 +15,7 @@ public interface FontPrefController {
 
     public void showUI();
 
-    public void restoreToDefaults();
+    public void resetToDefaults();
 
     public void setFontPrefModel(FontPrefModel fontPrefModel);
 

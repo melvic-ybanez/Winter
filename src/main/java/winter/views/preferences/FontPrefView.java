@@ -76,7 +76,7 @@ public class FontPrefView extends Dialog<ButtonType> {
     }
 
     private void registerEvents() {
-
+        resetButton.setOnAction(e -> fontPrefController.resetToDefaults());
     }
 
     public void populateWithData() {

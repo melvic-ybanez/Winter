@@ -1,11 +1,13 @@
 package winter.controllers.preferences;
 
+import javafx.scene.control.ButtonType;
 import winter.models.preferences.FontPrefModel;
 import winter.views.preferences.FontPrefView;
 
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -31,7 +33,10 @@ public class FontPrefControllerImpl implements FontPrefController {
 
     @Override
     public void applySettings() {
-
+        fontPrefModel.setFontFamily(fontPrefView.getFontFamilyCombo().getSelectionModel().getSelectedItem());
+        fontPrefModel.setFontStyle(fontPrefView.getFontStyleCombo().getSelectionModel().getSelectedItem());
+        fontPrefModel.setFontSize(fontPrefView.getFontSizeCombo().getSelectionModel().getSelectedIndex());
+        fontPrefModel.setSampleString(fontPrefView.getSampleEditor().getText());
     }
 
     @Override
@@ -43,12 +48,20 @@ public class FontPrefControllerImpl implements FontPrefController {
             fontPrefView.getFontSizeCombo().getItems().addAll(getFontSizes());
             fontPrefView.populateWithData();
         }
-        fontPrefView.showAndWait();
+        Optional<ButtonType> result = fontPrefView.showAndWait();
+        result.ifPresent(buttonType -> {
+            if (buttonType == ButtonType.APPLY) {
+                applySettings();
+            } else if (buttonType == ButtonType.CANCEL) {
+                fontPrefView.populateWithData();
+            }
+        });
     }
 
     @Override
-    public void restoreToDefaults() {
-
+    public void resetToDefaults() {
+        fontPrefModel.reset();
+        fontPrefView.populateWithData();
     }
 
     @Override
