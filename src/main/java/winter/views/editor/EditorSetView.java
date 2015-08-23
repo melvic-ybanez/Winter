@@ -1,5 +1,7 @@
 package winter.views.editor;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -34,6 +36,7 @@ public class EditorSetView extends BorderPane {
     private int untitledCount = 0;
     private ContextMenu tabContextMenu;
     private ContextMenu editorContextMenu = new ContextMenu();
+    private StringProperty fontStyleProperty = new SimpleStringProperty();
     
     public EditorSetView(EditorSetController editorSetController) {
         setEditorSetController(editorSetController);
@@ -166,5 +169,13 @@ public class EditorSetView extends BorderPane {
 
     public ContextMenu getEditorContextMenu() {
         return editorContextMenu;
+    }
+
+    public StringProperty fontStyleStringProperty() {
+        return fontStyleProperty;
+    }
+
+    public void setFontStyleString(String fontStyleString) {
+        fontStyleProperty.set(fontStyleString);
     }
 }

@@ -33,9 +33,8 @@ public class EditorView extends CodeArea implements Observer {
         editorModel.registerObserver(this);
         
         getStyleClass().add("meruem-codearea"); 
-        
-        /* These are hardcoded values for now */
-        setStyle("-fx-font-family: Consolas");
+
+        styleProperty().bind(editorController.getEditorSetController().getEditorSetView().fontStyleStringProperty());
 
         setParagraphGraphicFactory(new LineNumberView(this)); 
         textProperty().addListener((obs, oldText, newText) -> {

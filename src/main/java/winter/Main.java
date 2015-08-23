@@ -47,10 +47,10 @@ public class Main extends javafx.application.Application {
 
         GeneralPrefModel generalPrefModel = new GeneralPrefModelImpl();
         GeneralPrefController generalPrefController = new GeneralPrefControllerImpl(generalPrefModel);
-        FontPrefModel fontPrefModel = new FontPrefModelImpl();
-        FontPrefController fontPrefController = new FontPrefControllerImpl(fontPrefModel);
-
         EditorSetController editorSetController = new EditorSetControllerImpl(generalPrefController);
+        FontPrefModel fontPrefModel = new FontPrefModelImpl();
+        FontPrefController fontPrefController = new FontPrefControllerImpl(fontPrefModel, editorSetController);
+
         EditorSetView editorSetView = editorSetController.getEditorSetView();
         ProjectSetController projectSetController = new ProjectSetControllerImpl(editorSetView, mainSplitPane.heightProperty());
         ProjectSetView projectSetView = projectSetController.getProjectSetView();

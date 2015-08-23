@@ -11,6 +11,8 @@ import java.util.List;
 public interface FontPrefController extends PreferencesController {
     public List<String> getSystemFonts();
 
+    public void fontChanged();
+
     public void setFontPrefModel(FontPrefModel fontPrefModel);
 
     public void setFontPrefView(FontPrefView fontPrefView);

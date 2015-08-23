@@ -29,7 +29,6 @@ public class FontPrefView extends Dialog<ButtonType> implements PreferencesView 
 
         setTitle("Font Settings");
         init();
-        registerEvents();
     }
 
     private void init() {
@@ -88,8 +87,12 @@ public class FontPrefView extends Dialog<ButtonType> implements PreferencesView 
         return label;
     }
 
-    private void registerEvents() {
+    public void registerEvents() {
         resetButton.setOnAction(e -> fontPrefController.resetToDefaults());
+        Runnable fontChangeEvent = fontPrefController::fontChanged;
+        fontFamilyCombo.getSelectionModel().selectedItemProperty().addListener((a, b, c) -> fontChangeEvent.run());
+        fontStyleCombo.getSelectionModel().selectedItemProperty().addListener(event -> fontChangeEvent.run());
+        fontSizeCombo.getSelectionModel().selectedItemProperty().addListener(event -> fontChangeEvent.run());
     }
 
     @Override
@@ -134,5 +137,17 @@ public class FontPrefView extends Dialog<ButtonType> implements PreferencesView 
 
     public Button getResetButton() {
         return resetButton;
+    }
+
+    public String getFontFamily() {
+        return fontFamilyCombo.getSelectionModel().getSelectedItem();
+    }
+
+    public String getFontStyle() {
+        return fontStyleCombo.getSelectionModel().getSelectedItem();
+    }
+
+    public int getFontSize() {
+        return fontSizeCombo.getSelectionModel().getSelectedItem();
     }
 }
