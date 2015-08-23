@@ -43,13 +43,18 @@ public class FontPrefControllerImpl extends BasePrefController implements FontPr
 
     @Override
     public void fontChanged() {
-        if (validateFontFamily() && validateFontStyle() && validateFontSize()) {
+        if (validateFontValues()) {
             fontPrefView.getSampleEditor().setStyle(createFontStyleString());
         }
     }
 
     @Override
     public void applySettings() {
+        if (!validateFontValues()) {
+            showUI();
+            return;
+        }
+
         fontPrefModel.setFontFamily(fontPrefView.getFontFamily());
         fontPrefModel.setFontStyle(fontPrefView.getFontStyle());
         fontPrefModel.setFontSize(fontPrefView.getFontSize());
@@ -156,5 +161,9 @@ public class FontPrefControllerImpl extends BasePrefController implements FontPr
             Errors.headerLessDialog("Font Size Error", "Invalid Font Size");
         }
         return valid;
+    }
+
+    public boolean validateFontValues() {
+        return validateFontFamily() && validateFontStyle() && validateFontSize();
     }
 }
