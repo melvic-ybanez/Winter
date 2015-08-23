@@ -4,10 +4,12 @@ import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.util.StringConverter;
 import org.fxmisc.richtext.CodeArea;
 import winter.controllers.preferences.FontPrefController;
 import winter.models.preferences.FontPrefModel;
 import winter.models.preferences.PreferencesView;
+import winter.utils.StringUtils;
 
 /**
  * Created by ybamelcash on 8/22/2015.
@@ -43,6 +45,18 @@ public class FontPrefView extends Dialog<ButtonType> implements PreferencesView 
         fontStyleCombo.setPrefWidth(90);
         fontSizeCombo.setEditable(true);
         fontSizeCombo.setPrefWidth(60);
+
+        fontSizeCombo.setConverter(new StringConverter<Integer>() {
+            @Override
+            public String toString(Integer x) {
+                return String.valueOf(x);
+            }
+
+            @Override
+            public Integer fromString(String string) {
+                return StringUtils.asInteger(string).orElseGet(() -> -1);
+            }
+        });
 
         sampleEditor.getStyleClass().add("sample-code-area");
         int space = 10;
@@ -89,6 +103,7 @@ public class FontPrefView extends Dialog<ButtonType> implements PreferencesView 
 
     public void registerEvents() {
         resetButton.setOnAction(e -> fontPrefController.resetToDefaults());
+
         Runnable fontChangeEvent = fontPrefController::fontChanged;
         fontFamilyCombo.getSelectionModel().selectedItemProperty().addListener((a, b, c) -> fontChangeEvent.run());
         fontStyleCombo.getSelectionModel().selectedItemProperty().addListener(event -> fontChangeEvent.run());

@@ -1,10 +1,16 @@
 package winter.controllers.preferences;
 
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.ComboBox;
 import javafx.scene.text.Font;
 import winter.controllers.editors.EditorSetController;
 import winter.models.preferences.FontPrefModel;
 import winter.models.preferences.PreferencesModel;
 import winter.models.preferences.PreferencesView;
+import winter.utils.Errors;
+import winter.utils.StreamUtils;
 import winter.views.preferences.FontPrefView;
 
 import java.awt.*;
@@ -37,7 +43,9 @@ public class FontPrefControllerImpl extends BasePrefController implements FontPr
 
     @Override
     public void fontChanged() {
-        fontPrefView.getSampleEditor().setStyle(createFontStyleString());
+        if (validateFontFamily() && validateFontStyle() && validateFontSize()) {
+            fontPrefView.getSampleEditor().setStyle(createFontStyleString());
+        }
     }
 
     @Override
@@ -116,5 +124,37 @@ public class FontPrefControllerImpl extends BasePrefController implements FontPr
 
         return "-fx-font-family: " + fontFamily + ";"
                 + styleString + "; -fx-font-size: " + fontSize;
+    }
+
+    public boolean validateFontString(ComboBox<String> combo) {
+        String fontString = combo.getSelectionModel().getSelectedItem().trim();
+        return !fontString.isEmpty() &&
+                StreamUtils.exists(combo.getItems().stream(), item -> item.equals(fontString));
+    }
+
+    public boolean validateFontFamily() {
+        boolean valid = validateFontString(fontPrefView.getFontFamilyCombo());
+        if (!valid) {
+            Errors.headerLessDialog("Font Family Error", "Invalid Font Family");
+        }
+        return valid;
+    }
+
+    public boolean validateFontStyle() {
+        boolean valid = validateFontString(fontPrefView.getFontStyleCombo());
+        if (!valid) {
+            Errors.headerLessDialog("Font Style Error", "Invalid Font Style");
+        }
+        return valid;
+    }
+
+    public boolean validateFontSize() {
+        int fontSize = fontPrefView.getFontSize();
+        boolean valid = StreamUtils.exists(fontPrefView.getFontSizeCombo().getItems().stream(),
+                        item -> item == fontSize);
+        if (!valid) {
+            Errors.headerLessDialog("Font Size Error", "Invalid Font Size");
+        }
+        return valid;
     }
 }
