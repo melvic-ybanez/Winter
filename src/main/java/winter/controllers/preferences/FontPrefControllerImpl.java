@@ -42,12 +42,6 @@ public class FontPrefControllerImpl extends BasePrefController implements FontPr
     }
 
     @Override
-    public void resetToDefaults() {
-        fontPrefModel.reset();
-        fontPrefView.populateWithData();
-    }
-
-    @Override
     public PreferencesView getView() {
         return getFontPrefView();
     }

@@ -39,19 +39,25 @@ public class FontPrefView extends Dialog<ButtonType> implements PreferencesView 
         sampleEditor = new CodeArea();
         resetButton = new Button("Reset to Defaults");
 
+        fontFamilyCombo.setEditable(true);
+        fontStyleCombo.setEditable(true);
+        fontStyleCombo.setPrefWidth(90);
+        fontSizeCombo.setEditable(true);
+        fontSizeCombo.setPrefWidth(60);
+
         sampleEditor.getStyleClass().add("sample-code-area");
         int space = 10;
 
         HBox fontFamilyPane = new HBox();
-        fontFamilyPane.getChildren().addAll(new Label("Font Family:"), fontFamilyCombo);
+        fontFamilyPane.getChildren().addAll(createFontLabel("Font Family"), fontFamilyCombo);
         fontFamilyPane.setSpacing(space);
 
         HBox fontStylePane = new HBox();
-        fontStylePane.getChildren().addAll(new Label("Font Style:"), fontStyleCombo);
+        fontStylePane.getChildren().addAll(createFontLabel("Font Style"), fontStyleCombo);
         fontStylePane.setSpacing(space);
 
         HBox fontSizePane = new HBox();
-        fontSizePane.getChildren().addAll(new Label("Font Size:"), fontSizeCombo);
+        fontSizePane.getChildren().addAll(createFontLabel("Font Size"), fontSizeCombo);
         fontSizePane.setSpacing(space);
 
         HBox fontPane = new HBox();
@@ -74,6 +80,12 @@ public class FontPrefView extends Dialog<ButtonType> implements PreferencesView 
         getDialogPane().setContent(mainPane);
 
         getDialogPane().getScene().getStylesheets().add(FontPrefView.class.getResource("/styles/preferences.css").toExternalForm());
+    }
+
+    private Label createFontLabel(String text) {
+        Label label = new Label(text + ":");
+        label.setTranslateY(5);
+        return label;
     }
 
     private void registerEvents() {
