@@ -1,12 +1,9 @@
 package winter.controllers.navigations;
 
-import javafx.stage.Stage;
 import winter.models.editors.EditorModel;
 import winter.views.navigation.NavigationView;
 
-import java.nio.file.Path;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Created by ybamelcash on 8/18/2015.

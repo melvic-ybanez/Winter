@@ -11,7 +11,6 @@ import javafx.stage.StageStyle;
 import winter.controllers.editors.EditorSetController;
 import winter.controllers.navigations.NavigationController;
 import winter.models.editors.EditorModel;
-import winter.utils.StreamUtils;
 import winter.views.editor.EditorView;
 
 import java.nio.file.Path;

@@ -1,6 +1,5 @@
 package winter.models.preferences;
 
-import winter.utils.SimpleObservable;
 import winter.utils.StringUtils;
 
 /**

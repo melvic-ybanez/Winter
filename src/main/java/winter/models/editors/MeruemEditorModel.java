@@ -1,7 +1,6 @@
 package winter.models.editors;
 
 import winter.Settings;
-import winter.controllers.preferences.GeneralPrefController;
 import winter.factories.EditorModelBehaviors;
 import winter.models.preferences.GeneralPrefModel;
 import winter.utils.Either;

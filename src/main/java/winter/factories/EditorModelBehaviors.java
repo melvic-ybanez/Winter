@@ -1,6 +1,5 @@
 package winter.factories;
 
-import winter.Settings;
 import winter.models.behaviors.*;
 import winter.utils.Pair;
 import winter.utils.StringUtils;

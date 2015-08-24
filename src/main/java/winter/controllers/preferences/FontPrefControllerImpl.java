@@ -1,8 +1,5 @@
 package winter.controllers.preferences;
 
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.ComboBox;
 import javafx.scene.text.Font;
 import winter.controllers.editors.EditorSetController;

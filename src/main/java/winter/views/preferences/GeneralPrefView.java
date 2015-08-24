@@ -8,7 +8,6 @@ import javafx.scene.layout.VBox;
 import winter.controllers.preferences.GeneralPrefController;
 import winter.models.preferences.GeneralPrefModel;
 import winter.models.preferences.PreferencesView;
-import winter.utils.Observer;
 
 /**
  * Created by ybamelcash on 8/20/2015.

@@ -8,7 +8,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import org.fxmisc.richtext.CodeArea;
-import winter.Settings;
 import winter.controllers.editors.EditorController;
 import winter.models.editors.EditorModel;
 import winter.utils.Observer;

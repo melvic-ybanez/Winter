@@ -1,6 +1,5 @@
 package winter.controllers.preferences;
 
-import javafx.scene.control.ButtonType;
 import winter.models.preferences.GeneralPrefModel;
 import winter.models.preferences.PreferencesModel;
 import winter.models.preferences.PreferencesView;

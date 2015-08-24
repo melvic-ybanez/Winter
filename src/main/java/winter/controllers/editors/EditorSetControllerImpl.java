@@ -1,6 +1,5 @@
 package winter.controllers.editors;
 
-import javafx.collections.ObservableList;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Tab;
 import winter.controllers.files.FileController;

@@ -1,7 +1,5 @@
 package winter.models.preferences;
 
-import winter.utils.Observable;
-
 /**
  * Created by ybamelcash on 8/20/2015.
  */

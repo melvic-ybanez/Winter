@@ -1,7 +1,5 @@
 package winter.models.preferences;
 
-import java.util.List;
-
 /**
  * Created by ybamelcash on 8/22/2015.
  */

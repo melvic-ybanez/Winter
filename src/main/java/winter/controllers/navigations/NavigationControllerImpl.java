@@ -13,14 +13,14 @@ import winter.views.RequiredTextInputDialog;
 import winter.views.editor.EditorView;
 import winter.views.navigation.NavigationView;
 
-import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-import static winter.utils.StreamUtils.*;
+import static winter.utils.StreamUtils.filterToList;
+import static winter.utils.StreamUtils.mapToList;
 
 /**
  * Created by ybamelcash on 8/18/2015.
