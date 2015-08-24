@@ -115,7 +115,7 @@ public class FontPrefView extends Dialog<ButtonType> implements PreferencesView 
         sampleEditor.replaceText(fontPrefModel.getSampleString());
         fontFamilyCombo.getSelectionModel().select(fontPrefModel.getFontFamily());
         fontStyleCombo.getSelectionModel().select(fontPrefModel.getFontStyle());
-        fontSizeCombo.getSelectionModel().select(fontPrefModel.getFontSize());
+        fontSizeCombo.getSelectionModel().select(fontPrefModel.getFontSize() - 1);
     }
 
     public FontPrefController getFontPrefController() {

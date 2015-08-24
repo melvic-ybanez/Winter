@@ -32,6 +32,10 @@ public class FontPrefControllerImpl extends BasePrefController implements FontPr
         this.editorSetController = editorSetController;
         fontPrefModel.setSampleString("; Sample Text. You can edit this one.\n\n" +
                 "The quick brown fox jump over the lazy dog");
+        editorSetController.getEditorSetView().setFontStyleString(
+                createFontStyleString(fontPrefModel.getFontFamily(),
+                        fontPrefModel.getFontStyle(),
+                        fontPrefModel.getFontSize()));
     }
 
     @Override
@@ -113,11 +117,7 @@ public class FontPrefControllerImpl extends BasePrefController implements FontPr
         this.fontPrefView = fontPrefView;
     }
 
-    private String createFontStyleString() {
-        String fontFamily = fontPrefView.getFontFamily();
-        int fontSize = fontPrefView.getFontSize();
-        String fontStyle = fontPrefView.getFontStyle();
-
+    private String createFontStyleString(String fontFamily, String fontStyle, int fontSize) {
         Font font = Font.font(fontFamily, fontSize);
         String styleString = "-fx-font-style: normal";
 
@@ -129,6 +129,11 @@ public class FontPrefControllerImpl extends BasePrefController implements FontPr
 
         return "-fx-font-family: " + fontFamily + ";"
                 + styleString + "; -fx-font-size: " + fontSize;
+    }
+
+    private String createFontStyleString() {
+        return createFontStyleString(fontPrefView.getFontFamily(),
+                fontPrefView.getFontStyle(), fontPrefView.getFontSize());
     }
 
     public boolean validateFontString(ComboBox<String> combo) {

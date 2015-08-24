@@ -24,6 +24,7 @@ public class FontPrefModelImpl implements FontPrefModel {
 
     @Override
     public String getDefaultFontFamily() {
+        if (SystemUtils.IS_OS_WINDOWS) return "Consolas";
         return Font.MONOSPACED;
     }
 
@@ -34,7 +35,7 @@ public class FontPrefModelImpl implements FontPrefModel {
 
     @Override
     public int getDefaultFontSize() {
-        return 12;
+        return 13;
     }
 
     @Override
