@@ -1,11 +1,12 @@
 package winter.views;
 
+import javafx.geometry.Side;
 import javafx.scene.control.*;
 import winter.factories.Icons;
-import winter.views.menus.EditMenu;
-import winter.views.menus.FileMenu;
-import winter.views.menus.NavigationMenu;
-import winter.views.menus.ViewMenu;
+import winter.utils.StreamUtils;
+import winter.views.menus.*;
+
+import java.util.List;
 
 /**
  * Created by ybamelcash on 7/8/2015.
@@ -33,12 +34,14 @@ public class ToolBarView extends ToolBar {
     private EditMenu editMenu;
     private ViewMenu viewMenu;
     private NavigationMenu navigationMenu;
+    private PreferencesMenu preferencesMenu;
     
-    public ToolBarView(FileMenu fileMenu, EditMenu editMenu, NavigationMenu navigationMenu) {
+    public ToolBarView(FileMenu fileMenu, EditMenu editMenu, NavigationMenu navigationMenu, PreferencesMenu preferencesMenu) {
         super();
         this.fileMenu = fileMenu;
         this.editMenu = editMenu;
         this.navigationMenu = navigationMenu;
+        this.preferencesMenu = preferencesMenu;
     }
     
     public void createUI() {
@@ -60,6 +63,8 @@ public class ToolBarView extends ToolBar {
         findFileButton.setTooltip(createTooltip(navigationMenu.getGoToFile()));
         replaceButton.setTooltip(createTooltip(editMenu.getReplaceItem()));
         viewProjectsButton.setTooltip(new Tooltip(viewMenu.getProjectsItem().getText()));
+
+        configurePreferencesButton();
 
         getItems().addAll(newButton, 
                 openFileButton, openFolderButton, saveButton, saveAsButton, restartButton, new Separator(),
@@ -100,6 +105,19 @@ public class ToolBarView extends ToolBar {
         
         undoButton.disableProperty().bind(editMenu.getUndoItem().disableProperty());
         redoButton.disableProperty().bind(editMenu.getRedoItem().disableProperty());
+    }
+
+    private void configurePreferencesButton() {
+        preferencesButton.setTooltip(new Tooltip("Preferences"));
+        ContextMenu contextMenu = new ContextMenu();
+        List<MenuItem> items = StreamUtils.mapToList(preferencesMenu.getItems().stream(), item -> {
+            MenuItem menuItem = new MenuItem(item.getText());
+            menuItem.setOnAction(item.getOnAction());
+            return menuItem;
+        });
+        contextMenu.getItems().addAll(items);
+        preferencesButton.setContextMenu(contextMenu);
+        preferencesButton.setOnAction(event -> contextMenu.show(preferencesButton, Side.BOTTOM, 0, 0));
     }
 
     public void setViewMenu(ViewMenu viewMenu) {

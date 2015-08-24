@@ -78,15 +78,15 @@ public class Main extends javafx.application.Application {
         FileMenu fileMenu = fileController.getFileMenu();
         EditMenu editMenu = new EditMenu(editorSetController);
         NavigationMenu navigationMenu = new NavigationMenu(navigationController);
+        PreferencesMenu preferencesMenu = new PreferencesMenu(generalPrefController, fontPrefController);
 
-        ToolBarView toolBarView = new ToolBarView(fileMenu, editMenu, navigationMenu);
+        ToolBarView toolBarView = new ToolBarView(fileMenu, editMenu, navigationMenu, preferencesMenu);
         ViewMenu viewMenu = new ViewMenu(editorSetController, projectSetController, toolBarView);
         toolBarView.setViewMenu(viewMenu);
         toolBarView.createUI();
 
         menuBar.getMenus().addAll(fileMenu,
-                editMenu, viewMenu, navigationMenu,
-                new PreferencesMenu(generalPrefController, fontPrefController), new HelpMenu());
+                editMenu, viewMenu, navigationMenu, preferencesMenu, new HelpMenu());
 
         BorderPane mainPane = new BorderPane();
         mainPane.setTop(toolBarView);
