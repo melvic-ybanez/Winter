@@ -1,5 +1,7 @@
 package winter.models.preferences;
 
+import org.apache.commons.lang.SystemUtils;
+
 import java.awt.*;
 
 /**
