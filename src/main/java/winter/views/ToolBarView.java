@@ -35,13 +35,19 @@ public class ToolBarView extends ToolBar {
     private ViewMenu viewMenu;
     private NavigationMenu navigationMenu;
     private PreferencesMenu preferencesMenu;
+    private HelpMenu helpMenu;
     
-    public ToolBarView(FileMenu fileMenu, EditMenu editMenu, NavigationMenu navigationMenu, PreferencesMenu preferencesMenu) {
+    public ToolBarView(FileMenu fileMenu,
+                       EditMenu editMenu,
+                       NavigationMenu navigationMenu,
+                       PreferencesMenu preferencesMenu,
+                       HelpMenu helpMenu) {
         super();
         this.fileMenu = fileMenu;
         this.editMenu = editMenu;
         this.navigationMenu = navigationMenu;
         this.preferencesMenu = preferencesMenu;
+        this.helpMenu = helpMenu;
     }
     
     public void createUI() {
@@ -64,7 +70,8 @@ public class ToolBarView extends ToolBar {
         replaceButton.setTooltip(createTooltip(editMenu.getReplaceItem()));
         viewProjectsButton.setTooltip(new Tooltip(viewMenu.getProjectsItem().getText()));
 
-        configurePreferencesButton();
+        preferencesButton.setTooltip(new Tooltip("Preferences"));
+        helpButton.setTooltip(createTooltip(helpMenu.getHelpTopicsItem()));
 
         getItems().addAll(newButton, 
                 openFileButton, openFolderButton, saveButton, saveAsButton, restartButton, new Separator(),
@@ -102,14 +109,12 @@ public class ToolBarView extends ToolBar {
         
         viewProjectsButton.setOnAction(event -> 
                 viewMenu.getProjectsItem().setSelected(!viewMenu.getProjectsItem().isSelected()));
+        preferencesButton.setOnAction(e -> preferencesMenu.getGeneralPrefController().showUI());
+
+        helpButton.setOnAction(helpMenu.getHelpTopicsItem().getOnAction());
         
         undoButton.disableProperty().bind(editMenu.getUndoItem().disableProperty());
         redoButton.disableProperty().bind(editMenu.getRedoItem().disableProperty());
-    }
-
-    private void configurePreferencesButton() {
-        preferencesButton.setTooltip(new Tooltip("Preferences"));
-        preferencesButton.setOnAction(e -> preferencesMenu.getGeneralPrefController().showUI());
     }
 
     public void setViewMenu(ViewMenu viewMenu) {
