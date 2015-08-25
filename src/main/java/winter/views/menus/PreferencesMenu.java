@@ -11,7 +11,6 @@ import winter.controllers.preferences.GeneralPrefController;
 public class PreferencesMenu extends Menu {
     private MenuItem generalItem;
     private MenuItem fontItem;
-    private MenuItem syntaxItem;
 
     private GeneralPrefController generalPrefController;
     private FontPrefController fontPrefController;
@@ -25,11 +24,10 @@ public class PreferencesMenu extends Menu {
     }
 
     private void init() {
-        generalItem = new MenuItem("General...");
-        fontItem = new MenuItem("Font...");
-        syntaxItem = new MenuItem("Language Syntax...");
+        generalItem = new MenuItem("General Settings...");
+        fontItem = new MenuItem("Change Fonts...");
 
-        getItems().addAll(generalItem, fontItem, syntaxItem);
+        getItems().addAll(generalItem, fontItem);
     }
 
     private void registerEvents() {
