@@ -136,7 +136,7 @@ public class FontPrefControllerImpl extends BasePrefController implements FontPr
     public boolean validateFontString(ComboBox<String> combo) {
         String fontString = combo.getSelectionModel().getSelectedItem().trim();
         return !fontString.isEmpty() &&
-                StreamUtils.exists(combo.getItems().stream(), item -> item.equals(fontString));
+                StreamUtils.exists(combo.getItems().stream(), item -> item.equalsIgnoreCase(fontString));
     }
 
     public boolean validateFontFamily() {
