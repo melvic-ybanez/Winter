@@ -33,6 +33,7 @@ public class GeneralPrefControllerImpl extends BasePrefController implements Gen
         tabSpaceCountOpt.ifPresent(generalPrefModel::setTabSpaceCount);
         generalPrefModel.setSaveFilesBeforeExit(generalPrefView.getSaveFilesBeforeExitBox().isSelected());
         generalPrefModel.setRemoveExtraSpaces(generalPrefView.getRemoveExtraSpacesBox().isSelected());
+        generalPrefModel.setWrapText(generalPrefView.getWrapTextBox().isSelected());
     }
 
     @Override

@@ -27,4 +27,12 @@ public interface GeneralPrefModel extends PreferencesModel {
     public boolean removeExtraSpaces();
 
     public boolean getDefaultRemoveExtraSpaces();
+
+    public BooleanProperty wrapTextProperty();
+
+    public void setWrapText(boolean wrapText);
+
+    public boolean wrapText();
+
+    public boolean getDefaultWrapText();
 }

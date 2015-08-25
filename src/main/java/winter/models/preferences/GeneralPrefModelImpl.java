@@ -11,6 +11,7 @@ public class GeneralPrefModelImpl implements GeneralPrefModel {
     private int tabSpaceCount;
     private boolean saveFilesBeforeExit;
     private BooleanProperty removeExtraSpacesProperty = new SimpleBooleanProperty();
+    private BooleanProperty wrapTextProperty = new SimpleBooleanProperty();
 
     public GeneralPrefModelImpl() {
         reset();
@@ -72,9 +73,30 @@ public class GeneralPrefModelImpl implements GeneralPrefModel {
     }
 
     @Override
+    public BooleanProperty wrapTextProperty() {
+        return wrapTextProperty;
+    }
+
+    @Override
+    public void setWrapText(boolean wrapText) {
+        wrapTextProperty.set(wrapText);
+    }
+
+    @Override
+    public boolean wrapText() {
+        return wrapTextProperty.get();
+    }
+
+    @Override
+    public boolean getDefaultWrapText() {
+        return false;
+    }
+
+    @Override
     public void reset() {
         setTabSpaceCount(getDefaultTabSpaceCount());
         setSaveFilesBeforeExit(getDefaultSaveFilesBeforeExit());
         setRemoveExtraSpaces(getDefaultRemoveExtraSpaces());
+        setWrapText(getDefaultWrapText());
     }
 }

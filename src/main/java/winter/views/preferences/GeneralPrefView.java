@@ -16,6 +16,7 @@ public class GeneralPrefView extends Dialog<ButtonType> implements PreferencesVi
     private TextField spaceCountField;
     private CheckBox saveFilesBeforeExitBox;
     private CheckBox removeExtraSpacesBox;
+    private CheckBox wrapTextBox;
     private Button resetButton;
 
     private GeneralPrefController generalPrefController;
@@ -34,7 +35,8 @@ public class GeneralPrefView extends Dialog<ButtonType> implements PreferencesVi
     private void init() {
         spaceCountField = new TextField();
         saveFilesBeforeExitBox = new CheckBox("Prompt to save files before exiting.");
-        removeExtraSpacesBox = new CheckBox("Remove extra lines and spaces from files.");
+        removeExtraSpacesBox = new CheckBox("Remove extra lines and spaces from files contents.");
+        wrapTextBox = new CheckBox("Wrap Text.");
         resetButton = new Button("Reset to Defaults");
 
         spaceCountField.setPrefColumnCount(4);
@@ -46,7 +48,7 @@ public class GeneralPrefView extends Dialog<ButtonType> implements PreferencesVi
         spacesPane.setSpacing(10);
 
         VBox centerPane = new VBox();
-        centerPane.getChildren().addAll(spacesPane, saveFilesBeforeExitBox, removeExtraSpacesBox);
+        centerPane.getChildren().addAll(spacesPane, saveFilesBeforeExitBox, removeExtraSpacesBox, wrapTextBox);
         centerPane.setSpacing(20);
         centerPane.setPadding(new Insets(0, 0, 50, 0));
 
@@ -70,6 +72,7 @@ public class GeneralPrefView extends Dialog<ButtonType> implements PreferencesVi
         spaceCountField.setText(generalPrefModel.getTabSpaceCount() + "");
         saveFilesBeforeExitBox.setSelected(generalPrefModel.saveFilesBeforeExit());
         removeExtraSpacesBox.setSelected(generalPrefModel.removeExtraSpaces());
+        wrapTextBox.setSelected(generalPrefModel.wrapText());
     }
 
     public TextField getSpaceCountField() {
@@ -82,6 +85,10 @@ public class GeneralPrefView extends Dialog<ButtonType> implements PreferencesVi
 
     public CheckBox getRemoveExtraSpacesBox() {
         return removeExtraSpacesBox;
+    }
+
+    public CheckBox getWrapTextBox() {
+        return wrapTextBox;
     }
 
     public GeneralPrefController getGeneralPrefController() {

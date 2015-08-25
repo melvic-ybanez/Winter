@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import org.fxmisc.richtext.CodeArea;
 import winter.controllers.editors.EditorController;
+import winter.controllers.editors.EditorSetController;
 import winter.models.editors.EditorModel;
 import winter.utils.Observer;
 import winter.views.RequiredTextInputDialog;
@@ -31,9 +32,12 @@ public class EditorView extends CodeArea implements Observer {
         setEditorController(editorController); 
         editorModel.registerObserver(this);
         
-        getStyleClass().add("meruem-codearea"); 
+        getStyleClass().add("meruem-codearea");
 
-        styleProperty().bind(editorController.getEditorSetController().getEditorSetView().fontStyleStringProperty());
+        EditorSetController editorSetController = editorController.getEditorSetController();
+
+        styleProperty().bind(editorSetController.getEditorSetView().fontStyleStringProperty());
+        wrapTextProperty().bind(editorSetController.getGeneralPrefController().getGeneralPrefModel().wrapTextProperty());
 
         setParagraphGraphicFactory(new LineNumberView(this)); 
         textProperty().addListener((obs, oldText, newText) -> {
