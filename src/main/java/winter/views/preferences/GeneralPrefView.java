@@ -15,6 +15,7 @@ import winter.models.preferences.PreferencesView;
 public class GeneralPrefView extends Dialog<ButtonType> implements PreferencesView {
     private TextField spaceCountField;
     private CheckBox saveFilesBeforeExitBox;
+    private CheckBox removeExtraSpacesBox;
     private Button resetButton;
 
     private GeneralPrefController generalPrefController;
@@ -33,16 +34,19 @@ public class GeneralPrefView extends Dialog<ButtonType> implements PreferencesVi
     private void init() {
         spaceCountField = new TextField();
         saveFilesBeforeExitBox = new CheckBox("Prompt to save files before exiting.");
+        removeExtraSpacesBox = new CheckBox("Remove extra lines and spaces from files.");
         resetButton = new Button("Reset to Defaults");
 
         spaceCountField.setPrefColumnCount(4);
 
         HBox spacesPane = new HBox();
-        spacesPane.getChildren().addAll(new Label("Number of spaces per indentations:"), spaceCountField);
+        Label spaceCountLabel = new Label("Number of spaces per indentations:");
+        spaceCountLabel.setTranslateY(5);
+        spacesPane.getChildren().addAll(spaceCountLabel, spaceCountField);
         spacesPane.setSpacing(10);
 
         VBox centerPane = new VBox();
-        centerPane.getChildren().addAll(spacesPane, saveFilesBeforeExitBox);
+        centerPane.getChildren().addAll(spacesPane, saveFilesBeforeExitBox, removeExtraSpacesBox);
         centerPane.setSpacing(20);
         centerPane.setPadding(new Insets(0, 0, 50, 0));
 
@@ -65,6 +69,7 @@ public class GeneralPrefView extends Dialog<ButtonType> implements PreferencesVi
     public void populateWithData() {
         spaceCountField.setText(generalPrefModel.getTabSpaceCount() + "");
         saveFilesBeforeExitBox.setSelected(generalPrefModel.saveFilesBeforeExit());
+        removeExtraSpacesBox.setSelected(generalPrefModel.removeExtraSpaces());
     }
 
     public TextField getSpaceCountField() {
@@ -73,6 +78,10 @@ public class GeneralPrefView extends Dialog<ButtonType> implements PreferencesVi
 
     public CheckBox getSaveFilesBeforeExitBox() {
         return saveFilesBeforeExitBox;
+    }
+
+    public CheckBox getRemoveExtraSpacesBox() {
+        return removeExtraSpacesBox;
     }
 
     public GeneralPrefController getGeneralPrefController() {

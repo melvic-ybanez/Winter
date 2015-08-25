@@ -1,9 +1,6 @@
 package winter.models.editors;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import org.fxmisc.richtext.StyleSpans;
 import org.fxmisc.richtext.StyleSpansBuilder;
 import winter.models.behaviors.*;
@@ -30,6 +27,7 @@ public abstract class EditorModel extends SimpleObservable {
     private IntegerProperty caretPositionProperty = new SimpleIntegerProperty();
     private IntegerProperty lineNumberProperty = new SimpleIntegerProperty();
     private IntegerProperty columnNumberProperty = new SimpleIntegerProperty();
+    private BooleanProperty removeExtraSpacesProperty = new SimpleBooleanProperty();
     private String origContents = "";
 
     private ParenIndexesBehavior parenIndexesBehavior;
@@ -56,6 +54,10 @@ public abstract class EditorModel extends SimpleObservable {
     
     public IntegerProperty columnNumberProperty() {
         return columnNumberProperty;
+    }
+
+    public BooleanProperty removeExtraSpacesProperty() {
+        return removeExtraSpacesProperty;
     }
 
     public boolean equalsPath(Path path) {
@@ -118,7 +120,11 @@ public abstract class EditorModel extends SimpleObservable {
     }
 
     public String getContents() {
-        return contentsProperty().get();
+        String contents = contentsProperty().get();
+        if (removeExtraSpaces()) {
+            contents = contents.trim();
+        }
+        return contents;
     }
 
     public int getCaretPosition() {
@@ -209,6 +215,10 @@ public abstract class EditorModel extends SimpleObservable {
     
     public int getColumnNumber() {
         return columnNumberProperty.get();
+    }
+
+    public boolean removeExtraSpaces() {
+        return removeExtraSpacesProperty.get();
     }
 
     public ActiveParenIndexesBehavior getActiveParenIndexesBehavior() {

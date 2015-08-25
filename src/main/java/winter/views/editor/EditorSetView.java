@@ -84,6 +84,8 @@ public class EditorSetView extends BorderPane {
             } 
         } else {
             editorModel.setOrigContents(contents);
+            editorModel.removeExtraSpacesProperty().bind(editorSetController.getGeneralPrefController()
+                    .getGeneralPrefModel().removeExtraSpacesProperty());
             editorControllers.add(editorController);
             
             CodeArea codeArea = editorController.getEditorView();

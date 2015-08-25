@@ -1,5 +1,7 @@
 package winter.models.preferences;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import winter.utils.StringUtils;
 
 /**
@@ -8,6 +10,7 @@ import winter.utils.StringUtils;
 public class GeneralPrefModelImpl implements GeneralPrefModel {
     private int tabSpaceCount;
     private boolean saveFilesBeforeExit;
+    private BooleanProperty removeExtraSpacesProperty = new SimpleBooleanProperty();
 
     public GeneralPrefModelImpl() {
         reset();
@@ -49,8 +52,29 @@ public class GeneralPrefModelImpl implements GeneralPrefModel {
     }
 
     @Override
+    public BooleanProperty removeExtraSpacesProperty() {
+        return removeExtraSpacesProperty;
+    }
+
+    @Override
+    public void setRemoveExtraSpaces(boolean removeExtraSpaces) {
+        removeExtraSpacesProperty.set(removeExtraSpaces);
+    }
+
+    @Override
+    public boolean removeExtraSpaces() {
+        return removeExtraSpacesProperty.get();
+    }
+
+    @Override
+    public boolean getDefaultRemoveExtraSpaces() {
+        return false;
+    }
+
+    @Override
     public void reset() {
         setTabSpaceCount(getDefaultTabSpaceCount());
         setSaveFilesBeforeExit(getDefaultSaveFilesBeforeExit());
+        setRemoveExtraSpaces(getDefaultRemoveExtraSpaces());
     }
 }

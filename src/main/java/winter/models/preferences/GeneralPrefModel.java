@@ -1,5 +1,7 @@
 package winter.models.preferences;
 
+import javafx.beans.property.BooleanProperty;
+
 /**
  * Created by ybamelcash on 8/20/2015.
  */
@@ -17,4 +19,12 @@ public interface GeneralPrefModel extends PreferencesModel {
     public boolean saveFilesBeforeExit();
 
     public String getTabString();
+
+    public BooleanProperty removeExtraSpacesProperty();
+
+    public void setRemoveExtraSpaces(boolean removeExtraSpaces);
+
+    public boolean removeExtraSpaces();
+
+    public boolean getDefaultRemoveExtraSpaces();
 }
