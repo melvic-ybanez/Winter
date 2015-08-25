@@ -19,5 +19,5 @@ public interface PreferencesController {
 
     public void initPreferencesView();
 
-    public void handleResult();
+    public void showAndHandleResult();
 }

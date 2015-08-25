@@ -50,6 +50,7 @@ public class Main extends javafx.application.Application {
         EditorSetController editorSetController = new EditorSetControllerImpl(generalPrefController);
         FontPrefModel fontPrefModel = new FontPrefModelImpl();
         FontPrefController fontPrefController = new FontPrefControllerImpl(fontPrefModel, editorSetController);
+        generalPrefController.setFontPrefController(fontPrefController);
 
         EditorSetView editorSetView = editorSetController.getEditorSetView();
         ProjectSetController projectSetController = new ProjectSetControllerImpl(editorSetView, mainSplitPane.heightProperty());

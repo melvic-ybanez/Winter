@@ -13,7 +13,7 @@ public abstract class BasePrefController implements PreferencesController {
         if (getView() == null) {
             initPreferencesView();
         }
-        handleResult();
+        showAndHandleResult();
     }
 
     @Override
@@ -23,7 +23,7 @@ public abstract class BasePrefController implements PreferencesController {
     }
 
     @Override
-    public void handleResult() {
+    public void showAndHandleResult() {
         Optional<ButtonType> result = getView().showAndWait();
         result.ifPresent(buttonType -> {
             if (buttonType == ButtonType.APPLY) {

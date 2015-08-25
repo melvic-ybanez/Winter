@@ -34,4 +34,12 @@ public class PreferencesMenu extends Menu {
         generalItem.setOnAction(e -> generalPrefController.showUI());
         fontItem.setOnAction(e -> fontPrefController.showUI());
     }
+
+    public GeneralPrefController getGeneralPrefController() {
+        return generalPrefController;
+    }
+
+    public FontPrefController getFontPrefController() {
+        return fontPrefController;
+    }
 }

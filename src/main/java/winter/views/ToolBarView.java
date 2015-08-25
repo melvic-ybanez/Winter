@@ -109,15 +109,7 @@ public class ToolBarView extends ToolBar {
 
     private void configurePreferencesButton() {
         preferencesButton.setTooltip(new Tooltip("Preferences"));
-        ContextMenu contextMenu = new ContextMenu();
-        List<MenuItem> items = StreamUtils.mapToList(preferencesMenu.getItems().stream(), item -> {
-            MenuItem menuItem = new MenuItem(item.getText());
-            menuItem.setOnAction(item.getOnAction());
-            return menuItem;
-        });
-        contextMenu.getItems().addAll(items);
-        preferencesButton.setContextMenu(contextMenu);
-        preferencesButton.setOnAction(event -> contextMenu.show(preferencesButton, Side.BOTTOM, 0, 0));
+        preferencesButton.setOnAction(e -> preferencesMenu.getGeneralPrefController().showUI());
     }
 
     public void setViewMenu(ViewMenu viewMenu) {

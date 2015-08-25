@@ -17,6 +17,7 @@ public class GeneralPrefView extends Dialog<ButtonType> implements PreferencesVi
     private CheckBox saveFilesBeforeExitBox;
     private CheckBox removeExtraSpacesBox;
     private CheckBox wrapTextBox;
+    private Hyperlink fontSettingsLink;
     private Button resetButton;
 
     private GeneralPrefController generalPrefController;
@@ -37,6 +38,7 @@ public class GeneralPrefView extends Dialog<ButtonType> implements PreferencesVi
         saveFilesBeforeExitBox = new CheckBox("Prompt to save files before exiting.");
         removeExtraSpacesBox = new CheckBox("Remove extra lines and spaces from files contents.");
         wrapTextBox = new CheckBox("Wrap Text.");
+        fontSettingsLink = new Hyperlink("Change Font Settings");
         resetButton = new Button("Reset to Defaults");
 
         spaceCountField.setPrefColumnCount(4);
@@ -48,7 +50,7 @@ public class GeneralPrefView extends Dialog<ButtonType> implements PreferencesVi
         spacesPane.setSpacing(10);
 
         VBox centerPane = new VBox();
-        centerPane.getChildren().addAll(spacesPane, saveFilesBeforeExitBox, removeExtraSpacesBox, wrapTextBox);
+        centerPane.getChildren().addAll(spacesPane, saveFilesBeforeExitBox, removeExtraSpacesBox, wrapTextBox, fontSettingsLink);
         centerPane.setSpacing(20);
         centerPane.setPadding(new Insets(0, 0, 50, 0));
 
@@ -66,6 +68,7 @@ public class GeneralPrefView extends Dialog<ButtonType> implements PreferencesVi
 
     private void registerEvents() {
         resetButton.setOnAction(e -> generalPrefController.resetToDefaults());
+        fontSettingsLink.setOnAction(e -> generalPrefController.changeFontSettings());
     }
 
     public void populateWithData() {

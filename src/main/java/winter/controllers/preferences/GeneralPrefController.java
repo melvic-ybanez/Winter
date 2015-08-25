@@ -14,4 +14,10 @@ public interface GeneralPrefController extends PreferencesController {
     public GeneralPrefView getGeneralPrefView();
 
     public GeneralPrefModel getGeneralPrefModel();
+
+    public void changeFontSettings();
+
+    public void setFontPrefController(FontPrefController fontPrefController);
+
+    public FontPrefController getFontPrefController();
 }

@@ -1,5 +1,6 @@
 package winter.controllers.preferences;
 
+import javafx.application.Platform;
 import winter.models.preferences.GeneralPrefModel;
 import winter.models.preferences.PreferencesModel;
 import winter.models.preferences.PreferencesView;
@@ -15,9 +16,11 @@ import java.util.Optional;
 public class GeneralPrefControllerImpl extends BasePrefController implements GeneralPrefController {
     private GeneralPrefModel generalPrefModel;
     private GeneralPrefView generalPrefView;
+    private FontPrefController fontPrefController;
 
     public GeneralPrefControllerImpl(GeneralPrefModel generalPrefModel) {
         setGeneralPrefModel(generalPrefModel);
+        setFontPrefController(fontPrefController);
     }
 
     @Override
@@ -52,6 +55,12 @@ public class GeneralPrefControllerImpl extends BasePrefController implements Gen
     }
 
     @Override
+    public void changeFontSettings() {
+        generalPrefView.close();
+        Platform.runLater(() -> getFontPrefController().showUI());
+    }
+
+    @Override
     public PreferencesView getView() {
         return getGeneralPrefView();
     }
@@ -70,5 +79,14 @@ public class GeneralPrefControllerImpl extends BasePrefController implements Gen
     @Override
     public void setGeneralPrefModel(GeneralPrefModel generalPrefModel) {
         this.generalPrefModel = generalPrefModel;
+    }
+
+    @Override
+    public FontPrefController getFontPrefController() {
+        return fontPrefController;
+    }
+
+    public void setFontPrefController(FontPrefController fontPrefController) {
+        this.fontPrefController = fontPrefController;
     }
 }
