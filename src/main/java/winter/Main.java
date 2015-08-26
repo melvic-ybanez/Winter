@@ -80,7 +80,7 @@ public class Main extends javafx.application.Application {
         EditMenu editMenu = new EditMenu(editorSetController);
         NavigationMenu navigationMenu = new NavigationMenu(navigationController);
         PreferencesMenu preferencesMenu = new PreferencesMenu(generalPrefController, fontPrefController);
-        HelpMenu helpMenu = new HelpMenu();
+        HelpMenu helpMenu = new HelpMenu(primaryStage);
 
         ToolBarView toolBarView = new ToolBarView(fileMenu, editMenu, navigationMenu, preferencesMenu, helpMenu);
         ViewMenu viewMenu = new ViewMenu(editorSetController, projectSetController, toolBarView);
