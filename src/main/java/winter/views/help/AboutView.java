@@ -38,6 +38,7 @@ public class AboutView extends Stage {
         setTitle("About Winter");
         initOwner(window);
         initModality(Modality.WINDOW_MODAL);
+        setResizable(false);
 
         projectNameLink = new Hyperlink(aboutModel.getProjectName());
         authorLink = new Hyperlink(aboutModel.getAuthor());
