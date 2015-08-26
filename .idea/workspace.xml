@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="implement about dialog">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/winter/controllers/helps/AboutController.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/winter/controllers/helps/AboutControllerImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/winter/views/menus/HelpMenu.class" afterPath="$PROJECT_DIR$/target/classes/winter/views/menus/HelpMenu.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/winter/Main.class" afterPath="$PROJECT_DIR$/target/classes/winter/Main.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/winter/views/menus/HelpMenu.java" afterPath="$PROJECT_DIR$/src/main/java/winter/views/menus/HelpMenu.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/winter/Main.java" afterPath="$PROJECT_DIR$/src/main/java/winter/Main.java" />
+    <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="implement about dialog controller skeleton">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/winter/views/help/AboutView.java" afterPath="$PROJECT_DIR$/src/main/java/winter/views/help/AboutView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/styles/about.css" afterPath="$PROJECT_DIR$/src/main/resources/styles/about.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="JavaFxApplication.iws" />
@@ -70,17 +66,17 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="HelpMenu.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="HelpMenu.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/winter/views/menus/HelpMenu.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.94057727">
-              <caret line="38" column="59" selection-start-line="38" selection-start-column="59" selection-end-line="38" selection-end-column="59" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="27" column="53" selection-start-line="27" selection-start-column="53" selection-end-line="27" selection-end-column="53" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1134#1135#0" expanded="true" />
-                <element signature="e#1202#1203#0" expanded="true" />
-                <element signature="e#1245#1246#0" expanded="true" />
-                <element signature="e#1282#1283#0" expanded="true" />
+                <element signature="e#1070#1071#0" expanded="true" />
+                <element signature="e#1138#1139#0" expanded="true" />
+                <element signature="e#1181#1182#0" expanded="true" />
+                <element signature="e#1218#1219#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -106,15 +102,17 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AboutView.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="AboutView.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/winter/views/help/AboutView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="62" column="42" selection-start-line="62" selection-start-column="42" selection-end-line="62" selection-end-column="42" />
+            <state vertical-scroll-proportion="0.7198642">
+              <caret line="75" column="23" selection-start-line="75" selection-start-column="23" selection-end-line="75" selection-end-column="23" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#670#671#0" expanded="true" />
                 <element signature="e#706#707#0" expanded="true" />
+                <element signature="e#2430#2431#0" expanded="true" />
+                <element signature="e#2460#2461#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -183,7 +181,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/resources/styles/about.css">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="1" column="26" selection-start-line="1" selection-start-column="26" selection-end-line="1" selection-end-column="26" />
+              <caret line="5" column="12" selection-start-line="5" selection-start-column="12" selection-end-line="5" selection-end-column="12" />
               <folding />
             </state>
           </provider>
@@ -258,15 +256,15 @@
         <option value="$PROJECT_DIR$/src/main/java/winter/views/menus/PreferencesMenu.java" />
         <option value="$PROJECT_DIR$/src/main/java/winter/views/ToolBarView.java" />
         <option value="$PROJECT_DIR$/src/main/java/winter/views/preferences/GeneralPrefView.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/styles/about.css" />
         <option value="$PROJECT_DIR$/src/main/resources/application.conf" />
         <option value="$PROJECT_DIR$/src/main/java/winter/Settings.java" />
-        <option value="$PROJECT_DIR$/src/main/java/winter/views/help/AboutView.java" />
         <option value="$PROJECT_DIR$/src/main/java/winter/controllers/help/AboutController.java" />
         <option value="$PROJECT_DIR$/src/main/java/winter/controllers/helps/AboutController.java" />
         <option value="$PROJECT_DIR$/src/main/java/winter/controllers/helps/AboutControllerImpl.java" />
-        <option value="$PROJECT_DIR$/src/main/java/winter/views/menus/HelpMenu.java" />
         <option value="$PROJECT_DIR$/src/main/java/winter/Main.java" />
+        <option value="$PROJECT_DIR$/src/main/java/winter/views/menus/HelpMenu.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/styles/about.css" />
+        <option value="$PROJECT_DIR$/src/main/java/winter/views/help/AboutView.java" />
       </list>
     </option>
   </component>
@@ -1675,7 +1673,7 @@
       <workItem from="1440348345529" duration="11134000" />
       <workItem from="1440446255865" duration="3051000" />
       <workItem from="1440495605422" duration="16833000" />
-      <workItem from="1440595885844" duration="4825000" />
+      <workItem from="1440595885844" duration="5284000" />
     </task>
     <task id="LOCAL-00001" summary="implement about dialog">
       <created>1440605116385</created>
@@ -1683,11 +1681,17 @@
       <option name="project" value="LOCAL" />
       <updated>1440605116385</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="implement about dialog controller skeleton">
+      <created>1440605801556</created>
+      <option name="number" value="00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1440605801556</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1008476000" />
+    <option name="totallyTimeSpent" value="1008935000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="886" extended-state="6" />
@@ -1773,7 +1777,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="implement about dialog" />
-    <option name="LAST_COMMIT_MESSAGE" value="implement about dialog" />
+    <MESSAGE value="implement about dialog controller skeleton" />
+    <option name="LAST_COMMIT_MESSAGE" value="implement about dialog controller skeleton" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -2246,26 +2251,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/styles/about.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="1" column="26" selection-start-line="1" selection-start-column="26" selection-end-line="1" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/winter/views/help/AboutView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="62" column="42" selection-start-line="62" selection-start-column="42" selection-end-line="62" selection-end-column="42" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#670#671#0" expanded="true" />
-            <element signature="e#706#707#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/winter/controllers/helps/AboutController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -2314,14 +2299,36 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/winter/views/menus/HelpMenu.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.94057727">
-          <caret line="38" column="59" selection-start-line="38" selection-start-column="59" selection-end-line="38" selection-end-column="59" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="27" column="53" selection-start-line="27" selection-start-column="53" selection-end-line="27" selection-end-column="53" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1134#1135#0" expanded="true" />
-            <element signature="e#1202#1203#0" expanded="true" />
-            <element signature="e#1245#1246#0" expanded="true" />
-            <element signature="e#1282#1283#0" expanded="true" />
+            <element signature="e#1070#1071#0" expanded="true" />
+            <element signature="e#1138#1139#0" expanded="true" />
+            <element signature="e#1181#1182#0" expanded="true" />
+            <element signature="e#1218#1219#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/styles/about.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="5" column="12" selection-start-line="5" selection-start-column="12" selection-end-line="5" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/winter/views/help/AboutView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7198642">
+          <caret line="75" column="23" selection-start-line="75" selection-start-column="23" selection-end-line="75" selection-end-column="23" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#670#671#0" expanded="true" />
+            <element signature="e#706#707#0" expanded="true" />
+            <element signature="e#2430#2431#0" expanded="true" />
+            <element signature="e#2460#2461#0" expanded="true" />
           </folding>
         </state>
       </provider>

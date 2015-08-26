@@ -72,6 +72,10 @@ public class AboutView extends Stage {
         setScene(scene);
     }
 
+    private void registerEvents() {
+        projectNameLink
+    }
+
     private Label createLabel(String text) {
         Label label = new Label(text);
         label.getStyleClass().add("about-label");
