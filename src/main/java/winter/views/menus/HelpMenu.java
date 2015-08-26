@@ -4,9 +4,8 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
-import javafx.stage.Window;
+import winter.controllers.helps.AboutController;
 import winter.factories.Icons;
-import winter.views.help.AboutView;
 
 /**
  * Created by ybamelcash on 6/21/2015.
@@ -14,12 +13,11 @@ import winter.views.help.AboutView;
 public class HelpMenu extends Menu {
     private MenuItem aboutItem;
     private MenuItem helpTopicsItem;
-    private AboutView aboutView;
-    private Window window;
+    private AboutController aboutController;
 
-    public HelpMenu(Window window) {
+    public HelpMenu(AboutController aboutController) {
         super("Help");
-        this.window = window;
+        this.aboutController = aboutController;
         init();
         registerEvents();
     }
@@ -36,13 +34,7 @@ public class HelpMenu extends Menu {
     }
 
     private void registerEvents() {
-        aboutItem.setOnAction(e -> {
-            if (aboutView == null) {
-                aboutView = new AboutView(window);
-                aboutView.init();
-            }
-            aboutView.showAndWait();
-        });
+        aboutItem.setOnAction(e -> aboutController.showUI());
     }
 
     public MenuItem getHelpTopicsItem() {

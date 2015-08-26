@@ -15,6 +15,8 @@ import winter.controllers.editors.EditorSetController;
 import winter.controllers.editors.EditorSetControllerImpl;
 import winter.controllers.files.FileController;
 import winter.controllers.files.FileControllerImpl;
+import winter.controllers.helps.AboutController;
+import winter.controllers.helps.AboutControllerImpl;
 import winter.controllers.navigations.NavigationController;
 import winter.controllers.navigations.NavigationControllerImpl;
 import winter.controllers.preferences.FontPrefController;
@@ -59,6 +61,7 @@ public class Main extends javafx.application.Application {
         StatusModel statusModel = new StatusModelImpl(editorSetController);
         StatusView statusView = new StatusView(statusModel);
         NavigationController navigationController = new NavigationControllerImpl(editorSetController);
+        AboutController aboutController = new AboutControllerImpl(primaryStage);
 
         editorSetController.setFileController(fileController);
         editorSetView.newUntitledTab();
@@ -80,7 +83,7 @@ public class Main extends javafx.application.Application {
         EditMenu editMenu = new EditMenu(editorSetController);
         NavigationMenu navigationMenu = new NavigationMenu(navigationController);
         PreferencesMenu preferencesMenu = new PreferencesMenu(generalPrefController, fontPrefController);
-        HelpMenu helpMenu = new HelpMenu(primaryStage);
+        HelpMenu helpMenu = new HelpMenu(aboutController);
 
         ToolBarView toolBarView = new ToolBarView(fileMenu, editMenu, navigationMenu, preferencesMenu, helpMenu);
         ViewMenu viewMenu = new ViewMenu(editorSetController, projectSetController, toolBarView);
