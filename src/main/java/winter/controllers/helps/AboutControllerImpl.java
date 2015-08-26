@@ -2,6 +2,7 @@ package winter.controllers.helps;
 
 import javafx.stage.Window;
 import winter.models.helps.AboutModel;
+import winter.utils.BrowserUtil;
 import winter.views.help.AboutView;
 
 /**
@@ -22,23 +23,24 @@ public class AboutControllerImpl implements AboutController {
         if (aboutView == null) {
             aboutView = new AboutView(this, aboutModel, window);
             aboutView.init();
+            aboutView.registerEvents();
         }
         aboutView.showAndWait();
     }
 
     @Override
     public void openProjectWebPage() {
-        aboutView.getProjectNameLink().getText();
+        BrowserUtil.openWebPage(aboutModel.getProjectNameURLString());
     }
 
     @Override
     public void openAuthorWebPage() {
-
+        BrowserUtil.openWebPage(aboutModel.getAuthorURLString());
     }
 
     @Override
     public void openIconsSourceWebPage() {
-
+        BrowserUtil.openWebPage(aboutModel.getIconsSourceURLString());
     }
 
     @Override

@@ -79,25 +79,15 @@ public class AboutView extends Stage {
         setScene(scene);
     }
 
-    private void registerEvents() {
-
+    public void registerEvents() {
+        projectNameLink.setOnAction(e -> aboutController.openProjectWebPage());
+        authorLink.setOnAction(e -> aboutController.openAuthorWebPage());
+        iconsSourceLink.setOnAction(e -> aboutController.openIconsSourceWebPage());
     }
 
     private Label createLabel(String text) {
         Label label = new Label(text);
         label.getStyleClass().add("about-label");
         return label;
-    }
-
-    public Hyperlink getProjectNameLink() {
-        return projectNameLink;
-    }
-
-    public Hyperlink getAuthorLink() {
-        return authorLink;
-    }
-
-    public Hyperlink getIconsSourceLink() {
-        return iconsSourceLink;
     }
 }
