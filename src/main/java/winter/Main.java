@@ -25,6 +25,8 @@ import winter.controllers.preferences.GeneralPrefController;
 import winter.controllers.preferences.GeneralPrefControllerImpl;
 import winter.controllers.projects.ProjectSetController;
 import winter.controllers.projects.ProjectSetControllerImpl;
+import winter.models.helps.AboutModel;
+import winter.models.helps.AboutModelImpl;
 import winter.models.preferences.FontPrefModel;
 import winter.models.preferences.FontPrefModelImpl;
 import winter.models.preferences.GeneralPrefModel;
@@ -61,7 +63,8 @@ public class Main extends javafx.application.Application {
         StatusModel statusModel = new StatusModelImpl(editorSetController);
         StatusView statusView = new StatusView(statusModel);
         NavigationController navigationController = new NavigationControllerImpl(editorSetController);
-        AboutController aboutController = new AboutControllerImpl(primaryStage);
+        AboutModel aboutModel = new AboutModelImpl();
+        AboutController aboutController = new AboutControllerImpl(aboutModel, primaryStage);
 
         editorSetController.setFileController(fileController);
         editorSetView.newUntitledTab();

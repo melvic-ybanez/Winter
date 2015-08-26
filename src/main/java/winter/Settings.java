@@ -49,4 +49,6 @@ public class Settings {
     public static final String TAB_STRING = StringUtils.repeat(Settings.DEFAULT_TAB_SIZE, " ");
 
     public static final String VERSION = getString("general-settings.version");
+
+    public static final String PROJECT_NAME = getString("general-settings.project_name");
 }

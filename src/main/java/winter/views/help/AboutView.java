@@ -11,6 +11,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import winter.Settings;
+import winter.controllers.helps.AboutController;
+import winter.models.helps.AboutModel;
 
 import java.util.stream.IntStream;
 
@@ -23,7 +25,12 @@ public class AboutView extends Stage {
     private Hyperlink iconsSourceLink;
     private Window window;
 
-    public AboutView(Window window) {
+    private AboutController aboutController;
+    private AboutModel aboutModel;
+
+    public AboutView(AboutController aboutController, AboutModel aboutModel, Window window) {
+        this.aboutController = aboutController;
+        this.aboutModel = aboutModel;
         this.window = window;
     }
 
@@ -32,9 +39,9 @@ public class AboutView extends Stage {
         initOwner(window);
         initModality(Modality.WINDOW_MODAL);
 
-        projectNameLink = new Hyperlink("Winter");
-        authorLink = new Hyperlink("Melvic Ybanez");
-        iconsSourceLink = new Hyperlink("https://icons8.com");
+        projectNameLink = new Hyperlink(aboutModel.getProjectName());
+        authorLink = new Hyperlink(aboutModel.getAuthor());
+        iconsSourceLink = new Hyperlink(aboutModel.getIconsSourceURLString());
 
         GridPane grid = new GridPane();
         grid.setHgap(10);
@@ -47,7 +54,7 @@ public class AboutView extends Stage {
         });
 
         Node[] valueNodes = {
-                projectNameLink, new Label("The text editor for the Meruem programing language"),
+                projectNameLink, new Label(aboutModel.getDescription()),
                 new Label(Settings.VERSION), authorLink
         };
         IntStream.range(0, valueNodes.length).forEach(row -> {
@@ -73,12 +80,24 @@ public class AboutView extends Stage {
     }
 
     private void registerEvents() {
-        projectNameLink
+
     }
 
     private Label createLabel(String text) {
         Label label = new Label(text);
         label.getStyleClass().add("about-label");
         return label;
+    }
+
+    public Hyperlink getProjectNameLink() {
+        return projectNameLink;
+    }
+
+    public Hyperlink getAuthorLink() {
+        return authorLink;
+    }
+
+    public Hyperlink getIconsSourceLink() {
+        return iconsSourceLink;
     }
 }

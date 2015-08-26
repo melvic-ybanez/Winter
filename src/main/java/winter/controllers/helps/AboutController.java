@@ -1,5 +1,6 @@
 package winter.controllers.helps;
 
+import winter.models.helps.AboutModel;
 import winter.views.help.AboutView;
 
 /**
@@ -15,4 +16,6 @@ public interface AboutController {
     public void openIconsSourceWebPage();
 
     public AboutView getAboutView();
+
+    public AboutModel getAboutModel();
 }
