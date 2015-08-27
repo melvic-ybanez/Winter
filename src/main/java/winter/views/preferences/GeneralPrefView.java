@@ -36,7 +36,7 @@ public class GeneralPrefView extends Dialog<ButtonType> implements PreferencesVi
     private void init() {
         spaceCountField = new TextField();
         saveFilesBeforeExitBox = new CheckBox("Prompt to save files before exiting.");
-        removeExtraSpacesBox = new CheckBox("Remove extra lines and spaces from files contents.");
+        removeExtraSpacesBox = new CheckBox("Remove extra lines and spaces from file contents.");
         wrapTextBox = new CheckBox("Wrap Text.");
         fontSettingsLink = new Hyperlink("Change Font Settings");
         resetButton = new Button("Reset to Defaults");

@@ -1,0 +1,17 @@
+.about-label {
+    -fx-font-weight: bold;
+}
+
+.hyperlink {
+    -fx-focus-color: transparent;
+}
+
+.main-title {
+    -fx-font-weight: bold;
+    -fx-font-size: 20;
+}
+
+.topic > title {
+    -fx-font-weight: bold;
+    -fx-font-size: 15;
+}

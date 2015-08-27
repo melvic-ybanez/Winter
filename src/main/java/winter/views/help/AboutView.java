@@ -76,7 +76,7 @@ public class AboutView extends Stage {
         mainPane.setBottom(bottomPane);
 
         Scene scene = new Scene(mainPane);
-        scene.getStylesheets().add(AboutView.class.getResource("/styles/about.css").toExternalForm());
+        scene.getStylesheets().add(AboutView.class.getResource("/styles/help.css").toExternalForm());
         setScene(scene);
     }
 
