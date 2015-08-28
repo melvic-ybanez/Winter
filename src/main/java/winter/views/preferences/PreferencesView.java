@@ -1,4 +1,4 @@
-package winter.models.preferences;
+package winter.views.preferences;
 
 import javafx.scene.control.ButtonType;
 
@@ -10,5 +10,5 @@ import java.util.Optional;
 public interface PreferencesView {
     public void populateWithData();
 
-    public Optional<ButtonType> showAndWait();
+    public Optional<ButtonType> showAndGetResult();
 }

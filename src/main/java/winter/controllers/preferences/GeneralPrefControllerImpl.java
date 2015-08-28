@@ -3,10 +3,10 @@ package winter.controllers.preferences;
 import javafx.application.Platform;
 import winter.models.preferences.GeneralPrefModel;
 import winter.models.preferences.PreferencesModel;
-import winter.models.preferences.PreferencesView;
 import winter.utils.Errors;
 import winter.utils.StringUtils;
 import winter.views.preferences.GeneralPrefView;
+import winter.views.preferences.PreferencesView;
 
 import java.util.Optional;
 

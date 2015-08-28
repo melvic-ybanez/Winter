@@ -1,4 +1,4 @@
-package winter.controllers.helps;
+package winter.models.helps;
 
 import java.util.List;
 

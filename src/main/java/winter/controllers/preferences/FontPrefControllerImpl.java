@@ -5,10 +5,10 @@ import javafx.scene.text.Font;
 import winter.controllers.editors.EditorSetController;
 import winter.models.preferences.FontPrefModel;
 import winter.models.preferences.PreferencesModel;
-import winter.models.preferences.PreferencesView;
 import winter.utils.Errors;
 import winter.utils.StreamUtils;
 import winter.views.preferences.FontPrefView;
+import winter.views.preferences.PreferencesView;
 
 import java.awt.*;
 import java.util.Arrays;

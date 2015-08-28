@@ -10,9 +10,7 @@ import java.util.Optional;
 public abstract class BasePrefController implements PreferencesController {
     @Override
     public void showUI() {
-        if (getView() == null) {
-            initPreferencesView();
-        }
+        initPreferencesView();
         showAndHandleResult();
     }
 
@@ -24,7 +22,7 @@ public abstract class BasePrefController implements PreferencesController {
 
     @Override
     public void showAndHandleResult() {
-        Optional<ButtonType> result = getView().showAndWait();
+        Optional<ButtonType> result = getView().showAndGetResult();
         result.ifPresent(buttonType -> {
             if (buttonType == ButtonType.APPLY) {
                 applySettings();

@@ -8,8 +8,9 @@ import javafx.util.StringConverter;
 import org.fxmisc.richtext.CodeArea;
 import winter.controllers.preferences.FontPrefController;
 import winter.models.preferences.FontPrefModel;
-import winter.models.preferences.PreferencesView;
 import winter.utils.StringUtils;
+
+import java.util.Optional;
 
 /**
  * Created by ybamelcash on 8/22/2015.
@@ -116,6 +117,11 @@ public class FontPrefView extends Dialog<ButtonType> implements PreferencesView 
         fontFamilyCombo.getSelectionModel().select(fontPrefModel.getFontFamily());
         fontStyleCombo.getSelectionModel().select(fontPrefModel.getFontStyle());
         fontSizeCombo.getSelectionModel().select(fontPrefModel.getFontSize() - 1);
+    }
+
+    @Override
+    public Optional<ButtonType> showAndGetResult() {
+        return showAndWait();
     }
 
     public FontPrefController getFontPrefController() {

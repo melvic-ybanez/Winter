@@ -1,7 +1,7 @@
 package winter.controllers.preferences;
 
 import winter.models.preferences.PreferencesModel;
-import winter.models.preferences.PreferencesView;
+import winter.views.preferences.PreferencesView;
 
 /**
  * Created by ybamelcash on 8/23/2015.

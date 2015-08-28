@@ -7,7 +7,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import winter.controllers.preferences.GeneralPrefController;
 import winter.models.preferences.GeneralPrefModel;
-import winter.models.preferences.PreferencesView;
+
+import java.util.Optional;
 
 /**
  * Created by ybamelcash on 8/20/2015.
@@ -76,6 +77,11 @@ public class GeneralPrefView extends Dialog<ButtonType> implements PreferencesVi
         saveFilesBeforeExitBox.setSelected(generalPrefModel.saveFilesBeforeExit());
         removeExtraSpacesBox.setSelected(generalPrefModel.removeExtraSpaces());
         wrapTextBox.setSelected(generalPrefModel.wrapText());
+    }
+
+    @Override
+    public Optional<ButtonType> showAndGetResult() {
+        return showAndWait();
     }
 
     public TextField getSpaceCountField() {
