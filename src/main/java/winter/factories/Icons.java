@@ -114,7 +114,7 @@ public class Icons {
     }
 
     public static ImageView createHideIcon() {
-        return Resources.getIcon("hide");
+        return Resources.getIcon("hide_below");
     }
 
     public static Button createIconedButton(ImageView iconView, String tooltip) {
