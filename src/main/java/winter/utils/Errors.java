@@ -1,10 +1,12 @@
 package winter.utils;
 
+import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -38,6 +40,15 @@ public class Errors {
         borderPane.setCenter(textArea);
 
         alert.getDialogPane().setExpandableContent(borderPane);
+
+        // A hack to fix the resize issue of dialogs on linux
+        alert.getDialogPane().expandedProperty().addListener(l -> {
+            Platform.runLater(() -> {
+                alert.getDialogPane().requestLayout();
+                Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+                stage.sizeToScene();
+            });
+        });
 
         return alert.showAndWait();
     }
