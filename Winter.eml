@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<component LANGUAGE_LEVEL="JDK_1_8" inheritJdk="true">
+<component LANGUAGE_LEVEL="JDK_1_5" inheritJdk="true">
 	<output-test url="file://$MODULE_DIR$/target/test-classes"/>
 	<contentEntry url="file://$MODULE_DIR$">
 		<testFolder url="file://$MODULE_DIR$/src/test/java"/>
@@ -16,5 +16,6 @@
 		<level name="Maven: org.controlsfx:openjfx-dialogs:1.0.3" value="project"/>
 		<level name="Maven: commons-io:commons-io:2.4" value="project"/>
 		<level name="Maven: commons-lang:commons-lang:2.6" value="project"/>
+		<level name="Maven: com.googlecode.json-simple:json-simple:1.1" value="project"/>
 	</levels>
 </component>
