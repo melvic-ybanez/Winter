@@ -48,7 +48,7 @@ public class ProjectController implements WatchableDir {
             keyMap = new HashMap<>();
         } catch (IOException e) {
             showRegisterErrorDialogAndExit(e);
-        }
+        } 
     }
 
     public void insertNode(ProjectNodeView newNode) {

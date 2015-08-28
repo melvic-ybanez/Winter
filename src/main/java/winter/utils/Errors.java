@@ -76,7 +76,7 @@ public class Errors {
     }
 
     public static Optional<ButtonType> registerWatcherException(IOException ex) {
-        return Errors.fileIOExceptionDialog(ex, titles.REGISTER_WATCHER, "register watcher");
+        return Errors.fileIOExceptionDialog(ex, titles.REGISTER_WATCHER, "registering watcher");
     }
     
     public static Optional<ButtonType> headerLessDialog(String title, String contents) {

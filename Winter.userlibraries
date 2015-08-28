@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eclipse-userlibraries>
+  <library name="Maven: com.typesafe:config:1.3.0">
+    <archive path="/home/melvic/.m2/repository/com/typesafe/config/1.3.0/config-1.3.0.jar" />
+  </library>
+  <library name="Maven: commons-io:commons-io:2.4">
+    <archive path="/home/melvic/.m2/repository/commons-io/commons-io/2.4/commons-io-2.4.jar" />
+  </library>
+  <library name="Maven: commons-lang:commons-lang:2.6">
+    <archive path="/home/melvic/.m2/repository/commons-lang/commons-lang/2.6/commons-lang-2.6.jar" />
+  </library>
+  <library name="Maven: org.controlsfx:controlsfx:8.40.9">
+    <archive path="/home/melvic/.m2/repository/org/controlsfx/controlsfx/8.40.9/controlsfx-8.40.9.jar" />
+  </library>
+  <library name="Maven: org.controlsfx:openjfx-dialogs:1.0.3">
+    <archive path="/home/melvic/.m2/repository/org/controlsfx/openjfx-dialogs/1.0.3/openjfx-dialogs-1.0.3.jar" />
+  </library>
+  <library name="Maven: org.fxmisc.undo:undofx:1.1.1">
+    <archive path="/home/melvic/.m2/repository/org/fxmisc/undo/undofx/1.1.1/undofx-1.1.1.jar" />
+  </library>
+  <library name="Maven: org.fxmisc.wellbehaved:wellbehavedfx:0.1.1">
+    <archive path="/home/melvic/.m2/repository/org/fxmisc/wellbehaved/wellbehavedfx/0.1.1/wellbehavedfx-0.1.1.jar" />
+  </library>
+  <library name="Maven: org.fxmisc.richtext:richtextfx:0.6.6">
+    <archive path="/home/melvic/.m2/repository/org/fxmisc/richtext/richtextfx/0.6.6/richtextfx-0.6.6.jar" />
+  </library>
+  <library name="Maven: org.reactfx:reactfx:2.0-M4u1">
+    <archive path="/home/melvic/.m2/repository/org/reactfx/reactfx/2.0-M4u1/reactfx-2.0-M4u1.jar" />
+  </library>
+  <library name="Maven: org.fxmisc.flowless:flowless:0.4.5">
+    <archive path="/home/melvic/.m2/repository/org/fxmisc/flowless/flowless/0.4.5/flowless-0.4.5.jar" />
+  </library>
+</eclipse-userlibraries>
+
