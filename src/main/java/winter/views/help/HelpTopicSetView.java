@@ -14,8 +14,9 @@ import winter.models.helps.HelpTopicModel;
 public class HelpTopicSetView extends Stage {
     private HelpTopicModel helpTopicModel;
     private HelpTopicSetController helpTopicSetController;
-    private TreeView<String> tree;
+    private TreeView<HelpTopicModel> tree;
     private HelpTopicView helpTopicView;
+    private HelpTopicModel selectedTopic;
 
     public HelpTopicSetView(HelpTopicModel helpTopicModel, HelpTopicSetController helpTopicSetController, Window window) {
         setTitle("Help Topics");
@@ -24,13 +25,30 @@ public class HelpTopicSetView extends Stage {
 
         initOwner(window);
         initModality(Modality.APPLICATION_MODAL);
+
+        init();
+        registerEvents();
+
+        tree.setCellFactory(treeView -> {
+            return new TreeCell<HelpTopicModel>() {
+                @Override
+                public void updateItem(HelpTopicModel item, boolean isEmpty) {
+                    super.updateItem(item, isEmpty);
+                    if (isEmpty) {
+                        setText(null);
+                    } else {
+                        setText(item.getTitle());
+                    }
+                }
+            };
+        });
     }
 
-    public void init() {
+    private void init() {
         SplitPane splitPane = new SplitPane();
         tree = new TreeView<>();
         helpTopicView = new HelpTopicView(helpTopicModel, splitPane.heightProperty());
-        TreeItem<String> root = createTopicTreeItem(helpTopicModel);
+        TreeItem<HelpTopicModel> root = createTopicTreeItem(helpTopicModel);
         tree.setRoot(root);
         root.setExpanded(true);
 
@@ -49,10 +67,10 @@ public class HelpTopicSetView extends Stage {
         setScene(scene);
     }
 
-    private TreeItem<String> createTopicTreeItem(HelpTopicModel helpTopicModel) {
-        TreeItem<String> node = new TreeItem<>(helpTopicModel.getTitle());
+    private TreeItem<HelpTopicModel> createTopicTreeItem(HelpTopicModel helpTopicModel) {
+        TreeItem<HelpTopicModel> node = new TreeItem<>(helpTopicModel);
         helpTopicModel.getSubTopics().forEach(subTopic -> {
-            TreeItem<String> child = createTopicTreeItem(subTopic);
+            TreeItem<HelpTopicModel> child = createTopicTreeItem(subTopic);
             node.getChildren().add(child);
         });
         return node;

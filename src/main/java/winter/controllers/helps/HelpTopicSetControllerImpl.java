@@ -21,7 +21,6 @@ public class HelpTopicSetControllerImpl implements HelpTopicSetController {
     public void showHelpTopics() {
         if (helpTopicSetView == null) {
             helpTopicSetView = new HelpTopicSetView(helpTopicModel, this, window);
-            helpTopicSetView.init();
         }
         helpTopicSetView.showAndWait();
     }
