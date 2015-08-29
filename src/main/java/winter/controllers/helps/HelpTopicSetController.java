@@ -1,15 +1,15 @@
 package winter.controllers.helps;
 
 import winter.models.helps.HelpTopicModel;
-import winter.views.help.HelpTopicsView;
+import winter.views.help.HelpTopicSetView;
 
 /**
  * Created by melvic on 8/29/15.
  */
-public interface HelpTopicsController {
+public interface HelpTopicSetController {
     public void showHelpTopics();
 
-    public HelpTopicsView getHelpTopicsView();
+    public HelpTopicSetView getHelpTopicSetView();
 
     public HelpTopicModel getHelpTopicModel();
 }

@@ -11,7 +11,8 @@
     -fx-font-size: 20;
 }
 
-.topic > title {
+.topic .title {
     -fx-font-weight: bold;
-    -fx-font-size: 15;
+    -fx-font-size: 20;
+    -fx-padding: 10 10 10 15;
 }

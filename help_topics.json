@@ -1,7 +1,7 @@
 {
   "Title": "Help Topics",
-  "Description": "",
-  "Instructions": [],
+  "Description": "This serves as the guide for users on how to use the Winter Text Editor",
+  "Instructions": [ "Select the topic you want to read from the tree at the left." ],
   "Topics": [
     {
       "Title": "Creating a new file",

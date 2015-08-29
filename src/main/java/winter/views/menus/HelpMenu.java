@@ -7,8 +7,8 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.stage.Window;
 import winter.controllers.helps.AboutController;
 import winter.controllers.helps.AboutControllerImpl;
-import winter.controllers.helps.HelpTopicsController;
-import winter.controllers.helps.HelpTopicsControllerImpl;
+import winter.controllers.helps.HelpTopicSetController;
+import winter.controllers.helps.HelpTopicSetControllerImpl;
 import winter.factories.HelpTopicsFactory;
 import winter.factories.Icons;
 import winter.models.helps.AboutModel;
@@ -24,7 +24,7 @@ public class HelpMenu extends Menu {
     private MenuItem aboutItem;
     private MenuItem helpTopicsItem;
     private AboutController aboutController;
-    private HelpTopicsController helpTopicsController;
+    private HelpTopicSetController helpTopicSetController;
     private Window window;
 
     public HelpMenu(Window window) {
@@ -54,18 +54,18 @@ public class HelpMenu extends Menu {
         aboutItem.setOnAction(e -> aboutController.showUI());
 
         helpTopicsItem.setOnAction(e -> {
-            if (helpTopicsController == null) {
+            if (helpTopicSetController == null) {
                 Either<Exception, HelpTopicModel> helpTopicModelEither = HelpTopicsFactory.createHelpTopicFromJSON();
                 helpTopicModelEither.ifLeft(ex -> {
                     Errors.exceptionDialog("JSON Read Error",
-                            "An error occured while reading json", ex.getMessage(), ex);
+                            "An error occurred while reading json", ex.getMessage(), ex);
                 });
                 helpTopicModelEither.ifRight(helpTopicModel -> {
-                    helpTopicsController = new HelpTopicsControllerImpl(helpTopicModel, window);
+                    helpTopicSetController = new HelpTopicSetControllerImpl(helpTopicModel, window);
                 });
             }
-            if (helpTopicsController != null) {
-                helpTopicsController.showHelpTopics();
+            if (helpTopicSetController != null) {
+                helpTopicSetController.showHelpTopics();
             }
         });
     }
