@@ -1,17 +1,17 @@
 {
   "Title": "Help Topics",
-  "Body": "",
+  "Description": "",
   "Topics": [
     {
       "Title": "Creating a new file",
-      "Steps": [
+      "Instructions": [
         "Go to File Menu > New File. A new tab will be opened.",
         "Alternatively, you can do Ctrl+N (Control and N key together)."
       ]
     },
     {
       "Title": "Opening a new file",
-      "Steps": [
+      "Instructions": [
         "Go to File Menu > Open File. A file chooser dialog will appear.",
         "Select the file you want to open using the file chooser dialog. The file will be opened on a new tab",
         "Alternatively, you can do Ctrl+O."
@@ -19,7 +19,7 @@
     },
     {
       "Title": "Opening a directory",
-      "Steps": [
+      "Instructions": [
         "Go to File Menu > Open Directory. A file chooser dialog will appear.",
         "Select the directory you want to open using the file chooser dialog. The directory tree will be added to the project trees at the left."
         "Alternatively, you can do Ctrl+Shift+O."
@@ -27,7 +27,7 @@
     },
     {
       "Title": "Save",
-      "Steps": [
+      "Instructions": [
         "Go to File Menu > Save.",
         "Alternatively, you can do Ctrl+S.",
         "If the file hasn't been saved yet, a Save As dialog box will appear allowing you to provide a name this file before saving it."
@@ -35,7 +35,7 @@
     },
     {
       "Title": "Save As",
-      "Steps": [
+      "Instructions": [
         "Go to File Menu > Save As.",
         "Alternatively, you can do Ctrl+Shift+S.",
         "A Save As dialog box will appear, allowing you to provide a name this file before saving it."
@@ -43,14 +43,14 @@
     },
     {
       "Title": "Restart",
-      "Steps": [
+      "Instructions": [
         "Go to File Menu > Restart. This closes the application.",
         "Wait for Winter to start again."
       ]
     },
     {
       "Title": "Exit",
-      "Steps": [
+      "Instructions": [
         "Go to File Menu > Exit.",
         "Alternatively, you can do Ctrl+Q."
       ]
