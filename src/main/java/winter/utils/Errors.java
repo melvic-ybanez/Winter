@@ -47,6 +47,7 @@ public class Errors {
                 alert.getDialogPane().requestLayout();
                 Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
                 stage.sizeToScene();
+                stage.centerOnScreen();
             });
         });
 

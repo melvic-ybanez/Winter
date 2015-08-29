@@ -15,8 +15,6 @@ import winter.controllers.editors.EditorSetController;
 import winter.controllers.editors.EditorSetControllerImpl;
 import winter.controllers.files.FileController;
 import winter.controllers.files.FileControllerImpl;
-import winter.controllers.helps.AboutController;
-import winter.controllers.helps.AboutControllerImpl;
 import winter.controllers.navigations.NavigationController;
 import winter.controllers.navigations.NavigationControllerImpl;
 import winter.controllers.preferences.FontPrefController;
@@ -25,8 +23,6 @@ import winter.controllers.preferences.GeneralPrefController;
 import winter.controllers.preferences.GeneralPrefControllerImpl;
 import winter.controllers.projects.ProjectSetController;
 import winter.controllers.projects.ProjectSetControllerImpl;
-import winter.models.helps.AboutModel;
-import winter.models.helps.AboutModelImpl;
 import winter.models.preferences.FontPrefModel;
 import winter.models.preferences.FontPrefModelImpl;
 import winter.models.preferences.GeneralPrefModel;
@@ -63,8 +59,6 @@ public class Main extends javafx.application.Application {
         StatusModel statusModel = new StatusModelImpl(editorSetController);
         StatusView statusView = new StatusView(statusModel);
         NavigationController navigationController = new NavigationControllerImpl(editorSetController);
-        AboutModel aboutModel = new AboutModelImpl();
-        AboutController aboutController = new AboutControllerImpl(aboutModel, primaryStage);
 
         editorSetController.setFileController(fileController);
         editorSetView.newUntitledTab();
@@ -86,7 +80,7 @@ public class Main extends javafx.application.Application {
         EditMenu editMenu = new EditMenu(editorSetController);
         NavigationMenu navigationMenu = new NavigationMenu(navigationController);
         PreferencesMenu preferencesMenu = new PreferencesMenu(generalPrefController, fontPrefController);
-        HelpMenu helpMenu = new HelpMenu(aboutController);
+        HelpMenu helpMenu = new HelpMenu(primaryStage);
 
         ToolBarView toolBarView = new ToolBarView(fileMenu, editMenu, navigationMenu, preferencesMenu, helpMenu);
         ViewMenu viewMenu = new ViewMenu(editorSetController, projectSetController, toolBarView);

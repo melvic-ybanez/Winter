@@ -6,39 +6,36 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import winter.models.helps.HelpTopicModel;
 import winter.models.helps.HelpTopicModelImpl;
-import winter.utils.Errors;
+import winter.utils.Either;
 
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Created by melvic on 8/29/15.
  */
 public class HelpTopicsFactory {
-    public static Optional<HelpTopicModel> createHelpTopicFromJSON() {
+    public static Either<Exception, HelpTopicModel> createHelpTopicFromJSON() {
         JSONParser parser = new JSONParser();
 
         try {
-            Object obj = parser.parse(new FileReader("hep_topics.json"));
+            Object obj = parser.parse(new FileReader("help_topics.json"));
             JSONObject json = (JSONObject) obj;
-            return Optional.of(createHelpTopicFromJSON(json));
+            return Either.right(createHelpTopicFromJSON(json));
         } catch (IOException | ParseException e) {
-            Errors.exceptionDialog("JSON Read Error",
-                    "An error occured while reading json", e.getMessage(), e);
-            return Optional.empty();
+            return Either.left(e);
         }
     }
 
     public static HelpTopicModel createHelpTopicFromJSON(JSONObject json) {
-        String title = (String) json.get("Title");
-        String description = (String) json.get("Description");
+        String title = (String) json.getOrDefault("Title", "");
+        String description = (String) json.getOrDefault("Description", "");
 
         List<String> instructions = new ArrayList<>();
-        JSONArray jsonArray = (JSONArray) json.get("Instructions");
+        JSONArray jsonArray = (JSONArray) json.getOrDefault("Instructions", new JSONArray());
         Iterator i = jsonArray.iterator();
 
         while (i.hasNext()) {
@@ -47,7 +44,7 @@ public class HelpTopicsFactory {
         }
 
         List<HelpTopicModel> subTopics = new ArrayList<>();
-        jsonArray = (JSONArray) json.get("Topics");
+        jsonArray = (JSONArray) json.getOrDefault("Topics", new JSONArray());
         i = jsonArray.iterator();
 
         while (i.hasNext()) {
