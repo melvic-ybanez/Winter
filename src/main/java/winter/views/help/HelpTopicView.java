@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import winter.controllers.helps.HelpTopicSetController;
 import winter.models.helps.HelpTopicModel;
 import winter.utils.StreamUtils;
 
@@ -23,9 +24,13 @@ public class HelpTopicView extends BorderPane {
     private Label descriptionLabel;
     private Label instructionsLabel;
     private List<Hyperlink> subTopics;
+    private HelpTopicSetController helpTopicSetController;
 
-    public HelpTopicView(HelpTopicModel helpTopicModel, ReadOnlyDoubleProperty heightProperty) {
+    public HelpTopicView(HelpTopicModel helpTopicModel,
+                         HelpTopicSetController helpTopicSetController,
+                         ReadOnlyDoubleProperty heightProperty) {
         setHelpTopicModel(helpTopicModel);
+        this.helpTopicSetController = helpTopicSetController;
         prefHeightProperty().bind(heightProperty);
         getStyleClass().add("topic");
     }
@@ -77,7 +82,11 @@ public class HelpTopicView extends BorderPane {
         instructionsLabel = new Label(instructionsString);
 
         subTopics = StreamUtils.mapToList(helpTopicModel.getSubTopics().stream(),
-                topic -> new Hyperlink(topic.getTitle()));
+                topic -> {
+                    Hyperlink topicLink = new Hyperlink(topic.getTitle());
+                    topicLink.setOnAction(e -> helpTopicSetController.showHelpTopic(topic));
+                    return topicLink;
+                });
 
         updateUI();
     }

@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="implement help topic tree cell factory">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/winter/views/menus/HelpMenu.class" afterPath="$PROJECT_DIR$/target/classes/winter/views/menus/HelpMenu.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/winter/views/menus/HelpMenu.java" afterPath="$PROJECT_DIR$/src/main/java/winter/views/menus/HelpMenu.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/winter/controllers/helps/HelpTopicSetController.java" afterPath="$PROJECT_DIR$/src/main/java/winter/controllers/helps/HelpTopicSetController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/winter/controllers/helps/HelpTopicSetControllerImpl.java" afterPath="$PROJECT_DIR$/src/main/java/winter/controllers/helps/HelpTopicSetControllerImpl.java" />
+    <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="update help topic view when help tree is clicked">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/winter/views/help/HelpTopicSetView.java" afterPath="$PROJECT_DIR$/src/main/java/winter/views/help/HelpTopicSetView.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/winter/views/help/HelpTopicView.java" afterPath="$PROJECT_DIR$/src/main/java/winter/views/help/HelpTopicView.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
@@ -73,18 +69,18 @@
       <file leaf-file-name="HelpTopicSetView.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/winter/views/help/HelpTopicSetView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.18644068">
-              <caret line="74" column="66" selection-start-line="74" selection-start-column="66" selection-end-line="74" selection-end-column="66" />
+            <state vertical-scroll-proportion="0.30508474">
+              <caret line="49" column="82" selection-start-line="49" selection-start-column="82" selection-end-line="49" selection-end-column="82" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#3160#3161#0" expanded="true" />
-                <element signature="e#3197#3198#0" expanded="true" />
-                <element signature="e#3265#3266#0" expanded="true" />
-                <element signature="e#3317#3318#0" expanded="true" />
-                <element signature="e#3382#3383#0" expanded="true" />
-                <element signature="e#3427#3428#0" expanded="true" />
-                <element signature="e#3634#3635#0" expanded="true" />
-                <element signature="e#3670#3671#0" expanded="true" />
+                <element signature="e#3184#3185#0" expanded="true" />
+                <element signature="e#3221#3222#0" expanded="true" />
+                <element signature="e#3289#3290#0" expanded="true" />
+                <element signature="e#3341#3342#0" expanded="true" />
+                <element signature="e#3406#3407#0" expanded="true" />
+                <element signature="e#3451#3452#0" expanded="true" />
+                <element signature="e#3658#3659#0" expanded="true" />
+                <element signature="e#3694#3695#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -114,11 +110,11 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/winter/views/help/HelpTopicView.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="77" column="0" selection-start-line="77" selection-start-column="0" selection-end-line="77" selection-end-column="0" />
+              <caret line="83" column="60" selection-start-line="83" selection-start-column="60" selection-end-line="83" selection-end-column="60" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1959#1960#0" expanded="true" />
-                <element signature="e#1996#1997#0" expanded="true" />
+                <element signature="e#2233#2234#0" expanded="true" />
+                <element signature="e#2270#2271#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -129,16 +125,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="16" column="28" selection-start-line="16" selection-start-column="28" selection-end-line="16" selection-end-column="28" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="HelpMenu.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/winter/views/menus/HelpMenu.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="62" column="58" selection-start-line="62" selection-start-column="58" selection-end-line="62" selection-end-column="58" />
               <folding />
             </state>
           </provider>
@@ -168,7 +154,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/winter/controllers/helps/HelpTopicSetController.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="11" column="61" selection-start-line="11" selection-start-column="61" selection-end-line="11" selection-end-column="61" />
+              <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -180,7 +166,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/winter/controllers/helps/HelpTopicSetControllerImpl.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="31" column="56" selection-start-line="31" selection-start-column="56" selection-end-line="31" selection-end-column="56" />
+              <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="42" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1109#1110#0" expanded="true" />
@@ -219,7 +205,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/winter/controllers/preferences/FontPrefController.java" />
         <option value="$PROJECT_DIR$/src/main/java/winter/controllers/preferences/PreferencesController.java" />
         <option value="$PROJECT_DIR$/src/main/java/winter/utils/SimpleObservable.java" />
         <option value="$PROJECT_DIR$/src/main/java/winter/models/preferences/FontPrefModelImpl.java" />
@@ -266,9 +251,10 @@
         <option value="$PROJECT_DIR$/help_topics.json" />
         <option value="$PROJECT_DIR$/src/main/resources/styles/help.css" />
         <option value="$PROJECT_DIR$/src/main/java/winter/views/project/ProjectSetView.java" />
-        <option value="$PROJECT_DIR$/src/main/java/winter/views/help/HelpTopicView.java" />
-        <option value="$PROJECT_DIR$/src/main/java/winter/controllers/helps/HelpTopicSetController.java" />
         <option value="$PROJECT_DIR$/src/main/java/winter/controllers/helps/HelpTopicSetControllerImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/winter/controllers/helps/HelpTopicSetController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/winter/views/help/HelpTopicLink.java" />
+        <option value="$PROJECT_DIR$/src/main/java/winter/views/help/HelpTopicView.java" />
         <option value="$PROJECT_DIR$/src/main/java/winter/views/help/HelpTopicSetView.java" />
       </list>
     </option>
@@ -1351,7 +1337,7 @@
       <workItem from="1440764289481" duration="51000" />
       <workItem from="1440765622156" duration="12908000" />
       <workItem from="1440849047918" duration="114000" />
-      <workItem from="1440849217398" duration="17899000" />
+      <workItem from="1440849217398" duration="18671000" />
     </task>
     <task id="LOCAL-00001" summary="implement about dialog">
       <created>1440605116385</created>
@@ -1455,11 +1441,17 @@
       <option name="project" value="LOCAL" />
       <updated>1440872896324</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="update help topic view when help tree is clicked">
+      <created>1440874403427</created>
+      <option name="number" value="00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1440874403427</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1057884000" />
+    <option name="totallyTimeSpent" value="1058656000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="30" width="1600" height="870" extended-state="0" />
@@ -1561,7 +1553,8 @@
     <MESSAGE value="implement help topic view" />
     <MESSAGE value="refactor help topic view" />
     <MESSAGE value="implement help topic tree cell factory" />
-    <option name="LAST_COMMIT_MESSAGE" value="implement help topic tree cell factory" />
+    <MESSAGE value="update help topic view when help tree is clicked" />
+    <option name="LAST_COMMIT_MESSAGE" value="update help topic view when help tree is clicked" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -1578,13 +1571,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/winter/views/menus/EditMenu.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/winter/views/menus/FileMenu.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1940,32 +1926,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/winter/controllers/helps/HelpTopicSetController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="11" column="61" selection-start-line="11" selection-start-column="61" selection-end-line="11" selection-end-column="61" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/winter/views/help/HelpTopicView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="77" column="0" selection-start-line="77" selection-start-column="0" selection-end-line="77" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1959#1960#0" expanded="true" />
-            <element signature="e#1996#1997#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/winter/controllers/helps/HelpTopicSetControllerImpl.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="31" column="56" selection-start-line="31" selection-start-column="56" selection-end-line="31" selection-end-column="56" />
+          <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="42" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1109#1110#0" expanded="true" />
@@ -1976,20 +1940,42 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/winter/views/help/HelpTopicSetView.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/winter/controllers/helps/HelpTopicSetController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.18644068">
-          <caret line="74" column="66" selection-start-line="74" selection-start-column="66" selection-end-line="74" selection-end-column="66" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#3160#3161#0" expanded="true" />
-            <element signature="e#3197#3198#0" expanded="true" />
-            <element signature="e#3265#3266#0" expanded="true" />
-            <element signature="e#3317#3318#0" expanded="true" />
-            <element signature="e#3382#3383#0" expanded="true" />
-            <element signature="e#3427#3428#0" expanded="true" />
-            <element signature="e#3634#3635#0" expanded="true" />
-            <element signature="e#3670#3671#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/winter/views/help/HelpTopicView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="83" column="60" selection-start-line="83" selection-start-column="60" selection-end-line="83" selection-end-column="60" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2233#2234#0" expanded="true" />
+            <element signature="e#2270#2271#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/winter/views/help/HelpTopicSetView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.30508474">
+          <caret line="49" column="82" selection-start-line="49" selection-start-column="82" selection-end-line="49" selection-end-column="82" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#3184#3185#0" expanded="true" />
+            <element signature="e#3221#3222#0" expanded="true" />
+            <element signature="e#3289#3290#0" expanded="true" />
+            <element signature="e#3341#3342#0" expanded="true" />
+            <element signature="e#3406#3407#0" expanded="true" />
+            <element signature="e#3451#3452#0" expanded="true" />
+            <element signature="e#3658#3659#0" expanded="true" />
+            <element signature="e#3694#3695#0" expanded="true" />
           </folding>
         </state>
       </provider>

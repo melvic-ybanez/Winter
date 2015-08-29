@@ -47,7 +47,7 @@ public class HelpTopicSetView extends Stage {
     private void init() {
         SplitPane splitPane = new SplitPane();
         tree = new TreeView<>();
-        helpTopicView = new HelpTopicView(helpTopicModel, splitPane.heightProperty());
+        helpTopicView = new HelpTopicView(helpTopicModel, helpTopicSetController, splitPane.heightProperty());
         TreeItem<HelpTopicModel> root = createTopicTreeItem(helpTopicModel);
         tree.setRoot(root);
         root.setExpanded(true);
