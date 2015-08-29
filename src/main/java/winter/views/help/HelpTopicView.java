@@ -26,29 +26,12 @@ public class HelpTopicView extends BorderPane {
 
     public HelpTopicView(HelpTopicModel helpTopicModel, ReadOnlyDoubleProperty heightProperty) {
         setHelpTopicModel(helpTopicModel);
-        init();
         prefHeightProperty().bind(heightProperty);
         getStyleClass().add("topic");
     }
 
-    private void init() {
-        titleLabel = new Label(helpTopicModel.getTitle());
+    private void updateUI() {
         titleLabel.getStyleClass().add("title");
-
-        descriptionLabel = new Label(helpTopicModel.getDescription());
-        List<String> instructions = helpTopicModel.getInstructions();
-        String instructionsString = "";
-        if (!instructions.isEmpty()) {
-            instructionsString = "Instructions: \n\n";
-            List<String> instructs = StreamUtils.mapToList(IntStream.range(0, instructions.size()).boxed(), i -> {
-                return "\t" + (i + 1) + ". " + instructions.get(i);
-            });
-            instructionsString += String.join("\n\n", instructs);
-        }
-        instructionsLabel = new Label(instructionsString);
-
-        subTopics = StreamUtils.mapToList(helpTopicModel.getSubTopics().stream(),
-                topic -> new Hyperlink(topic.getTitle()));
 
         BorderPane topPane = new BorderPane();
         BorderPane titlePane = new BorderPane();
@@ -78,5 +61,24 @@ public class HelpTopicView extends BorderPane {
 
     public void setHelpTopicModel(HelpTopicModel helpTopicModel) {
         this.helpTopicModel = helpTopicModel;
+
+        titleLabel = new Label(helpTopicModel.getTitle());
+
+        descriptionLabel = new Label(helpTopicModel.getDescription());
+        List<String> instructions = helpTopicModel.getInstructions();
+        String instructionsString = "";
+        if (!instructions.isEmpty()) {
+            instructionsString = "Instructions: \n\n";
+            List<String> instructs = StreamUtils.mapToList(IntStream.range(0, instructions.size()).boxed(), i -> {
+                return "\t" + (i + 1) + ". " + instructions.get(i);
+            });
+            instructionsString += String.join("\n\n", instructs);
+        }
+        instructionsLabel = new Label(instructionsString);
+
+        subTopics = StreamUtils.mapToList(helpTopicModel.getSubTopics().stream(),
+                topic -> new Hyperlink(topic.getTitle()));
+
+        updateUI();
     }
 }

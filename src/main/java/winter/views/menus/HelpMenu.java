@@ -65,7 +65,7 @@ public class HelpMenu extends Menu {
                 });
             }
             if (helpTopicSetController != null) {
-                helpTopicSetController.showHelpTopics();
+                helpTopicSetController.showHelpTopicSetView();
             }
         });
     }

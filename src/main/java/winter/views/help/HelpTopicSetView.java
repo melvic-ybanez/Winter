@@ -67,6 +67,15 @@ public class HelpTopicSetView extends Stage {
         setScene(scene);
     }
 
+    private void registerEvents() {
+        tree.setOnMouseClicked(e -> {
+            TreeItem<HelpTopicModel> item = tree.getSelectionModel().getSelectedItem();
+            if (item == null) return;
+
+            helpTopicSetController.showHelpTopic(item.getValue());
+        });
+    }
+
     private TreeItem<HelpTopicModel> createTopicTreeItem(HelpTopicModel helpTopicModel) {
         TreeItem<HelpTopicModel> node = new TreeItem<>(helpTopicModel);
         helpTopicModel.getSubTopics().forEach(subTopic -> {
@@ -90,5 +99,9 @@ public class HelpTopicSetView extends Stage {
 
     public void setHelpTopicSetController(HelpTopicSetController helpTopicSetController) {
         this.helpTopicSetController = helpTopicSetController;
+    }
+
+    public HelpTopicView getHelpTopicView() {
+        return helpTopicView;
     }
 }

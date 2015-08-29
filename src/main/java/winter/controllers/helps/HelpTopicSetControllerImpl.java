@@ -3,6 +3,7 @@ package winter.controllers.helps;
 import javafx.stage.Window;
 import winter.models.helps.HelpTopicModel;
 import winter.views.help.HelpTopicSetView;
+import winter.views.help.HelpTopicView;
 
 /**
  * Created by melvic on 8/29/15.
@@ -18,11 +19,17 @@ public class HelpTopicSetControllerImpl implements HelpTopicSetController {
     }
 
     @Override
-    public void showHelpTopics() {
+    public void showHelpTopicSetView() {
         if (helpTopicSetView == null) {
             helpTopicSetView = new HelpTopicSetView(helpTopicModel, this, window);
         }
         helpTopicSetView.showAndWait();
+    }
+
+    @Override
+    public void showHelpTopic(HelpTopicModel helpTopicModel) {
+        HelpTopicView helpTopicView = helpTopicSetView.getHelpTopicView();
+        helpTopicView.setHelpTopicModel(helpTopicModel);
     }
 
     @Override

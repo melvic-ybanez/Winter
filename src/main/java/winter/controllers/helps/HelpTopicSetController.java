@@ -7,7 +7,9 @@ import winter.views.help.HelpTopicSetView;
  * Created by melvic on 8/29/15.
  */
 public interface HelpTopicSetController {
-    public void showHelpTopics();
+    public void showHelpTopicSetView();
+
+    public void showHelpTopic(HelpTopicModel helpTopicModel);
 
     public HelpTopicSetView getHelpTopicSetView();
 
