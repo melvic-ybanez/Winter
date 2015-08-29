@@ -1,12 +1,8 @@
 package winter.views;
 
-import javafx.geometry.Side;
 import javafx.scene.control.*;
 import winter.factories.Icons;
-import winter.utils.StreamUtils;
 import winter.views.menus.*;
-
-import java.util.List;
 
 /**
  * Created by ybamelcash on 7/8/2015.
