@@ -4,56 +4,90 @@
   "Instructions": [ "Select the topic you want to read from the tree at the left." ],
   "Topics": [
     {
-      "Title": "Creating a new file",
-      "Instructions": [
-        "Go to File Menu > New File. A new tab will be opened.",
-        "Alternatively, you can do Ctrl+N (Control and N key together)."
+      "Title": "File",
+      "Description": "This section will teach you how to create, open, and save changes to files or directories, and more",
+      "Instructions": [ "In order to read the sub-sections, just click any of the topics under this one from the topics tree at the left.", "You can also just click on any of the links below."],
+      "Topics": [
+        {
+          "Title": "Creating a new file",
+          "Instructions": [
+            "Go to File Menu > New File. A new tab will be opened.",
+            "Alternatively, you can do Ctrl+N (Control and N key together)."
+          ]
+        },
+        {
+          "Title": "Opening a new file",
+          "Instructions": [
+            "Go to File Menu > Open File. A file chooser dialog will appear.",
+            "Select the file you want to open using the file chooser dialog. The file will be opened on a new tab",
+            "Alternatively, you can do Ctrl+O."
+          ]
+        },
+        {
+          "Title": "Opening a directory",
+          "Instructions": [
+            "Go to File Menu > Open Directory. A file chooser dialog will appear.",
+            "Select the directory you want to open using the file chooser dialog. The directory tree will be added to the project trees at the left.",
+            "Alternatively, you can do Ctrl+Shift+O."
+          ]
+        },
+        {
+          "Title": "Save",
+          "Instructions": [
+            "Go to File Menu > Save.",
+            "Alternatively, you can do Ctrl+S.",
+            "If the file hasn't been saved yet, a Save As dialog box will appear allowing you to provide a name this file before saving it."
+          ]
+        },
+        {
+          "Title": "Save As",
+          "Instructions": [
+            "Go to File Menu > Save As.",
+            "Alternatively, you can do Ctrl+Shift+S.",
+            "A Save As dialog box will appear, allowing you to provide a name this file before saving it."
+          ]
+        },
+        {
+          "Title": "Restart",
+          "Instructions": [
+            "Go to File Menu > Restart. This closes the application.",
+            "Wait for Winter to start again."
+          ]
+        },
+        {
+          "Title": "Exit",
+          "Instructions": [
+            "Go to File Menu > Exit.",
+            "Alternatively, you can do Ctrl+Q."
+          ]
+        }
       ]
     },
     {
-      "Title": "Opening a new file",
-      "Instructions": [
-        "Go to File Menu > Open File. A file chooser dialog will appear.",
-        "Select the file you want to open using the file chooser dialog. The file will be opened on a new tab",
-        "Alternatively, you can do Ctrl+O."
-      ]
-    },
-    {
-      "Title": "Opening a directory",
-      "Instructions": [
-        "Go to File Menu > Open Directory. A file chooser dialog will appear.",
-        "Select the directory you want to open using the file chooser dialog. The directory tree will be added to the project trees at the left."
-        "Alternatively, you can do Ctrl+Shift+O."
-      ]
-    },
-    {
-      "Title": "Save",
-      "Instructions": [
-        "Go to File Menu > Save.",
-        "Alternatively, you can do Ctrl+S.",
-        "If the file hasn't been saved yet, a Save As dialog box will appear allowing you to provide a name this file before saving it."
-      ]
-    },
-    {
-      "Title": "Save As",
-      "Instructions": [
-        "Go to File Menu > Save As.",
-        "Alternatively, you can do Ctrl+Shift+S.",
-        "A Save As dialog box will appear, allowing you to provide a name this file before saving it."
-      ]
-    },
-    {
-      "Title": "Restart",
-      "Instructions": [
-        "Go to File Menu > Restart. This closes the application.",
-        "Wait for Winter to start again."
-      ]
-    },
-    {
-      "Title": "Exit",
-      "Instructions": [
-        "Go to File Menu > Exit.",
-        "Alternatively, you can do Ctrl+Q."
+      "Title": "Edit",
+      "Description": "Most of the time, you are going to edit files (that's what text editors are for). Winter supports the most common file-editing actions like Undo, Find, Copy and others.",
+      "Topics": [
+        {
+          "Title": "Undo changes to a file"
+        },
+        {
+          "Title": "Redo changes to a file"
+        },
+        {
+          "Title": "Find Text"
+        },
+        {
+          "Title": "Replace Text"
+        },
+        {
+          "Title": "Copy Text to Clipboard"
+        },
+        {
+          "Title": "Cut Text to Clipboard"
+        },
+        {
+          "Title": "Paste Text from Clipboard"
+        }
       ]
     }
   ]
