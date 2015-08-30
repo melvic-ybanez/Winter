@@ -1,6 +1,5 @@
 package winter.views.help;
 
-import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Hyperlink;
@@ -27,11 +26,9 @@ public class HelpTopicView extends BorderPane {
     private HelpTopicSetController helpTopicSetController;
 
     public HelpTopicView(HelpTopicModel helpTopicModel,
-                         HelpTopicSetController helpTopicSetController,
-                         ReadOnlyDoubleProperty heightProperty) {
+                         HelpTopicSetController helpTopicSetController) {
         setHelpTopicModel(helpTopicModel);
         this.helpTopicSetController = helpTopicSetController;
-        prefHeightProperty().bind(heightProperty);
         getStyleClass().add("topic");
     }
 

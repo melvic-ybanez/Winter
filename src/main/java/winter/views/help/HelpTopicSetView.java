@@ -47,7 +47,7 @@ public class HelpTopicSetView extends Stage {
     private void init() {
         SplitPane splitPane = new SplitPane();
         tree = new TreeView<>();
-        helpTopicView = new HelpTopicView(helpTopicModel, helpTopicSetController, heightProperty());
+        helpTopicView = new HelpTopicView(helpTopicModel, helpTopicSetController);
         TreeItem<HelpTopicModel> root = createTopicTreeItem(helpTopicModel);
         tree.setRoot(root);
         root.setExpanded(true);
@@ -60,6 +60,8 @@ public class HelpTopicSetView extends Stage {
         splitPane.getItems().addAll(topicsTreePane, new ScrollPane(helpTopicView));
         splitPane.getStyleClass().add("winter-divider");
         splitPane.setDividerPosition(0, 0.4f);
+
+        topicsTreePane.prefHeightProperty().bind(splitPane.heightProperty());
 
         Scene scene = new Scene(splitPane);
         scene.getStylesheets().add(HelpTopicSetView.class.getResource("/styles/help.css").toExternalForm());
