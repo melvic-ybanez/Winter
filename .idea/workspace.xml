@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="add more help tpics data">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/winter/views/help/HelpTopicSetView.java" afterPath="$PROJECT_DIR$/src/main/java/winter/views/help/HelpTopicSetView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/winter/views/help/HelpTopicView.java" afterPath="$PROJECT_DIR$/src/main/java/winter/views/help/HelpTopicView.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/help_topics.json" afterPath="$PROJECT_DIR$/help_topics.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -122,8 +123,8 @@
       <file leaf-file-name="help_topics.json" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/help_topics.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.40409684">
-              <caret line="67" column="192" selection-start-line="67" selection-start-column="192" selection-end-line="67" selection-end-column="192" />
+            <state vertical-scroll-proportion="0.71681416">
+              <caret line="108" column="9" selection-start-line="108" selection-start-column="9" selection-end-line="108" selection-end-column="9" />
               <folding />
             </state>
           </provider>
@@ -133,7 +134,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/winter/views/help/HelpTopicView.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
+              <caret line="31" column="61" selection-start-line="31" selection-start-column="61" selection-end-line="31" selection-end-column="61" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -145,7 +146,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/winter/views/help/HelpTopicSetView.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="69" column="35" selection-start-line="69" selection-start-column="35" selection-end-line="69" selection-end-column="35" />
+              <caret line="63" column="37" selection-start-line="63" selection-start-column="37" selection-end-line="63" selection-end-column="37" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -247,10 +248,10 @@
         <option value="$PROJECT_DIR$/src/main/java/winter/controllers/helps/HelpTopicSetControllerImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/winter/controllers/helps/HelpTopicSetController.java" />
         <option value="$PROJECT_DIR$/src/main/java/winter/views/help/HelpTopicLink.java" />
-        <option value="$PROJECT_DIR$/src/main/java/winter/views/help/HelpTopicView.java" />
         <option value="$PROJECT_DIR$/src/main/java/winter/views/ToolBarView.java" />
-        <option value="$PROJECT_DIR$/src/main/java/winter/views/help/HelpTopicSetView.java" />
         <option value="$PROJECT_DIR$/help_topics.json" />
+        <option value="$PROJECT_DIR$/src/main/java/winter/views/help/HelpTopicSetView.java" />
+        <option value="$PROJECT_DIR$/src/main/java/winter/views/help/HelpTopicView.java" />
       </list>
     </option>
   </component>
@@ -1779,7 +1780,7 @@
       <workItem from="1440765622156" duration="12908000" />
       <workItem from="1440849047918" duration="114000" />
       <workItem from="1440849217398" duration="20911000" />
-      <workItem from="1440930290117" duration="2587000" />
+      <workItem from="1440930290117" duration="4856000" />
     </task>
     <task id="LOCAL-00001" summary="implement about dialog">
       <created>1440605116385</created>
@@ -1901,11 +1902,23 @@
       <option name="project" value="LOCAL" />
       <updated>1440876582913</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="add more help tpics data">
+      <created>1440933861391</created>
+      <option name="number" value="00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1440933861391</updated>
+    </task>
+    <task id="LOCAL-00022" summary="fix height binding for help topics dialog">
+      <created>1440934284329</created>
+      <option name="number" value="00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1440934284329</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1063483000" />
+    <option name="totallyTimeSpent" value="1065752000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="30" width="1600" height="870" extended-state="0" />
@@ -1913,13 +1926,13 @@
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24097939" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24097939" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20489691" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20489691" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32756326" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2428035" sideWeight="0.6703755" order="0" side_tool="false" content_ui="combo" />
@@ -2011,7 +2024,8 @@
     <MESSAGE value="handle help topic link events" />
     <MESSAGE value="optimize imports" />
     <MESSAGE value="add more help tpics data" />
-    <option name="LAST_COMMIT_MESSAGE" value="add more help tpics data" />
+    <MESSAGE value="fix height binding for help topics dialog" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix height binding for help topics dialog" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -2380,20 +2394,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/winter/views/help/HelpTopicView.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/winter/views/help/HelpTopicSetView.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
+          <caret line="63" column="37" selection-start-line="63" selection-start-column="37" selection-end-line="63" selection-end-column="37" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/winter/views/help/HelpTopicSetView.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/winter/views/help/HelpTopicView.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="69" column="35" selection-start-line="69" selection-start-column="35" selection-end-line="69" selection-end-column="35" />
+          <caret line="31" column="61" selection-start-line="31" selection-start-column="61" selection-end-line="31" selection-end-column="61" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -2402,8 +2416,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/help_topics.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.40409684">
-          <caret line="67" column="192" selection-start-line="67" selection-start-column="192" selection-end-line="67" selection-end-column="192" />
+        <state vertical-scroll-proportion="0.71681416">
+          <caret line="108" column="9" selection-start-line="108" selection-start-column="9" selection-end-line="108" selection-end-column="9" />
           <folding />
         </state>
       </provider>

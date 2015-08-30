@@ -68,25 +68,44 @@
       "Description": "Most of the time, you are going to edit files (that's what text editors are for). Winter supports the most common file-editing actions like Undo, Find, Copy and others.",
       "Topics": [
         {
-          "Title": "Undo changes to a file"
+          "Title": "Undo changes to a file",
+          "Instructions": ["Edit > Undo. Alternatively, you can type Ctrl+Z. You can also right click on the editor area and select Undo."]
         },
         {
-          "Title": "Redo changes to a file"
+          "Title": "Redo changes to a file",
+          "Instructions": ["Edit > Redo. Alternatively, you can type Ctrl+Y. You can also right click on the editor area and select Redo."]
         },
         {
-          "Title": "Find Text"
+          "Title": "Find Text",
+          "Instructions": [
+            "Edit > Find. Alternatively, you can type Ctrl+F. You can also right click on the editor area and select Find.",
+            "A panel will appear below the editor area. You can then type the text to find in the text field.",
+            "Click the up or down arrow to search in a specific direction.",
+            "Click the hide botton at the upper right side of the Find Panel to hide it."
+          ]
         },
         {
-          "Title": "Replace Text"
+          "Title": "Replace Text",
+          "Instructions": [
+            "Edit > Replace. Alternatively, you can type Ctrl+R. You can also right click on the editor area and select Replace.",
+            "A panel will appear below the editor area. You can then type the text to find in the first text field.",
+            "Click the up or down arrow to search in a specific direction.",
+            "Type the new text (replacement text) in the second text field.",
+            "You can choose whether to replace the currently selected matched text or all of them. Just choose between Replace and Replace All buttons.",
+            "Click the hide botton at the upper right side of the Find Panel to hide it."
+          ]
         },
         {
-          "Title": "Copy Text to Clipboard"
+          "Title": "Copy Text to Clipboard",
+          "Instructions": ["Edit > Copy. Alternatively, you can type Ctrl+Z. You can also right click on the editor area and select Copy."]
         },
         {
-          "Title": "Cut Text to Clipboard"
+          "Title": "Cut Text to Clipboard",
+          "Instructions": ["Edit > Undo. Alternatively, you can type Ctrl+Z. You can also right click on the editor area and select Cut"]
         },
         {
-          "Title": "Paste Text from Clipboard"
+          "Title": "Paste Text from Clipboard",
+          "Instructions": ["Edit > Paste. Alternatively, you can type Ctrl+Z. You can also right click on the editor area and select undo."]
         }
       ]
     }

@@ -45,7 +45,7 @@ public class HelpTopicView extends BorderPane {
         VBox subTopicsCenterPane = new VBox();
         subTopicsCenterPane.getChildren().addAll(subTopics);
         subTopicsCenterPane.setPadding(new Insets(5, 0, 0, 10));
-        subTopicsPane.setTop(new Label("Read Next:"));
+        if (!subTopics.isEmpty()) subTopicsPane.setTop(new Label("Read Next:"));
         subTopicsPane.setBottom(subTopicsCenterPane);
 
         VBox centerPane = new VBox();

@@ -61,6 +61,7 @@ public class HelpTopicSetView extends Stage {
         splitPane.getStyleClass().add("winter-divider");
         splitPane.setDividerPosition(0, 0.4f);
 
+        splitPane.setPrefHeight(400);
         topicsTreePane.prefHeightProperty().bind(splitPane.heightProperty());
 
         Scene scene = new Scene(splitPane);
