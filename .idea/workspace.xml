@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="help topics for viewing panels">
+    <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="help topics for navigating">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/help_topics.json" afterPath="$PROJECT_DIR$/help_topics.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -91,11 +91,10 @@
       <file leaf-file-name="help_topics.json" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/help_topics.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.17876107">
-              <caret line="132" column="96" selection-start-line="132" selection-start-column="96" selection-end-line="132" selection-end-column="96" />
+            <state vertical-scroll-proportion="0.74690264">
+              <caret line="208" column="161" selection-start-line="208" selection-start-column="161" selection-end-line="208" selection-end-column="161" />
               <folding>
-                <element signature="e#2585#5107#0" expanded="false" />
-                <element signature="e#5113#5901#0" expanded="false" />
+                <element signature="e#6434#7586#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -1816,7 +1815,7 @@
       <workItem from="1440849047918" duration="114000" />
       <workItem from="1440849217398" duration="20911000" />
       <workItem from="1440930290117" duration="6808000" />
-      <workItem from="1441003195050" duration="4360000" />
+      <workItem from="1441003195050" duration="7635000" />
     </task>
     <task id="LOCAL-00001" summary="implement about dialog">
       <created>1440605116385</created>
@@ -1962,11 +1961,17 @@
       <option name="project" value="LOCAL" />
       <updated>1441004601639</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="help topics for navigating">
+      <created>1441018599318</created>
+      <option name="number" value="00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1441018599318</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1072064000" />
+    <option name="totallyTimeSpent" value="1075339000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="30" width="1600" height="870" extended-state="0" />
@@ -2075,7 +2080,8 @@
     <MESSAGE value="fix height binding for help topics dialog" />
     <MESSAGE value="help topics for editing files" />
     <MESSAGE value="help topics for viewing panels" />
-    <option name="LAST_COMMIT_MESSAGE" value="help topics for viewing panels" />
+    <MESSAGE value="help topics for navigating" />
+    <option name="LAST_COMMIT_MESSAGE" value="help topics for navigating" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -2496,11 +2502,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/help_topics.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.17876107">
-          <caret line="132" column="96" selection-start-line="132" selection-start-column="96" selection-end-line="132" selection-end-column="96" />
+        <state vertical-scroll-proportion="0.74690264">
+          <caret line="208" column="161" selection-start-line="208" selection-start-column="161" selection-end-line="208" selection-end-column="161" />
           <folding>
-            <element signature="e#2585#5107#0" expanded="false" />
-            <element signature="e#5113#5901#0" expanded="false" />
+            <element signature="e#6434#7586#0" expanded="false" />
           </folding>
         </state>
       </provider>

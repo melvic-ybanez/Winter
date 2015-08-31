@@ -1,6 +1,6 @@
 {
   "Title": "Help Topics",
-  "Description": "This serves as the guide for users on how to use the Winter Text Editor",
+  "Description": "This serves as the guide for users on how to use the Winter Text Editor.\nNote: This set of topics is still incomplete.",
   "Instructions": [ "Select the topic you want to read from the tree at the left." ],
   "Topics": [
     {
@@ -12,7 +12,8 @@
           "Title": "Creating a new file",
           "Instructions": [
             "Go to File Menu > New File. A new tab will be opened.",
-            "Alternatively, you can do Ctrl+N (Control and N key together)."
+            "Alternatively, you can do Ctrl+N (Control and N key together).",
+            "You can also click the New File icon in the toolbar."
           ]
         },
         {
@@ -20,7 +21,8 @@
           "Instructions": [
             "Go to File Menu > Open File. A file chooser dialog will appear.",
             "Select the file you want to open using the file chooser dialog. The file will be opened on a new tab",
-            "Alternatively, you can do Ctrl+O."
+            "Alternatively, you can do Ctrl+O.",
+            "You can also click the Open File icon in the toolbar."
           ]
         },
         {
@@ -36,7 +38,8 @@
           "Instructions": [
             "Go to File Menu > Save.",
             "Alternatively, you can do Ctrl+S.",
-            "If the file hasn't been saved yet, a Save As dialog box will appear allowing you to provide a name this file before saving it."
+            "If the file hasn't been saved yet, a Save As dialog box will appear allowing you to provide a name this file before saving it.",
+            "You can also open the Save icon in the toolbar."
           ]
         },
         {
@@ -44,14 +47,16 @@
           "Instructions": [
             "Go to File Menu > Save As.",
             "Alternatively, you can do Ctrl+Shift+S.",
-            "A Save As dialog box will appear, allowing you to provide a name this file before saving it."
+            "A Save As dialog box will appear, allowing you to provide a name this file before saving it.",
+            "You can also click the Save As icon in the toolbar."
           ]
         },
         {
           "Title": "Restart",
           "Instructions": [
             "Go to File Menu > Restart. This closes the application.",
-            "Wait for Winter to start again."
+            "Wait for Winter to start again.",
+            "You can also click the Restart icon in the toolbar."
           ]
         },
         {
@@ -65,7 +70,7 @@
     },
     {
       "Title": "Edit",
-      "Description": "Most of the time, you are going to edit files (that's what text editors are for). \nWinter supports the most common file-editing actions like Undo, Find, Copy and others.",
+      "Description": "Most of the time, you are going to edit files (that's what text editors are for). \nWinter supports the most common file-editing actions like Undo, Find, Copy and others.\nAll of this actions can also be executed by clicking their corresponding toolbar icons.",
       "Topics": [
         {
           "Title": "Undo changes to a file",
@@ -120,7 +125,7 @@
         },
         {
           "Title": "Show/Hide Projects",
-          "Instructions": [ "View > Projects" ]
+          "Instructions": [ "View > Projects", "You can also click the Projects icon in the toolbar." ]
         },
         {
           "Title": "Show/Hide Toolbar",
@@ -148,6 +153,60 @@
             "Navigation > Go to Line. A dialog box will appear with a text field, asking you to input the line number.",
             "Type the line number you want to go to.",
             "Press the Enter key."
+          ]
+        }
+      ]
+    },
+    {
+      "Title": "Preferences",
+      "Description": "This section will teach you how to change some settings of the Winter text editor.",
+      "Topics": [
+        {
+          "Title": "General Settings",
+          "Description": "This section is about the general settings that Winter allows you to change.",
+          "Topics": [
+            {
+              "Title": "Number of Spaces",
+              "Description": "This section talks about how to set the number of spaces per indentation.\nThe indentation string (or tab string) will be inserted everytime you press the enter key in the editor.",
+              "Instructions": [
+                "Preferences > General Settings. You can also just click the Preferences icon in the toolbar. The General Settings dialog will appear.",
+                "Enter the desired numeric value in the text field beside the \"Number of Spaces per indentations\" label. (The default value is 2)",
+                "Click Apply to apply and save the changes. Otherwise Click Cancel. Click Result to Default if you want to set things back to their original values."
+              ]
+            },
+            {
+              "Title": "Prompt to save files before exiting",
+              "Description": "There are times where a command involves closing an unsaved tab, like the manual closing of a unsaved tab, \nclosing all tabs with unsaved tabs, or exiting the application with some unsaved tabs.\n This can be sometimes annoying to some users. To change this behavior, follow the instructions below.",
+              "Instructions": [
+                "Preferences > General Settings (or click the preferences icon in the toolbar). The General Settings dialog will appear.",
+                "Check/Uncheck the box before the \"Prompt to save files before saving\" label.",
+                "Click Apply to apply and save the changes. Otherwise Click Cancel. Click Result to Default if you want to set things back to their original values."
+              ]
+            },
+            {
+              "Title": "Remove extra lines and spaces",
+              "Instructions": [
+                "Preferences > General Settings (or click the preferences icon in the toolbar). The General Settings dialog will appear.",
+                "Check/Uncheck the box before the \"Remove extra lines and spaces...\" label.",
+                "Click Apply to apply and save the changes. Otherwise Click Cancel. Click Result to Default if you want to set things back to their original values."
+              ]
+            },
+            {
+              "Title": "Wrap Text",
+              "Instructions": [
+                "Preferences > General Settings (or click the preferences icon in the toolbar). The General Settings dialog will appear.",
+                "Check/Uncheck the box before the \"Wrap Text\" label.",
+                "Click Apply to apply and save the changes. Otherwise Click Cancel. Click Result to Default if you want to set things back to their original values."
+              ]
+            }
+          ]
+        },
+        {
+          "Title": "Font Settings",
+          "Instructions": [
+            "Preferences > Font Settings. You can also access it via the General Settings dialog.",
+            "Enter the desired font values (family, weight, and size).",
+            "Click Apply to apply and save the changes. Otherwise Click Cancel. Click Result to Default if you want to set things back to their original values."
           ]
         }
       ]
