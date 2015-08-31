@@ -65,7 +65,7 @@
     },
     {
       "Title": "Edit",
-      "Description": "Most of the time, you are going to edit files (that's what text editors are for). Winter supports the most common file-editing actions like Undo, Find, Copy and others.",
+      "Description": "Most of the time, you are going to edit files (that's what text editors are for). \nWinter supports the most common file-editing actions like Undo, Find, Copy and others.",
       "Topics": [
         {
           "Title": "Undo changes to a file",
@@ -106,6 +106,25 @@
         {
           "Title": "Paste Text from Clipboard",
           "Instructions": ["Edit > Paste. Alternatively, you can type Ctrl+Z. You can also right click on the editor area and select undo."]
+        }
+      ]
+    },
+    {
+      "Title": "View",
+      "Description": "You can hide or show some of the parts of the Winter Text Editor. For now, the only way to do it is to use the View Menu. \nThe next sub-sections will show how to hide/view the specific pnaels. \nThe instruction to show is the same as the one for hiding.",
+      "Topics": [
+        {
+          "Title": "Show/Hide Line Numbers",
+          "Description": "Some programmers prefer to hide the line numbers, located at the left side of the editor.",
+          "Instructions": [ "View > Line Numbers" ]
+        },
+        {
+          "Title": "Show/Hide Projects",
+          "Instructions": [ "View > Projects" ]
+        },
+        {
+          "Title": "Show/Hide Toolbar",
+          "Instructions": [ "View > Toolbar" ]
         }
       ]
     }
