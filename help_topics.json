@@ -127,6 +127,30 @@
           "Instructions": [ "View > Toolbar" ]
         }
       ]
+    },
+    {
+      "Title": "Navigation",
+      "Description": "The Navigation Menu contains the options on how to perform navigations. \nCurrently, the supported fetures are Go To File and Go To Line.",
+      "Topics": [
+        {
+          "Title": "Go to File",
+          "Description": "This feature allows you to go from one file to another. \nNote: You can only apply this to opened files.",
+          "Instructions": [
+            "Navigation > Go to File. A dialog box will appear with a text field, and a list of opened files to below it.",
+            "Type the name of the file you want to go to in the text field. Notice that the list changes as you type (it's auto-completion).",
+            "Press Enter key."
+          ]
+        },
+        {
+          "Title": "Go to Line",
+          "Description": "This will bring the cursor to the specific line specified by the user.",
+          "Instructions": [
+            "Navigation > Go to Line. A dialog box will appear with a text field, asking you to input the line number.",
+            "Type the line number you want to go to.",
+            "Press the Enter key."
+          ]
+        }
+      ]
     }
   ]
 }
