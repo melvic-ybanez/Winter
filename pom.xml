@@ -6,7 +6,16 @@
 
     <groupId>com.melvic.winter</groupId>
     <artifactId>Winter</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.2</version>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
 
     <dependencies>
         <dependency>
