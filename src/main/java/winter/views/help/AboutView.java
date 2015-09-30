@@ -7,6 +7,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -64,16 +65,23 @@ public class AboutView extends Stage {
 
         IntStream.range(0, labels.length).forEach(row -> grid.add(createLabel(":"), 1, row));
 
-        GridPane bottomPane = new GridPane();
-        bottomPane.add(createLabel("Icons downloaded from"), 0, 0);
-        bottomPane.add(createLabel(":"), 1, 0);
-        bottomPane.add(iconsSourceLink, 2, 0);
-        bottomPane.setPadding(new Insets(10, 20, 20, 20));
-        bottomPane.setHgap(grid.getHgap());
+        BorderPane projTypePane = new BorderPane();
+        Label projTypeLabel = new Label(aboutModel.getProjectType());
+        projTypeLabel.setStyle("-fx-font-size: 14;");
+        projTypePane.setCenter(projTypeLabel);
+        projTypePane.setPadding(new Insets(20, 20, 15, 20));
+
+        GridPane iconsSourcePane = new GridPane();
+        iconsSourcePane.add(createLabel("Icons downloaded from"), 0, 0);
+        iconsSourcePane.add(createLabel(":"), 1, 0);
+        iconsSourcePane.add(iconsSourceLink, 2, 0);
+        iconsSourcePane.setPadding(new Insets(10, 20, 20, 20));
+        iconsSourcePane.setHgap(grid.getHgap());
 
         BorderPane mainPane = new BorderPane();
+        mainPane.setTop(projTypePane);
         mainPane.setCenter(grid);
-        mainPane.setBottom(bottomPane);
+        mainPane.setBottom(iconsSourcePane);
 
         Scene scene = new Scene(mainPane);
         scene.getStylesheets().add(AboutView.class.getResource("/styles/help.css").toExternalForm());
