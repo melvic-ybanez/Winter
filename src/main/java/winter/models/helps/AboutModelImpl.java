@@ -12,6 +12,11 @@ public class AboutModelImpl implements AboutModel {
     }
 
     @Override
+    public String getProjectType() {
+        return "A Capstone Project presented to the Faculty of the\nCollege of Computer Studies, University of Cebu";
+    }
+
+    @Override
     public String getProjectNameURLString() {
         return "https://github.com/melvic-ybanez/Winter";
     }
