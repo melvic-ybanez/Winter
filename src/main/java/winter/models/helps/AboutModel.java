@@ -6,6 +6,8 @@ package winter.models.helps;
 public interface AboutModel {
     public String getProjectName();
 
+    public String getProjectType();
+
     public String getProjectNameURLString();
 
     public String getDescription();
